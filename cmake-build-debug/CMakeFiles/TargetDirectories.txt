@@ -1,3 +1,0 @@
-/mnt/c/Users/snz/Desktop/Πληροφοριακά project/cmake-build-debug/CMakeFiles/_project.dir
-/mnt/c/Users/snz/Desktop/Πληροφοριακά project/cmake-build-debug/CMakeFiles/edit_cache.dir
-/mnt/c/Users/snz/Desktop/Πληροφοριακά project/cmake-build-debug/CMakeFiles/rebuild_cache.dir
