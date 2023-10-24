@@ -3,6 +3,7 @@
 //
 
 #include "../../../headers/structures/unorderedMap/UnorderedMap.h"
+#include "../../../headers/config/Logger.h"
 UnorderedMap::UnorderedMap(size_t size): capacity(size) {
     data.resize(capacity, nullptr);
     LOG_INFO("UnorderedMap has been created!")

@@ -4,7 +4,9 @@
 
 #ifndef PROJECT_2023_1_KEYVALUE_H
 #define PROJECT_2023_1_KEYVALUE_H
-#include "../../../headers/config/LoggerConfig.h"
+
+#include <string>
+#include "../../../headers/config/Logger.h"
 class KeyValue {
 public:
     KeyValue(int k, const std::string& v);

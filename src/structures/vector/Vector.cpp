@@ -1,15 +1,17 @@
 //
 // Created by e.vrailas on 24/10/2023.
 //
-
+#include "../../../headers/config/Logger.h"
+#include <iostream>
 #include "../../../headers/structures/vector/Vector.h"
 Vector::Vector() : size(0), capacity(1) {
     array = new int[capacity];
-    LOG_INFO("Vector has been created!")
+
+    log.Info("Vector has been created!");
 }
 Vector::~Vector() {
     delete[] array;
-    LOG_INFO("Deleting Vector")
+    log.Info("Deleting Vector");
 }
 
 void Vector::push_back(int value)  {
@@ -27,7 +29,7 @@ int Vector::at(int index)  {
     return array[index];
 }
 
-int Vector::getSize()  {
+int Vector::getSize() const  {
     return size;
 }
 

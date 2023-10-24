@@ -1,6 +1,6 @@
 //
 // Created by snz on 10/23/2023
-
+#include "headers/structures/unorderedMap/UnorderedMap.h"
 class Node{
     public:
     Node(int id, float *quordinates){
@@ -87,8 +87,7 @@ private:
 };
 
 int main(){
-    Graph *g;
-    g=new Graph(10);
+    UnorderedMap unorderedMap= new UnorderedMap(20);
 
 
 }

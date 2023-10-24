@@ -5,7 +5,9 @@
 #ifndef PROJECT_2023_1_UNORDERMAP_H
 #define PROJECT_2023_1_UNORDERMAP_H
 
-#include "../../../headers/config/LoggerConfig.h"
+#include <string>
+#include "headers/structures/unorderedMap/KeyValue.h"
+#include "../vector/Vector.h"
 
 class UnorderedMap {
 public:
@@ -23,7 +25,7 @@ public:
     ~UnorderedMap();
 
 private:
-    std::vector<KeyValue *> data;
+   Vector<KeyValue *> data;
     size_t capacity;
 
     // Hash function to map keys to array indices

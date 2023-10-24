@@ -4,7 +4,6 @@
 
 #ifndef PROJECT_2023_1_VECTOR_H
 #define PROJECT_2023_1_VECTOR_H
-#include "../../../headers/config/LoggerConfig.h"
 
 class Vector {
 public:
@@ -15,7 +14,7 @@ public:
     void push_back(int value);
 
     int at(int index);
-    int getSize() ;
+    int getSize() const ;
 
 private:
     int* array;
