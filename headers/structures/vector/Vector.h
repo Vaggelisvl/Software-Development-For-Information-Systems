@@ -2,27 +2,39 @@
 // Created by e.vrailas on 24/10/2023.
 //
 
-#ifndef PROJECT_2023_1_VECTOR_H
-#define PROJECT_2023_1_VECTOR_H
+#ifndef VECTOR_H
+#define VECTOR_H
+#include <cstddef>
+#include <iostream>
 
+template <typename T>
 class Vector {
 public:
-    Vector();
+    Vector<T>();
 
-    ~Vector();
 
-    void push_back(int value);
+    void push_back(const T& value);
 
     int at(int index);
     int getSize() const ;
-
+    void reserve(size_t newCapacity) ;
+    void print();
 private:
-    int* array;
-    int size;
-    int capacity;
+    T * array;
+    size_t size;
+    size_t capacity;
 
-    void reserve(int newCapacity) ;
+
 };
 
+template<typename T>
+void Vector<T>::print() {
+    for (int i = 0; i < size; i++) {
+        std::cout << array[i] << " ";
+    }
+    std::cout << std::endl;
 
-#endif //PROJECT_2023_1_VECTOR_H
+}
+
+
+#endif //VECTOR_H

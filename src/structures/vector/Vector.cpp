@@ -2,38 +2,37 @@
 // Created by e.vrailas on 24/10/2023.
 //
 #include "../../../headers/config/Logger.h"
-#include <iostream>
 #include "../../../headers/structures/vector/Vector.h"
-Vector::Vector() : size(0), capacity(1) {
-    array = new int[capacity];
+#include <iostream>
+template<typename T>
+Vector<T>::Vector():size(0), capacity(1) {
+    array = new T[capacity];
 
-    log.Info("Vector has been created!");
-}
-Vector::~Vector() {
-    delete[] array;
-    log.Info("Deleting Vector");
+    LOG_INFO("Vector has been created!");
 }
 
-void Vector::push_back(int value)  {
+template<typename T>
+void Vector<T>::push_back(const T& value)  {
     if (size == capacity) {
         // Double the capacity when it's not sufficient
         reserve(2 * capacity);
     }
     array[size++] = value;
 }
-
-int Vector::at(int index)  {
+template<typename T>
+int Vector<T>::at(int index)  {
     if (index < 0 || index >= size) {
         throw "Index out of bounds";
     }
     return array[index];
 }
 
-int Vector::getSize() const  {
+template<typename T>
+int Vector<T>::getSize() const  {
     return size;
 }
-
-void Vector::reserve(int newCapacity) {
+template<typename T>
+void Vector<T>::reserve(size_t newCapacity) {
     int* newArray = new int[newCapacity];
     for (int i = 0; i < size; i++) {
         newArray[i] = array[i];
@@ -42,3 +41,5 @@ void Vector::reserve(int newCapacity) {
     array = newArray;
     capacity = newCapacity;
 }
+
+
