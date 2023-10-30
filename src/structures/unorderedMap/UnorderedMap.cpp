@@ -3,78 +3,98 @@
 //
 
 #include "../../../headers/structures/unorderedMap/UnorderedMap.h"
-UnorderedMap::UnorderedMap(size_t size): capacity(size) {
-    data.resize(capacity, nullptr);
-    LOG_INFO("UnorderedMap has been created!")
-}
+#include "../../../headers/config/Logger.h"
 
-void UnorderedMap::insert(int key, const int &value) {
+template<typename Key , typename Value>
+UnorderedMap<Key,Value>::UnorderedMap(): data(nullptr), capacity(1000) {
+    data = new KeyValue*[capacity]; // Create an array of pointers
+    for (size_t i = 0; i < capacity; i++) {
+        data[i] = nullptr; // Initialize each bucket with nullptr
+    }
+        LOG_INFO("UnorderedMap has been created!");
+}
+template<typename Key , typename Value>
+void UnorderedMap<Key,Value>::insert(const Key& key,  Value value) {
+    std::string message="Inserting key: " + std::to_string(key) + " with  address value: " +  std::to_string(reinterpret_cast<uintptr_t>(&value));
+    LOG_WARN(message);
     size_t index = hash(key);
     KeyValue* current = data[index];
-
     // Check if the key already exists in the linked list
     while (current) {
-        if (current->getKey() == key) {
+        if (current->key == key) {
             // Key already exists, update the value
-            current->setNext(new KeyValue(key, value));
+            current->value = value;
             return;
         }
-        current = current->getNext();
+        current = current->next;
     }
 
     // Add a new node to the beginning of the linked list
     KeyValue* newNode = new KeyValue(key, value);
-    newNode->setNext(data[index]);
+    newNode->next = data[index];
     data[index] = newNode;
 }
-
-bool UnorderedMap::find(int key, int &value) {
+template<typename Key , typename Value>
+bool UnorderedMap<Key,Value>::find(const Key& key, Value &values) {
     size_t index = hash(key);
     KeyValue* current = data[index];
 
     while (current) {
-        if (current->getKey() == key) {
-            value = current->getValue();
+        if (current->key == key) {
+            values = current->value;
             return true;
         }
-        current = current->getNext();
+        current = current->next;
     }
 
     return false;
 }
-
-void UnorderedMap::remove(int key) {
+template<typename Key,typename Value>
+void UnorderedMap<Key,Value>::remove(const Key& key) {
     size_t index = hash(key);
     KeyValue* current = data[index];
     KeyValue* prev = nullptr;
 
     while (current) {
-        if (current->getKey() == key) {
+        if (current->key == key) {
             if (prev) {
-                prev->setNext(current->getNext());
+                prev->next = current->next;
             } else {
-                data[index] = current->getNext();
+                data[index] = current->next;
             }
             delete current;
             return;
         }
         prev = current;
-        current = current->getNext();
+        current = current->next;
     }
 }
-
-UnorderedMap::~UnorderedMap() {
+template<typename Key,typename Value>
+UnorderedMap<Key,Value>::~UnorderedMap() {
     for (size_t i = 0; i < capacity; i++) {
         KeyValue* current = data[i];
         while (current) {
             KeyValue* temp = current;
-            current = current->getNext();
+            current = current->next;
             delete temp;
         }
+        data[i] = nullptr; // Set the bucket to nullptr after deleting
     }
+    delete[] data;
 }
 
 //TODO change the function to be more efficient
-size_t UnorderedMap::hash(int key) {
-    return key % capacity;
+template<typename Key,typename Value>
+size_t UnorderedMap<Key,Value>::hash(const Key& key) {
+    return static_cast<size_t>(key) %capacity;
+}
+template<typename Key, typename Value>
+void UnorderedMap<Key, Value>::print() {
+    for (size_t i = 0; i < capacity; i++) {
+        KeyValue* current = data[i];
+        while (current) {
+            LOG_INFO( std::to_string(current->key )+" " + std::to_string(current->value ));
+            current = current->next;
+        }
+    }
 }

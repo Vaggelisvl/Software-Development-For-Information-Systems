@@ -5,31 +5,45 @@
 #ifndef PROJECT_2023_1_UNORDERMAP_H
 #define PROJECT_2023_1_UNORDERMAP_H
 
-#include "../../../headers/config/LoggerConfig.h"
+#include <string>
+#include "../vector/Vector.h"
 
+template<typename Key, typename Value>
 class UnorderedMap {
 public:
-    UnorderedMap(size_t size);
+    UnorderedMap();
 
     // Insert a key-value pair into the hashmap
-    void insert(int key, const std::string &value);
+    void insert(const Key& key, Value value);
 
-    // Find the value associated with a given key
-    bool find(int key, std::string &value);
+    // Find the values associated with a given key
+    bool find(const Key& key, Value& value);
 
     // Remove a key-value pair from the hashmap
-    void remove(int key);
+    void remove(const Key& key);
+
+    void print();
+
 
     ~UnorderedMap();
 
 private:
-    std::vector<KeyValue *> data;
+    struct KeyValue {
+        Key key;
+        Value value;
+        KeyValue* next;
+
+        KeyValue(const Key& k, const Value v) : key(k), value(v), next(nullptr) {}
+    };
+    KeyValue ** data;
     size_t capacity;
 
     // Hash function to map keys to array indices
-    size_t hash(int key)
+    size_t hash(const Key& key);
 
 };
+
+
 
 
 #endif //PROJECT_2023_1_UNORDERMAP_H
