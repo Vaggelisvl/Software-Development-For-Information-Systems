@@ -6,7 +6,7 @@
 #define _PROJECT_POINT_H
 
 
-#include "../../headers/structures/vector/Vector.h"
+#include "../vector/Vector.h"
 
 class Point {
 protected:

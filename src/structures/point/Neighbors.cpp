@@ -2,8 +2,8 @@
 // Created by snz on 10/31/2023.
 //
 
-#include "Neighbors.h"
-#include "../../headers/config/Logger.h"
+#include "../../../headers/structures/point/Neighbors.h"
+#include "../../../headers/config/Logger.h"
 Neighbors::Neighbors(int id, float distance, Vector<float> coordinates) {
     this->id = id;
     this->distance = distance;
