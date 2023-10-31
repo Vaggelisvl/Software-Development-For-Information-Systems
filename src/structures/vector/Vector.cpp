@@ -33,7 +33,7 @@ int Vector<T>::getSize() const  {
 }
 template<typename T>
 void Vector<T>::reserve(size_t newCapacity) {
-    int* newArray = new int[newCapacity];
+    T* newArray = new T[newCapacity];
     for (int i = 0; i < size; i++) {
         newArray[i] = array[i];
     }
