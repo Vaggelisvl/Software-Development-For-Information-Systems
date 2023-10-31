@@ -20,7 +20,7 @@ void Vector<T>::push_back(const T& value)  {
     array[size++] = value;
 }
 template<typename T>
-int Vector<T>::at(int index)  {
+T Vector<T>::at(int index)  {
     if (index < 0 || index >= size) {
         throw "Index out of bounds";
     }
