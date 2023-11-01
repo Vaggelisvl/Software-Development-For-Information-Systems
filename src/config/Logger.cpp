@@ -3,28 +3,29 @@
 //
 
 
-#include <iostream>
 #include <ctime>
 #include "../../headers/config/Logger.h"
 
-void Logger::Info(const std::string &message) {
+void Logger::Info(const char* message) {
     Log("INFO", message, "\033[32m");  // Green
 }
 
-void Logger::Warn(const std::string &message) {
+void Logger::Warn(const char* message) {
     Log("WARNING", message, "\033[33m");  // Yellow
 }
 
-void Logger::Error(const std::string &message) {
+void Logger::Error(const char* message) {
     Log("ERROR", message, "\033[31m");  // Red
 }
 
-void Logger::Log(const std::string &logLevel, const std::string &message, const std::string &color) {
-    const std::string resetColor = "\033[0m";
-    std::time_t now = std::time(nullptr);
-    struct std::tm *timeinfo = std::localtime(&now); // Replace localtime_s with localtime
+void Logger::Log(const char* logLevel, const char* message, const char* color) {
+    const char* resetColor = "\x1b[0m"; // ANSI reset color escape code
+    time_t now = time(nullptr);
+    struct tm* timeinfo = localtime(&now); // Use localtime
     char timestamp[80];
-    std::strftime(timestamp, sizeof(timestamp), "[%Y-%m-%d %H:%M:%S]", timeinfo);
+    strftime(timestamp, sizeof(timestamp), "[%Y-%m-%d %H:%M:%S]", timeinfo);
 
-    std::cout << color << timestamp << " " << logLevel << ": " << message << resetColor << std::endl;
+    // Print the colored log message
+    printf("%s%s %s: %s %s\n", color, timestamp, logLevel, message, resetColor);
+
 }

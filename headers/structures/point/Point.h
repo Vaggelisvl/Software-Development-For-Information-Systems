@@ -16,12 +16,15 @@ protected:
 public:
     Point(int id, Vector<float> coordinates);
     Point();
-
+    bool operator==(const Point& other) const;
     virtual int getId() const;
     Vector<float> getCoordinates() const;
     void setCoordinates(Vector<float> coordinates);
-
+    size_t customHash() const;
+    size_t hashValue() const ;
     virtual void setId(int id);
+
+    Point(Point const &point);
 };
 
 

@@ -11,11 +11,11 @@
 class Logger {
     //TODO implement also the debug
 public:
-    static void Info(const std::string& message);
-    static void Warn(const std::string& message);
-    static void Error(const std::string& message);
+    static void Info(const char* message);
+    static void Warn(const char* message);
+    static void Error(const char* message);
 private:
-    static void Log(const std::string& logLevel, const std::string& message, const std::string& color);
+    static void Log(const char* logLevel, const char* message, const char* color);
 };
 #define LOG_INFO(message) Logger::Info(message)
 #define LOG_WARN(message) Logger::Warn(message)
