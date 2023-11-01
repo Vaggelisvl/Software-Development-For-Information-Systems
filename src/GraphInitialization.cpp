@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <ctime>
+#include "../headers/structures/GraphInitialization.h"
 
-#include "../headers/GraphInitialization.h"
 //#include "../headers/Point.h"
 //#include "../headers/Neighbors.h"
 
@@ -44,4 +44,4 @@ void GraphInitialization::generateRandomGraph(){
 
     }
 
-}
+
