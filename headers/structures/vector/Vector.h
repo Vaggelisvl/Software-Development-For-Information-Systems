@@ -15,7 +15,7 @@ public:
 
     void push_back(const T& value);
 
-    int at(int index);
+    T at(int index);
     int getSize() const ;
     void reserve(size_t newCapacity) ;
     void print();
