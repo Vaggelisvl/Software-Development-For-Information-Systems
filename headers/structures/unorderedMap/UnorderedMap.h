@@ -5,8 +5,8 @@
 #ifndef PROJECT_2023_1_UNORDERMAP_H
 #define PROJECT_2023_1_UNORDERMAP_H
 
-#include <string>
 #include "../vector/Vector.h"
+#include "../point/Point.h"
 
 template<typename Key, typename Value>
 class UnorderedMap {
@@ -40,9 +40,7 @@ private:
 
     // Hash function to map keys to array indices
     size_t hash(const Key& key);
-
 };
-
 
 
 

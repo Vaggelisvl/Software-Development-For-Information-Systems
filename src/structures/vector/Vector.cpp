@@ -42,4 +42,22 @@ void Vector<T>::reserve(size_t newCapacity) {
     capacity = newCapacity;
 }
 
+template<typename T>
+T Vector<T>::end() {
+    return array+size;
+}
+
+template<typename T>
+T Vector<T>::begin() {
+    return array;
+}
+template<typename T>
+void Vector<T>::print() {
+    for (int i = 0; i < size; i++) {
+        std::cout << array[i] << " ";
+    }
+    std::cout << std::endl;
+
+}
+
 

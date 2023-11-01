@@ -5,8 +5,6 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 #include <cstddef>
-#include <iostream>
-
 template <typename T>
 class Vector {
 public:
@@ -14,7 +12,14 @@ public:
 
 
     void push_back(const T& value);
-
+    T begin();
+    T end();
+    const T* begin() const {
+        return array;
+    };
+    const T* end() const{
+        return array+size;
+    };
     T at(int index);
     int getSize() const ;
     void reserve(size_t newCapacity) ;
@@ -27,14 +32,6 @@ private:
 
 };
 
-template<typename T>
-void Vector<T>::print() {
-    for (int i = 0; i < size; i++) {
-        std::cout << array[i] << " ";
-    }
-    std::cout << std::endl;
-
-}
 
 
 #endif //VECTOR_H

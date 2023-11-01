@@ -15,8 +15,7 @@ UnorderedMap<Key,Value>::UnorderedMap(): data(nullptr), capacity(1000) {
 }
 template<typename Key , typename Value>
 void UnorderedMap<Key,Value>::insert(const Key& key,  Value value) {
-    std::string message="Inserting key: " + std::to_string(key) + " with  address value: " +  std::to_string(reinterpret_cast<uintptr_t>(&value));
-    LOG_WARN(message);
+
     size_t index = hash(key);
     KeyValue* current = data[index];
     // Check if the key already exists in the linked list
@@ -84,16 +83,17 @@ UnorderedMap<Key,Value>::~UnorderedMap() {
 }
 
 //TODO change the function to be more efficient
-template<typename Key,typename Value>
-size_t UnorderedMap<Key,Value>::hash(const Key& key) {
-    return static_cast<size_t>(key) %capacity;
+template <typename Key, typename Value>
+size_t UnorderedMap<Key, Value>::hash(const Key& key) {
+    return key.hashValue() % capacity;
 }
+
 template<typename Key, typename Value>
 void UnorderedMap<Key, Value>::print() {
     for (size_t i = 0; i < capacity; i++) {
         KeyValue* current = data[i];
         while (current) {
-            LOG_INFO( std::to_string(current->key )+" " + std::to_string(current->value ));
+            LOG_INFO( (current->key +" " + current->value ).c_str());
             current = current->next;
         }
     }
