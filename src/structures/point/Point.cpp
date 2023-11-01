@@ -54,3 +54,11 @@ size_t Point::hashValue() const {
 
 }
 
+bool Point::operator<(const Point &other) const {
+    return this->id < other.id;
+}
+
+bool Point::operator>(const Point &other) const {
+    return this->id > other.id;
+}
+

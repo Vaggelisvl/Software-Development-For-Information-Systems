@@ -57,7 +57,41 @@ void Vector<T>::print() {
         std::cout << array[i] << " ";
     }
     std::cout << std::endl;
+}
 
+template<typename T>
+int  Vector<T>::partition(T* givenArray, int low, int high) {
+    T pivot = givenArray[high];
+    int i = low - 1;
+
+    for (int j = low; j <= high - 1; j++) {
+        if (givenArray[j] < pivot) {
+            i++;
+            T temp = givenArray[i];
+            givenArray[i] = givenArray[j];
+            givenArray[j] = temp;
+        }
+    }
+
+    T temp = givenArray[i + 1];
+    givenArray[i + 1] = givenArray[high];
+    givenArray[high] = temp;
+
+    return i + 1;
+}
+
+template<typename T>
+void  Vector<T>::quickSort(T* array, int low, int high) {
+    if (low < high) {
+        int pi = partition(array, low, high);
+        quickSort(array, low, pi - 1);
+        quickSort(array, pi + 1, high);
+    }
+}
+
+template<typename T>
+void Vector<T>::sort() {
+    quickSort(array, 0, size - 1);
 }
 
 

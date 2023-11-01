@@ -24,6 +24,8 @@ public:
 
     void print();
 
+    Value get(const Key& key);
+
 
     ~UnorderedMap();
 
@@ -41,6 +43,7 @@ private:
     // Hash function to map keys to array indices
     size_t hash(const Key& key);
 };
+
 
 
 

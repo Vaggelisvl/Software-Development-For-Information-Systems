@@ -20,11 +20,14 @@ public:
     const T* end() const{
         return array+size;
     };
+    void sort();
     T at(int index);
     int getSize() const ;
     void reserve(size_t newCapacity) ;
     void print();
 private:
+    void quickSort(T* array, int low, int high);
+    int partition(T* array, int low, int high);
     T * array;
     size_t size;
     size_t capacity;
