@@ -3,29 +3,26 @@
 
 #include "vector/Vector.h"
 #include "unorderedMap/UnorderedMap.h"
+#include "point/Point.h"
+#include "point/Neighbors.h"
 
-typedef struct{
-    int id;
-    Vector<float> coordinates;
-    Vector<float> distance;
-    int counter;
-}PointInfo;
-
-typedef Vector<PointInfo> neighborsPoints;
+//typedef Vector<Neighbors> neighborsPoints;
+//typedef Vector<Point> points;
 
 
 class GraphInitialization{
 private:
-    int numOfNode;
+    int numOfPoints;
     int K;
-    Vector<PointInfo> points;
-    UnorderedMap< PointInfo, neighborsPoints> graph;
+    Vector<Point> points;
+    UnorderedMap< int, Vector<Neighbors>> graph;
 public:
     GraphInitialization();
-    void putPoints(PointInfo);
+    void putPoints(Vector<float> coordinates);
     void initializeK();
-    void generateRandomGraph();
-    ~GraphInitialization();
+    int getNumOfPoints();
+    void setKRandomNeighbors();
+//    ~GraphInitialization();
 
 };
 
