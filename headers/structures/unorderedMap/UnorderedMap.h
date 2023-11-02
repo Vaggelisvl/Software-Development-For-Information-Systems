@@ -1,7 +1,3 @@
-//
-// Created by e.vrailas on 24/10/2023.
-//
-
 #ifndef PROJECT_2023_1_UNORDERMAP_H
 #define PROJECT_2023_1_UNORDERMAP_H
 
@@ -24,6 +20,8 @@ public:
 
     void print();
 
+    Value get(const Key& key);
+
 
     ~UnorderedMap();
 
@@ -41,6 +39,7 @@ private:
     // Hash function to map keys to array indices
     size_t hash(const Key& key);
 };
+
 
 
 

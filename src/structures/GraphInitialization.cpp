@@ -3,8 +3,9 @@
 #include <iostream>
 
 #include "../../headers/structures/GraphInitialization.h"
-#include "../../headers/structures/point/Point.h"
-#include "../../headers/structures/point/Neighbors.h"
+#include "apostas_se_diastas.cpp"
+//#include "../../headers/structures/point/Point.h"
+//#include "../../headers/structures/point/Neighbors.h"
 
 #include "point/Neighbors.cpp"
 
@@ -80,6 +81,7 @@ void GraphInitialization::printGraph(){
         cout<<endl;
     }
 }
+
 void GraphInitialization::setKRandomNeighbors(){
     srand(static_cast<unsigned>(time(nullptr)));
 
@@ -107,6 +109,9 @@ void GraphInitialization::setKRandomNeighbors(){
 
                 count ++;
                 if(count == 10){
+                    cout<<"cannot find a matching point!"<<endl;
+                    cout<<"point with id:"<<i+1<<" do not correspond to other neighbors!"<<endl;
+
                     loopFlag = 0;
                 }
 
@@ -141,7 +146,34 @@ void GraphInitialization::setKRandomNeighbors(){
 
     }
     this->printGraph();
+    this->setDistances();
 
+}
+
+void GraphInitialization::setDistances() {
+    float distance;
+
+    //for every point in the graph
+    for(int i=0;i<this->numOfPoints;i++){
+
+        //find current point with the neighbor vector of it
+        Point currentPoint = this->points.at(i);
+        Vector<Neighbors> neighborsVector;
+        this->graph.find(currentPoint,neighborsVector);
+
+        //for every neighbor
+        for(int j=0;j<neighborsVector.getSize();j++){
+            cout<<"here"<<endl;
+            Neighbors currentNeighbor;
+            currentNeighbor = neighborsVector.at(j);
+
+            distance = eukl_Apostash(currentPoint.getCoordinates(),currentNeighbor.getCoordinates());
+
+            currentNeighbor.setDistance(distance);
+
+            neighborsVector.push_back(currentNeighbor);
+        }
+    }
 }
 
 void GraphInitialization::basicGraphAlgorithm() {

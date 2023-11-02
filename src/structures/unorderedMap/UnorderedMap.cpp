@@ -1,23 +1,20 @@
-//
-// Created by e.vrailas on 24/10/2023.
-//
-
 #include "../../../headers/structures/unorderedMap/UnorderedMap.h"
 #include "../../../headers/config/Logger.h"
 
-template<typename Key , typename Value>
-UnorderedMap<Key,Value>::UnorderedMap(): data(nullptr), capacity(1000) {
-    data = new KeyValue*[capacity]; // Create an array of pointers
+template<typename Key, typename Value>
+UnorderedMap<Key, Value>::UnorderedMap(): data(nullptr), capacity(1000) {
+    data = new KeyValue *[capacity]; // Create an array of pointers
     for (size_t i = 0; i < capacity; i++) {
         data[i] = nullptr; // Initialize each bucket with nullptr
     }
-//        LOG_INFO("UnorderedMap has been created!");
+//    LOG_INFO("UnorderedMap has been created!");
 }
-template<typename Key , typename Value>
-void UnorderedMap<Key,Value>::insert(const Key& key,  Value value) {
+
+template<typename Key, typename Value>
+void UnorderedMap<Key, Value>::insert(const Key &key, Value value) {
 
     size_t index = hash(key);
-    KeyValue* current = data[index];
+    KeyValue *current = data[index];
     // Check if the key already exists in the linked list
     while (current) {
         if (current->key == key) {
@@ -29,14 +26,15 @@ void UnorderedMap<Key,Value>::insert(const Key& key,  Value value) {
     }
 
     // Add a new node to the beginning of the linked list
-    KeyValue* newNode = new KeyValue(key, value);
+    auto *newNode = new KeyValue(key, value);
     newNode->next = data[index];
     data[index] = newNode;
 }
-template<typename Key , typename Value>
-bool UnorderedMap<Key,Value>::find(const Key& key, Value &values) {
+
+template<typename Key, typename Value>
+bool UnorderedMap<Key, Value>::find(const Key &key, Value &values) {
     size_t index = hash(key);
-    KeyValue* current = data[index];
+    KeyValue *current = data[index];
 
     while (current) {
         if (current->key == key) {
@@ -48,11 +46,12 @@ bool UnorderedMap<Key,Value>::find(const Key& key, Value &values) {
 
     return false;
 }
-template<typename Key,typename Value>
-void UnorderedMap<Key,Value>::remove(const Key& key) {
+
+template<typename Key, typename Value>
+void UnorderedMap<Key, Value>::remove(const Key &key) {
     size_t index = hash(key);
-    KeyValue* current = data[index];
-    KeyValue* prev = nullptr;
+    KeyValue *current = data[index];
+    KeyValue *prev = nullptr;
 
     while (current) {
         if (current->key == key) {
@@ -68,12 +67,13 @@ void UnorderedMap<Key,Value>::remove(const Key& key) {
         current = current->next;
     }
 }
-template<typename Key,typename Value>
-UnorderedMap<Key,Value>::~UnorderedMap() {
+
+template<typename Key, typename Value>
+UnorderedMap<Key, Value>::~UnorderedMap() {
     for (size_t i = 0; i < capacity; i++) {
-        KeyValue* current = data[i];
+        KeyValue *current = data[i];
         while (current) {
-            KeyValue* temp = current;
+            KeyValue *temp = current;
             current = current->next;
             delete temp;
         }
@@ -83,18 +83,35 @@ UnorderedMap<Key,Value>::~UnorderedMap() {
 }
 
 //TODO change the function to be more efficient
-template <typename Key, typename Value>
-size_t UnorderedMap<Key, Value>::hash(const Key& key) {
+template<typename Key, typename Value>
+size_t UnorderedMap<Key, Value>::hash(const Key &key) {
     return key.hashValue() % capacity;
 }
 
 template<typename Key, typename Value>
 void UnorderedMap<Key, Value>::print() {
     for (size_t i = 0; i < capacity; i++) {
-        KeyValue* current = data[i];
+        KeyValue *current = data[i];
         while (current) {
-            LOG_INFO( (current->key +" " + current->value ).c_str());
+            LOG_INFO((current->key + " " + current->value));
             current = current->next;
         }
     }
+
+
+}
+
+template<typename Key, typename Value>
+Value UnorderedMap<Key, Value>::get(const Key &key) {
+    size_t index = hash(key);
+    KeyValue *current = data[index];
+
+    while (current) {
+        if (current->key == key) {
+            return current->value;
+        }
+        current = current->next;
+    }
+
+    return Value();
 }

@@ -1,7 +1,3 @@
-//
-// Created by snz on 10/31/2023.
-//
-
 #include "../../../headers/structures/point/Neighbors.h"
 #include "../../../headers/config/Logger.h"
 Neighbors::Neighbors(int id, float distance, Vector<float> coordinates) {
@@ -32,4 +28,3 @@ void Neighbors::setDistance(float distance) {
 void Neighbors::setId(int id) {
     this->id = id;
 }
-
