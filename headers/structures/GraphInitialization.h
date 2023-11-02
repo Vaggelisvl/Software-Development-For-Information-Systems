@@ -15,7 +15,8 @@ private:
     int numOfPoints;
     int K;
     Vector<Point> points;
-    UnorderedMap< int, Vector<Neighbors>> graph;
+    UnorderedMap< Point, Vector<Neighbors>> graph;
+    int checkRandomNum(Vector<Neighbors>,int,int);
 public:
     GraphInitialization();
     void putPoints(Vector<float> coordinates);

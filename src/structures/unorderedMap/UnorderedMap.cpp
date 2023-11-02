@@ -11,7 +11,7 @@ UnorderedMap<Key,Value>::UnorderedMap(): data(nullptr), capacity(1000) {
     for (size_t i = 0; i < capacity; i++) {
         data[i] = nullptr; // Initialize each bucket with nullptr
     }
-        LOG_INFO("UnorderedMap has been created!");
+//        LOG_INFO("UnorderedMap has been created!");
 }
 template<typename Key , typename Value>
 void UnorderedMap<Key,Value>::insert(const Key& key,  Value value) {
