@@ -26,8 +26,12 @@ void GraphInitialization::putPoints(Vector<float> coordinates) {
 }
 
 void GraphInitialization::initializeK(){
-    this->K = 3;
-//    this->K = (int)(this->numOfPoints * 0.01);
+    if(this->numOfPoints > 1000){
+        this->K = (int)(this->numOfPoints * 0.01);
+    }
+    else {
+        this->K = 3;
+    }
 }
 
 
@@ -41,7 +45,6 @@ int GraphInitialization::checkRandomNum(Vector<Neighbors> neighborsVector, int r
     for(int p=0;p<neighborsVector.getSize();p++) {
         //if num already in the neighbor list
         if (neighborsVector.at(p).getId() == randNum) {
-//            cout<<"again1"<<endl;
             flag = 0;
             break;
         }
@@ -49,7 +52,6 @@ int GraphInitialization::checkRandomNum(Vector<Neighbors> neighborsVector, int r
         //if num is the current point id
         if(currentPointId == randNum){
             flag = 0;
-//            cout<<"again2"<<endl;
             break;
         }
     }
@@ -57,21 +59,33 @@ int GraphInitialization::checkRandomNum(Vector<Neighbors> neighborsVector, int r
     Vector<Neighbors> neighborCheckVector;
     Point reverseCheckPoint = this->points.at(randNum-1);
     this->graph.find(reverseCheckPoint,neighborCheckVector);
+
     //if reverse neighbor list is full
     if(neighborCheckVector.getSize() == this->K){
-//        cout<<"again3"<<endl;
         flag = 0;
     }
 
     return !flag;
 }
 
+void GraphInitialization::printGraph(){
+    for (int i = 0; i < this->numOfPoints; ++i) {
+        Vector<Neighbors> neighborsVector;
+        //print graph
+        cout<<endl<<"point: "<<i+1<<endl;
+        for(int j=0;j< this->K;j++){
+            this->graph.find(this->points.at(i),neighborsVector);
+            cout<<"rand:"<<neighborsVector.at(j).getId()<<" ";
+        }
+        cout<<endl;
+    }
+}
 void GraphInitialization::setKRandomNeighbors(){
     srand(static_cast<unsigned>(time(nullptr)));
 
     //for every point
     for(int i=0;i<this->numOfPoints;i++) {
-        cout<<"---------------i="<<i+1<<"-----------------"<<endl;
+//        cout<<"---------------i="<<i+1<<"-----------------"<<endl;
         int randomNum;
         Vector<Neighbors> neighborsVector;
         Point currentPoint = this->points.at(i);
@@ -81,13 +95,20 @@ void GraphInitialization::setKRandomNeighbors(){
         //for every neighbor
         for (int j = 0; j < neighborCapacity; j++) {
             int loopFlag = 1;
+            int count = 0;
             while(loopFlag){
                 //generate random num
+
                 randomNum = (rand() % (this->numOfPoints)) + 1;
-                cout<<"randnum:"<<randomNum<<endl;
+//                cout<<"randnum:"<<randomNum<<endl;
 
                 //if num is ok, stop the loop
                 loopFlag = checkRandomNum(neighborsVector, randomNum, i+1);
+
+                count ++;
+                if(count == 10){
+                    loopFlag = 0;
+                }
 
             }
 
@@ -97,13 +118,13 @@ void GraphInitialization::setKRandomNeighbors(){
                     //init current point neighbor
                     Neighbors neighborsOfPoint(randomNum,0.0,this->points.at(p).getCoordinates());
                     neighborsVector.push_back(neighborsOfPoint);
-                    cout<<"pointid:"<<p+1<<endl;
+//                    cout<<"pointid:"<<p+1<<endl;
 
                     //find reverse neighbor from point(currentPoint)
                     Vector<Neighbors> reverseNeighborsVector;
                     Point reversePoint = this->points.at(randomNum-1);
                     this->graph.find(reversePoint,reverseNeighborsVector);
-                    cout<<"reverse:"<<reversePoint.getId()<<endl;
+//                    cout<<"reverse:"<<reversePoint.getId()<<endl;
 
                     //init neighbor reserve neighbor
                     Neighbors reverseNeighborsOfPoint(i+1,0.0,currentPoint.getCoordinates());
@@ -119,16 +140,58 @@ void GraphInitialization::setKRandomNeighbors(){
         this->graph.insert(currentPoint,neighborsVector);
 
     }
-    for (int i = 0; i < this->numOfPoints; ++i) {
-        Vector<Neighbors> neighborsVector;
-        //print graph
-        cout<<endl<<"point: "<<i+1<<endl;
-        for(int j=0;j< this->K;j++){
-            this->graph.find(this->points.at(i),neighborsVector);
-            cout<<"rand:"<<neighborsVector.at(j).getId()<<" ";
+    this->printGraph();
+
+}
+
+void GraphInitialization::basicGraphAlgorithm() {
+    float distance = 0.0;
+
+    int changeFlag = 0;
+
+    //for every point in the graph
+    for(int i=0;i<this->numOfPoints;i++){
+
+        if(changeFlag){
+            i--;
         }
-        cout<<endl;
+
+        //find current point with the neighbor vector of it
+        Point currentPoint = this->points.at(i);
+        Vector<Neighbors> neighborsVector;
+        this->graph.find(currentPoint,neighborsVector);
+
+        //find max distance of neighbors
+        float maxNeighborDistance = neighborsVector.at(K-1).getDistance();
+
+        //for every neighbor
+        for(int j=0;j<neighborsVector.getSize();j++){
+
+            //find neighbor point with the neighbor vector of it
+            Point neighborPoint = this->points.at(i);
+            Vector<Neighbors> extendedNeighborsVector;
+            this->graph.find(neighborPoint,extendedNeighborsVector);
+
+            //for every extended neighbor
+            for(int p=0;p<extendedNeighborsVector.getSize();p++){
+
+                //if is the revers neighbor ignore it
+                if(extendedNeighborsVector.at(p) == currentPoint){
+                    continue;
+                }
+
+                //if is closer to current point
+                if(maxNeighborDistance > extendedNeighborsVector.at(p).getDistance()){
+                    changeFlag = 1;
+                    maxNeighborDistance = extendedNeighborsVector.at(p).getDistance();
+
+                    //change the extended neighbor with the farthest current point neighbor
+                    neighborsVector.at(K-1) = extendedNeighborsVector.at(p);
+                }
+            }
+        }
     }
+    this->printGraph();
 
 }
 
@@ -137,5 +200,3 @@ void GraphInitialization::setKRandomNeighbors(){
 //        this->graph.remove(this->points.at(i));
 //    }
 //}
-
-
