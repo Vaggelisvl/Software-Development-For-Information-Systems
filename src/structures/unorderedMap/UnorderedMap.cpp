@@ -30,7 +30,7 @@ void UnorderedMap<Key, Value>::insert(const Key &key, Value value) {
     }
 
     // Add a new node to the beginning of the linked list
-    KeyValue *newNode = new KeyValue(key, value);
+    auto *newNode = new KeyValue(key, value);
     newNode->next = data[index];
     data[index] = newNode;
 }

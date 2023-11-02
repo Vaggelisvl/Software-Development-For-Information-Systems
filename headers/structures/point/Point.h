@@ -2,8 +2,8 @@
 // Created by snz on 10/31/2023.
 //
 
-#ifndef _PROJECT_POINT_H
-#define _PROJECT_POINT_H
+#ifndef POINT_H
+#define POINT_H
 
 
 #include "../vector/Vector.h"
