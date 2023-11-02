@@ -120,8 +120,11 @@ void GraphInitialization::setKRandomNeighbors(){
             for(int p=0;p<this->points.getSize();p++) {
                 //find neighbor from points
                 if (this->points.at(p).getId() == randomNum) {
+                    float distance = eukl_Apostash(currentPoint.getCoordinates(),this->points.at(p).getCoordinates());
+
+                    cout<<"distance: "<<distance<<endl;
                     //init current point neighbor
-                    Neighbors neighborsOfPoint(randomNum,0.0,this->points.at(p).getCoordinates());
+                    Neighbors neighborsOfPoint(randomNum,distance,this->points.at(p).getCoordinates());
                     neighborsVector.push_back(neighborsOfPoint);
 //                    cout<<"pointid:"<<p+1<<endl;
 
@@ -132,7 +135,7 @@ void GraphInitialization::setKRandomNeighbors(){
 //                    cout<<"reverse:"<<reversePoint.getId()<<endl;
 
                     //init neighbor reserve neighbor
-                    Neighbors reverseNeighborsOfPoint(i+1,0.0,currentPoint.getCoordinates());
+                    Neighbors reverseNeighborsOfPoint(i+1,distance,currentPoint.getCoordinates());
                     reverseNeighborsVector.push_back(reverseNeighborsOfPoint);
 
                     //put neighbor reverse neighbor
@@ -146,79 +149,104 @@ void GraphInitialization::setKRandomNeighbors(){
 
     }
     this->printGraph();
-    this->setDistances();
 
 }
 
-void GraphInitialization::setDistances() {
-    float distance;
+//void GraphInitialization::setDistances() {
+//    float distance;
+//
+//    //for every point in the graph
+//    for(int i=0;i<this->numOfPoints;i++){
+//
+//        //find current point with the neighbor vector of it
+//        Point currentPoint = this->points.at(i);
+//        Vector<Neighbors> neighborsVector;
+//        this->graph.find(currentPoint,neighborsVector);
+//
+//        int size = neighborsVector.getSize();
+//
+//        //for every neighbor
+//        for(int j=0;j<neighborsVector.getSize();j++){
+//            cout<<"here"<<endl;
+//            Neighbors currentNeighbor;
+//            currentNeighbor = neighborsVector.at(j);
+//
+//            distance = eukl_Apostash(currentPoint.getCoordinates(),currentNeighbor.getCoordinates());
+//
+//            currentNeighbor.setDistance(distance);
+//
+//            neighborsVector.push_back(currentNeighbor);
+//        }
+//    }
+//}
 
-    //for every point in the graph
+void GraphInitialization::sortKNeighbors(){
     for(int i=0;i<this->numOfPoints;i++){
-
         //find current point with the neighbor vector of it
         Point currentPoint = this->points.at(i);
         Vector<Neighbors> neighborsVector;
-        this->graph.find(currentPoint,neighborsVector);
+        this->graph.find(currentPoint, neighborsVector);
 
-        //for every neighbor
-        for(int j=0;j<neighborsVector.getSize();j++){
-            cout<<"here"<<endl;
-            Neighbors currentNeighbor;
-            currentNeighbor = neighborsVector.at(j);
-
-            distance = eukl_Apostash(currentPoint.getCoordinates(),currentNeighbor.getCoordinates());
-
-            currentNeighbor.setDistance(distance);
-
-            neighborsVector.push_back(currentNeighbor);
-        }
+        neighborsVector.sort();
     }
+    cout<<"SORTED GRAPH:"<<endl;
+    this->printGraph();
 }
 
 void GraphInitialization::basicGraphAlgorithm() {
-    float distance = 0.0;
 
-    int changeFlag = 0;
+    int changeFlag = 1;
 
-    //for every point in the graph
-    for(int i=0;i<this->numOfPoints;i++){
+    while(changeFlag) {
+        cout<<"again"<<endl;
+        changeFlag = 0;
 
-        if(changeFlag){
-            i--;
-        }
+        //for every point in the graph
+        for (int i = 0; i < this->numOfPoints; i++) {
 
-        //find current point with the neighbor vector of it
-        Point currentPoint = this->points.at(i);
-        Vector<Neighbors> neighborsVector;
-        this->graph.find(currentPoint,neighborsVector);
+//        if(changeFlag){
+//            i--;
+//        }
 
-        //find max distance of neighbors
-        float maxNeighborDistance = neighborsVector.at(K-1).getDistance();
+            //find current point with the neighbor vector of it
+            Point currentPoint = this->points.at(i);
+            Vector<Neighbors> neighborsVector;
+            this->graph.find(currentPoint, neighborsVector);
 
-        //for every neighbor
-        for(int j=0;j<neighborsVector.getSize();j++){
+            //find max distance of neighbors
+//            float maxNeighborDistance = neighborsVector.at(K - 1).getDistance();
+            float maxNeighborDistance = 1.2;
+//            cout<<"max="<<maxNeighborDistance<<endl;
 
-            //find neighbor point with the neighbor vector of it
-            Point neighborPoint = this->points.at(i);
-            Vector<Neighbors> extendedNeighborsVector;
-            this->graph.find(neighborPoint,extendedNeighborsVector);
+            //for every neighbor
+            for (int j = 0; j < this->K; j++) {
 
-            //for every extended neighbor
-            for(int p=0;p<extendedNeighborsVector.getSize();p++){
+                //find neighbor point with the neighbor vector of it
+                Point neighborPoint = this->points.at(i);
+                Vector<Neighbors> extendedNeighborsVector;
+                this->graph.find(neighborPoint, extendedNeighborsVector);
 
-                //if is the revers neighbor ignore it
-                if(extendedNeighborsVector.at(p) == currentPoint){
-                    continue;
-                }
+                //for every extended neighbor
+                for (int p = 0; p < this->K; p++) {
 
-                //if is closer to current point
-                if(maxNeighborDistance > extendedNeighborsVector.at(p).getDistance()){
-                    changeFlag = 1;
-                    maxNeighborDistance = extendedNeighborsVector.at(p).getDistance();
+                    //if is the revers neighbor ignore it
+                    if (extendedNeighborsVector.at(p) == currentPoint) {
+//                        cout<<"same"<<endl;
+                        continue;
+                    }
 
-                    //change the extended neighbor with the farthest current point neighbor
-                    neighborsVector.at(K-1) = extendedNeighborsVector.at(p);
+//                    cout<<"extendedDistance"<<extendedNeighborsVector.at(p).getDistance()<<endl;
+                    //if is closer to current point
+                    if (maxNeighborDistance > extendedNeighborsVector.at(p).getDistance()) {
+//                    cout<<"here  i="<<i<<endl;
+                        changeFlag = 1;
+                        maxNeighborDistance = extendedNeighborsVector.at(p).getDistance();
+
+                        //change the extended neighbor with the farthest current point neighbor
+                        neighborsVector.at(K - 1) = extendedNeighborsVector.at(p);
+
+                        neighborsVector.sort();
+                    }
                 }
             }
         }

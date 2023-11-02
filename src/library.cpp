@@ -1,11 +1,4 @@
-#include <iostream>
-#include <fstream>
-
-#include "../headers/structures/vector/Vector.h"
-#include "../headers/config/Logger.h"
-#include "../headers/structures/point/Point.h"
-#include "../headers/config/Logger.h"
-#include "../headers/structures/GraphInitialization.h"
+#include "../headers/library.h"
 
 
 #include "../src/structures/vector/Vector.cpp"
@@ -64,6 +57,8 @@ int main() {
     g.initializeK();
     cout<<"numofpoint="<<g.getNumOfPoints()<<endl;
     g.setKRandomNeighbors();
+    cout<<"FINISH WITH RANDOM"<<endl;
+    g.sortKNeighbors();
     g.basicGraphAlgorithm();
 
 }

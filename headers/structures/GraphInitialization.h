@@ -13,10 +13,11 @@ private:
     int numOfPoints;
     int K;
     Vector<Point> points;
+    Vector<float> pointsMaxDistance;
     UnorderedMap< Point, Vector<Neighbors>> graph;
     int checkRandomNum(Vector<Neighbors>,int,int);
     void printGraph();
-    void setDistances();
+//    void setDistances();
 public:
     GraphInitialization();
     void putPoints(Vector<float> coordinates);
