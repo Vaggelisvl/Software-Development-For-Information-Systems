@@ -6,11 +6,11 @@
 #include "../../../headers/config/Logger.h"
 
 Point::Point(int id, Vector<float> coordinates) : id(id), coordinates(coordinates) {
-    LOG_INFO("Point has been created!");
+//    LOG_INFO("Point has been created!");
 }
 
 Point::Point() : id(0) {
-    LOG_INFO("Point has been created!");
+//    LOG_INFO("Point has been created!");
 }
 
 int Point::getId() const {

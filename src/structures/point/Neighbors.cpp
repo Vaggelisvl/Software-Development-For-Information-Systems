@@ -8,12 +8,12 @@ Neighbors::Neighbors(int id, float distance, Vector<float> coordinates) {
     this->id = id;
     this->distance = distance;
     this->coordinates = coordinates;
-    LOG_INFO("Neighbor has been created!");
+//    LOG_INFO("Neighbor has been created!");
 }
 
 Neighbors::Neighbors() :distance(0) {
     this->id = 0;
-    LOG_INFO("Neighbor has been created!");
+//    LOG_INFO("Neighbor has been created!");
 }
 
 int Neighbors::getId() const {
