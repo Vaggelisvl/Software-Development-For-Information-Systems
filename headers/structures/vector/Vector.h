@@ -1,7 +1,3 @@
-//
-// Created by e.vrailas on 24/10/2023.
-//
-
 #ifndef VECTOR_H
 #define VECTOR_H
 #include <cstddef>

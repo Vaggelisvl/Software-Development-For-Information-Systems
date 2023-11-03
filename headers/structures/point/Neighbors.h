@@ -1,7 +1,3 @@
-//
-// Created by snz on 10/31/2023.
-//
-
 #ifndef _PROJECT_NEIGHBORS_H
 #define _PROJECT_NEIGHBORS_H
 

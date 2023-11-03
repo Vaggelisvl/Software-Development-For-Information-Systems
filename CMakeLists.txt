@@ -16,4 +16,4 @@ add_library(_project
         headers/structures/point/Neighbors.h
         src/structures/point/Neighbors.cpp
         src/structures/point/Point.cpp
-        src/library.cpp)
+        src/library.cpp headers/structures/GraphAlgorithm.h src/structures/GraphAlgorithm.cpp headers/structures/Dataset.h src/structures/Dataset.cpp src/structures/apostas_se_diastas.cpp headers/structures/apostas_se_diastas.h headers/library.h)

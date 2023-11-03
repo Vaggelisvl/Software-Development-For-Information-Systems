@@ -1,11 +1,4 @@
-#include <iostream>
-#include <fstream>
-
-#include "../headers/structures/vector/Vector.h"
-#include "../headers/config/Logger.h"
-#include "../headers/structures/point/Point.h"
-#include "../headers/config/Logger.h"
-#include "../headers/structures/GraphInitialization.h"
+#include "../headers/library.h"
 
 
 #include "../src/structures/vector/Vector.cpp"
@@ -46,13 +39,14 @@ uint32_t readVectorFromFile(const char* filename, Vector<Point>& elements) {
 }
 using namespace std;
 int main() {
+
     Vector<Point> elements;
     uint32_t N = readVectorFromFile("input1.bin", elements);
     std::cout<<N<<std::endl;
     for(int i=0;i<N;i++){
         cout<<"\n\n\n\n"<<endl;
         cout<<"vector element: "<<elements.at(i).getId()<<endl;
-        elements.at(i).getCoordinates().print();
+//        elements.at(i).getCoordinates().print();
     }
 
     //initialize graph, put points, set K, initialize random k neighbors
@@ -63,4 +57,8 @@ int main() {
     g.initializeK();
     cout<<"numofpoint="<<g.getNumOfPoints()<<endl;
     g.setKRandomNeighbors();
+    cout<<"FINISH WITH RANDOM"<<endl;
+    g.sortKNeighbors();
+    g.basicGraphAlgorithm();
+
 }
