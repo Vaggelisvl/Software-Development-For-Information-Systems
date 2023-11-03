@@ -49,7 +49,6 @@ size_t Point::customHash() const {
 }
 
 size_t Point::hashValue() const {
-
     return customHash();
 
 }

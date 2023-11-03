@@ -3,11 +3,7 @@
 #include <iostream>
 
 #include "../../headers/structures/GraphInitialization.h"
-#include "apostas_se_diastas.cpp"
-//#include "../../headers/structures/point/Point.h"
-//#include "../../headers/structures/point/Neighbors.h"
-
-#include "point/Neighbors.cpp"
+#include "../../headers/Metrics.h"
 
 using namespace std;
 
@@ -73,10 +69,11 @@ void GraphInitialization::printGraph(){
     for (int i = 0; i < this->numOfPoints; ++i) {
         Vector<Neighbors> neighborsVector;
         //print graph
-        cout<<endl<<"point: "<<i+1<<endl;
+
         for(int j=0;j< this->K;j++){
             this->graph.find(this->points.at(i),neighborsVector);
-            cout<<"rand:"<<neighborsVector.at(j).getId()<<" ";
+            cout<<endl<<"point: "<<i+1<<endl;
+            cout<<"neighbors:"<<neighborsVector.at(j).getId()<<" with distance:"<<neighborsVector.at(j).getDistance()<<endl;
         }
         cout<<endl;
     }
@@ -120,7 +117,7 @@ void GraphInitialization::setKRandomNeighbors(){
             for(int p=0;p<this->points.getSize();p++) {
                 //find neighbor from points
                 if (this->points.at(p).getId() == randomNum) {
-                    float distance = eukl_Apostash(currentPoint.getCoordinates(),this->points.at(p).getCoordinates());
+                    float distance = Metrics::eukl_Apostash(currentPoint.getCoordinates(),this->points.at(p).getCoordinates());
 
                     cout<<"distance: "<<distance<<endl;
                     //init current point neighbor
@@ -182,15 +179,24 @@ void GraphInitialization::setKRandomNeighbors(){
 
 void GraphInitialization::sortKNeighbors(){
     for(int i=0;i<this->numOfPoints;i++){
-        //find current point with the neighbor vector of it
-        Point currentPoint = this->points.at(i);
         Vector<Neighbors> neighborsVector;
-        this->graph.find(currentPoint, neighborsVector);
+        //find current point with the neighbor vector of it
+        cout<<endl;
+        Point currentPoint = this->points.at(i);
 
+
+        this->graph.find(currentPoint, neighborsVector);
+//        for(int n=0;n<3;n++){
+//            cout<<"point : "<<currentPoint.getId() <<"neighbors:"<<endl;
+//            cout<<"neighbor: "<<neighborsVector.at(n).getId()<<" and distance:"<<neighborsVector.at(n).getDistance()<<endl;
+//        }
+//
         neighborsVector.sort();
+//        cout<<"after calling sort"<<endl;
+//        for(int n=0;n<neighborsVector.getSize();n++){
+//            cout<<"neighbor: "<<neighborsVector.at(n).getId()<<" and distance:"<<neighborsVector.at(n).getDistance()<<endl;
+//        }
     }
-    cout<<"SORTED GRAPH:"<<endl;
-    this->printGraph();
 }
 
 void GraphInitialization::basicGraphAlgorithm() {
@@ -253,6 +259,10 @@ void GraphInitialization::basicGraphAlgorithm() {
     }
     this->printGraph();
 
+}
+
+UnorderedMap<Point, Vector<Neighbors>> &GraphInitialization::getGraph() {
+    return this->graph;
 }
 
 //GraphInitialization::~GraphInitialization(){
