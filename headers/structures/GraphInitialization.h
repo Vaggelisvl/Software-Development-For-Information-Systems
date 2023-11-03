@@ -5,7 +5,6 @@
 #include "unorderedMap/UnorderedMap.h"
 #include "point/Point.h"
 #include "point/Neighbors.h"
-#include "apostas_se_diastas.h"
 
 
 class GraphInitialization{
@@ -16,9 +15,9 @@ private:
     Vector<float> pointsMaxDistance;
     UnorderedMap< Point, Vector<Neighbors>> graph;
     int checkRandomNum(Vector<Neighbors>,int,int);
-    void printGraph();
-//    void setDistances();
 public:
+//    void setDistances();
+    void printGraph();
     GraphInitialization();
     void putPoints(Vector<float> coordinates);
     void initializeK();
@@ -26,6 +25,7 @@ public:
     void setKRandomNeighbors();
     void sortKNeighbors();
     void basicGraphAlgorithm();
+    UnorderedMap< Point, Vector<Neighbors>> &getGraph();
 //    ~GraphInitialization();
 
 };

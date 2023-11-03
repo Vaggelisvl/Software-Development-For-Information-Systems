@@ -76,7 +76,7 @@ void GraphInitialization::printGraph(){
         cout<<endl<<"point: "<<i+1<<endl;
         for(int j=0;j< this->K;j++){
             this->graph.find(this->points.at(i),neighborsVector);
-            cout<<"rand:"<<neighborsVector.at(j).getId()<<" "<<"["<<neighborsVector.at(j).getDistance()<<"]"<<"     ";
+            cout<<"rand:"<<neighborsVector.at(j).getId()<<" ";
         }
         cout<<endl;
     }
@@ -188,7 +188,6 @@ void GraphInitialization::sortKNeighbors(){
         this->graph.find(currentPoint, neighborsVector);
 
         neighborsVector.sort();
-
     }
     cout<<"SORTED GRAPH:"<<endl;
     this->printGraph();
@@ -216,7 +215,7 @@ void GraphInitialization::basicGraphAlgorithm() {
 
             //find max distance of neighbors
 //            float maxNeighborDistance = neighborsVector.at(K - 1).getDistance();
-            float maxNeighborDistance = 1.0;
+            float maxNeighborDistance = 1.2;
 //            cout<<"max="<<maxNeighborDistance<<endl;
 
             //for every neighbor
@@ -252,7 +251,6 @@ void GraphInitialization::basicGraphAlgorithm() {
             }
         }
     }
-    cout<<"EXTENDED NEIGHBOR CHECKED"<<endl;
     this->printGraph();
 
 }

@@ -1,3 +1,7 @@
+//
+// Created by snz on 10/31/2023.
+//
+
 #include "../../../headers/structures/point/Point.h"
 #include "../../../headers/config/Logger.h"
 
@@ -45,7 +49,6 @@ size_t Point::customHash() const {
 }
 
 size_t Point::hashValue() const {
-
     return customHash();
 
 }
@@ -57,3 +60,4 @@ bool Point::operator<(const Point &other) const {
 bool Point::operator>(const Point &other) const {
     return this->id > other.id;
 }
+

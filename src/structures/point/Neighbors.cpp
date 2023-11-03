@@ -1,5 +1,4 @@
 #include "../../../headers/structures/point/Neighbors.h"
-#include "../../../headers/config/Logger.h"
 Neighbors::Neighbors(int id, float distance, Vector<float> coordinates) {
     this->id = id;
     this->distance = distance;
@@ -27,4 +26,8 @@ void Neighbors::setDistance(float distance) {
 
 void Neighbors::setId(int id) {
     this->id = id;
+}
+
+bool Neighbors::operator<(const Neighbors &other)  const {
+    return distance < other.distance;
 }
