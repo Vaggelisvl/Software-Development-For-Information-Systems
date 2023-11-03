@@ -1,5 +1,12 @@
-#include "../headers/library.h"
+#include <iostream>
+#include <fstream>
 
+#include "../headers/structures/vector/Vector.h"
+#include "../headers/config/Logger.h"
+#include "../headers/structures/point/Point.h"
+#include "../headers/config/Logger.h"
+#include "../headers/structures/GraphInitialization.h"
+#include "../headers/structures/Dataset.h"
 
 #include "../src/structures/vector/Vector.cpp"
 #include "../src/structures/unorderedMap/UnorderedMap.cpp"
@@ -9,41 +16,30 @@
 
 
 
-uint32_t readVectorFromFile(const char* filename, Vector<Point>& elements) {
-    uint32_t N;
 
-    FILE* file = fopen(filename, "rb");
-
-    if (!file) {
-        fprintf(stderr, "Unable to open file\n");
-        return 0;
-    }
-
-    fread(&N, sizeof(uint32_t), 1, file);
-    int num=0;
-    // Reserve capacity in the Vector to accommodate N elements.
-    elements.reserve(N);
-    for (uint32_t i = 0; i < N; i++) {
-        Vector<float> coordinates;
-        for(int j=0;j<100;j++){
-            float element;  // Use the same type as the Vector
-            fread(&element, sizeof(float ), 1, file);
-//            std::cout<<element<<std::endl;
-            coordinates.push_back(element);
-        }
-        elements.push_back(Point(++num, coordinates));
-
-    }
-    fclose(file);
-    return N;
-}
 using namespace std;
-int main() {
+int main(int argc, char *argv[]) {
+
+    char* inputFile = argv[1];
+    int dimensions = atoi(argv[2]);
+    int numOfPoints = 0;
+    std::cout<<"argc"<<argc<<endl;
+    for (int i=0;i<argc;i++)
+        std::cout<<"argv "<<i<<"value :"<<argv[i]<<endl;
+
+    if(argc > 3){
+        numOfPoints = atoi(argv[3]);
+    }
+
+    Dataset dataset(inputFile, numOfPoints, dimensions);
+    cout<<dataset.getFilename()<<endl;
 
     Vector<Point> elements;
-    uint32_t N = readVectorFromFile("input1.bin", elements);
-    std::cout<<N<<std::endl;
-    for(int i=0;i<N;i++){
+    dataset.readVectorFromFile(elements);
+
+    std::cout<<dataset.getNumOfPoints()<<std::endl;
+    std::cout<<" num"<<dataset.getNumOfPoints()<<endl;
+    for(int i=0;i<dataset.getNumOfPoints();i++){
         cout<<"\n\n\n\n"<<endl;
         cout<<"vector element: "<<elements.at(i).getId()<<endl;
 //        elements.at(i).getCoordinates().print();
@@ -51,7 +47,7 @@ int main() {
 
     //initialize graph, put points, set K, initialize random k neighbors
     GraphInitialization g;
-    for(int i=0;i<N;i++){
+    for(int i=0;i<dataset.getNumOfPoints();i++){
         g.putPoints(elements.at(i).getCoordinates());
     }
     g.initializeK();
