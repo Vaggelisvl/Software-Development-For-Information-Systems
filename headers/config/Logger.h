@@ -5,9 +5,6 @@
 #ifndef PROJECT_2023_1_LOGGERCONFIG_H
 #define PROJECT_2023_1_LOGGERCONFIG_H
 
-#include <string>
-
-
 class Logger {
     //TODO implement also the debug
 public:

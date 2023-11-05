@@ -1,8 +1,8 @@
 
+
 #include <cstdint>
 #include "../../headers/structures/Dataset.h"
 
-#include "vector/Vector.cpp"
 
 using namespace std;
 
@@ -14,10 +14,6 @@ void Dataset::setNumOfPoints(int num){
     this->numOfPoints = num;
 }
 
-//void Dataset::setDimensions(int dimension){
-//    this->dimensions = dimension;
-//}
-
 int Dataset::getNumOfPoints() const {
     return this->numOfPoints;
 }
@@ -26,9 +22,6 @@ int Dataset::getDimensions() const {
     return this->dimensions;
 }
 
-char* Dataset::getFilename() {
-    return this->fileName;
-}
 
 void Dataset::readVectorFromFile(Vector<Point>& elements) {
     FILE *file = fopen(this->fileName, "rb");
@@ -51,7 +44,6 @@ void Dataset::readVectorFromFile(Vector<Point>& elements) {
         for(int j=0;j< this->dimensions;j++){
             float element;  // Use the same type as the Vector
             fread(&element, sizeof(float ), 1, file);
-//            std::cout<<element<<std::endl;
             coordinates.push_back(element);
         }
         elements.push_back(Point(++num, coordinates));

@@ -6,10 +6,9 @@
 #define _PROJECT_METRICS_H
 
 #include "structures/vector/Vector.h"
-const int DIASTASH = 100;
 class Metrics {
 public:
-    static float eukl_Apostash(Vector<float> a, Vector<float> b);
+    static float eukl_Apostash(Vector<float> a, Vector<float> b,int dimenstion);
 };
 
 

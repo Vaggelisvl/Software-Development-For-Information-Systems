@@ -1,7 +1,8 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 #include <cstddef>
-#include <iostream>
+#include <cstdio>
+
 template <typename T>
 class Vector {
 public:
@@ -92,10 +93,10 @@ T Vector<T>::begin() {
 }
 template<typename T>
 void Vector<T>::print() {
-    for (int i = 0; i < size; i++) {
-        std::cout << array[i] << " ";
-    }
-    std::cout << std::endl;
+    for (int i = 0; i < size; i++)
+        printf("%d ", array[i]);
+
+    printf("\n");
 }
 
 template<typename T>
@@ -201,7 +202,7 @@ void Vector<T>::remove(const T& value) {
 
         size--; // Decrement the size to reflect the removal.
     }
-}\
+}
 
 
 #endif //VECTOR_H

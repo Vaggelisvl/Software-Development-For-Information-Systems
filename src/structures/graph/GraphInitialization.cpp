@@ -1,18 +1,13 @@
 #include <cstdlib>
 #include <ctime>
-#include <iostream>
-#include <unistd.h>
 
-#include "../../headers/structures/GraphInitialization.h"
-#include "apostas_se_diastas.cpp"
-//#include "../../headers/structures/point/Point.h"
-//#include "../../headers/structures/point/Neighbors.h"
+#include "../../../headers/structures/graph/GraphInitialization.h"
+#include "../../../headers/Metrics.h"
 
-#include "point/Neighbors.cpp"
 
-using namespace std;
 
-GraphInitialization::GraphInitialization() : numOfPoints(0), K(-1){
+
+GraphInitialization::GraphInitialization() : numOfPoints(0), K(-1),dimensions(100){
 }
 
 void GraphInitialization::putPoints(Vector<float> coordinates) {
@@ -23,8 +18,8 @@ void GraphInitialization::putPoints(Vector<float> coordinates) {
     this->points.push_back(currentPoint);
     Vector<Neighbors> neighborsVector;
     this->graph.insert(currentPoint,neighborsVector);
+    printf("put point with id: %d\n", currentPoint.getId());
 
-    cout<<"put point with id: "<<currentPoint.getId()<<endl;
 }
 
 void GraphInitialization::initializeK(){
@@ -73,12 +68,16 @@ void GraphInitialization::printGraph(){
     for (int i = 0; i < this->numOfPoints; ++i) {
         Vector<Neighbors> neighborsVector;
         //print graph
-        cout<<endl<<"point: "<<i+1<<endl;
         for(int j=0;j< this->K;j++){
             this->graph.find(this->points.at(i),neighborsVector);
-            cout<<"neighbor:"<<neighborsVector.at(j).getId()<<" "<<"["<<neighborsVector.at(j).getDistance()<<"]"<<" ";
+            char buffer[100]; // Adjust the buffer size as needed
+            int neighborId = neighborsVector.at(j).getId();
+            float neighborDistance = neighborsVector.at(j).getDistance();
+            sprintf(buffer, "neighbor: %d [%.2f] ", neighborId, neighborDistance);
+            LOG_INFO(buffer);
+
         }
-        cout<<endl;
+
     }
 }
 
@@ -112,8 +111,14 @@ void GraphInitialization::setKRandomNeighbors(){
 
                 count ++;
                 if(count == 20){
-                    cout<<"cannot find a matching point!"<<endl;
-                    cout<<"point with id:"<<i+1<<" do not correspond to other neighbors!"<<endl;
+
+                    char buffer1[100]; // Adjust the buffer size as needed
+                    char buffer2[100]; // Adjust the buffer size as needed
+
+                    sprintf(buffer1, "cannot find a matching point!");
+                    sprintf(buffer2, "point with id: %d do not correspond to other neighbors!", i + 1);
+                    LOG_WARN(buffer1);
+                    LOG_WARN(buffer2);
 
                     loopFlag = 0;
                 }
@@ -123,7 +128,7 @@ void GraphInitialization::setKRandomNeighbors(){
             for(int p=0;p<this->points.getSize();p++) {
                 //find neighbor from points
                 if (this->points.at(p).getId() == randomNum) {
-                    float distance = eukl_Apostash(currentPoint.getCoordinates(),this->points.at(p).getCoordinates());
+                    float distance = Metrics::eukl_Apostash(currentPoint.getCoordinates(),this->points.at(p).getCoordinates(),this->dimensions);
 
                     //init current point neighbor
                     Neighbors neighborsOfPoint(randomNum,distance,this->points.at(p).getCoordinates());
@@ -161,21 +166,22 @@ void GraphInitialization::sortKNeighbors(){
 
         neighborsVector.sort();
     }
-    cout<<"SORTED GRAPH:"<<endl;
+    char buffer[50];
+    sprintf(buffer,"SORTED GRAPH:");
     this->printGraph();
 }
 
 void GraphInitialization::calculateAllPoints() {
     for(int i=0;i<this->numOfPoints;i++){
-        cout<<"point:"<<i+1<<endl;
+        printf("point: %d\n", i + 1);
         Point currentPoint = this->points.at(i);
         for(int j=0;j< this->numOfPoints;j++){
             Point point2 = this->points.at(j);
             if(point2.getId() == currentPoint.getId()){
                 continue;
             }
-            float dist =  eukl_Apostash(currentPoint.getCoordinates(), point2.getCoordinates());
-            cout<<"neighbor:"<<j+1<<" with dist:"<<dist<<endl;
+            float dist =  Metrics::eukl_Apostash(currentPoint.getCoordinates(), point2.getCoordinates(),this->dimensions);
+            printf("neighbor: %d with dist: %lf\n", j + 1, dist);
         }
     }
 }
@@ -224,13 +230,14 @@ int GraphInitialization::KNNAlgorithm() {
                     continue;
                 }
 
-                float extendedDistance = eukl_Apostash(currentPoint.getCoordinates(),extendedNeighborsVector.at(p).getCoordinates());
+                float extendedDistance = Metrics::eukl_Apostash(currentPoint.getCoordinates(),extendedNeighborsVector.at(p).getCoordinates(),this->dimensions);
 
                 //if is closer to current point
                 if (maxNeighborDistance > extendedDistance) {
 
                     if(neighborsVector.at(j).getDistance() == extendedNeighborsVector.at(p).getDistance()){
-                        cout<<"error"<<endl;
+                        LOG_ERROR("Some error occurred inside the KNNAlgorithm function");
+
                     }
 
                     flag = 1;
@@ -254,8 +261,7 @@ int GraphInitialization::KNNAlgorithm() {
 
     this->sortKNeighbors();
     this->printGraph();
-
-    cout<<"FINISH ALGORITHM"<<endl;
+    LOG_INFO("FINISH ALGORITHM");
     return 1;
 
 }

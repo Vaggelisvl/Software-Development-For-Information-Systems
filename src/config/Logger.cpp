@@ -5,6 +5,7 @@
 
 #include <ctime>
 #include <cstring>
+#include <cstdio>
 #include "../../headers/config/Logger.h"
 
 bool Logger::loggingEnabled = true;

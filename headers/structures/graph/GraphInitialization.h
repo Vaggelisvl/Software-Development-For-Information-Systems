@@ -1,10 +1,10 @@
 #ifndef _PROJECT_GRAPHINITIALIZATION_H
 #define _PROJECT_GRAPHINITIALIZATION_H
 
-#include "vector/Vector.h"
-#include "unorderedMap/UnorderedMap.h"
-#include "point/Point.h"
-#include "point/Neighbors.h"
+#include "../vector/Vector.h"
+#include "../unorderedMap/UnorderedMap.h"
+#include "../point/Point.h"
+#include "../point/Neighbors.h"
 
 
 class GraphInitialization{
@@ -15,6 +15,7 @@ private:
     Vector<float> pointsMaxDistance;
     UnorderedMap< Point, Vector<Neighbors>> graph;
     int checkRandomNum(Vector<Neighbors>,int,int);
+    int dimensions;
 
     int isEqual( Vector<Neighbors>&,  Vector<Neighbors>&);
 public:
