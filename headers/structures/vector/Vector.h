@@ -18,16 +18,28 @@ public:
         return array+size;
     };
     void sort();
-    T at(int index);
+    T & at(int index);
     int getSize() const ;
     void reserve(size_t newCapacity) ;
     void print();
+
+    void replace(const T& oldValue, const T& newValue);
+    void remove(const T& value) ;
+    bool operator==(const Vector<T>& other) const;
+
+    // Define the less than operator
+    bool operator<(const Vector<T>& other) const ;
+
+    // Define the greater than operator
+    bool operator>(const Vector<T>& other) const ;
 private:
     void quickSort(T* array, int low, int high);
     int partition(T* array, int low, int high);
     T * array;
     size_t size;
     size_t capacity;
+
+
 
 
 };
@@ -47,7 +59,7 @@ void Vector<T>::push_back(const T& value)  {
     array[size++] = value;
 }
 template<typename T>
-T Vector<T>::at(int index)  {
+T& Vector<T>::at(int index)  {
     if (index < 0 || index >= size) {
         throw "Index out of bounds";
     }
@@ -120,6 +132,76 @@ template<typename T>
 void Vector<T>::sort() {
     quickSort(array, 0, size - 1);
 }
+
+
+
+template<typename T>
+bool Vector<T>::operator>(const Vector<T> &other) const {
+    return (other < *this);
+}
+template<typename T>
+bool Vector<T>::operator==(const Vector<T> &other) const  {
+    if (size != other.size) {
+        return false;
+    }
+    for (size_t i = 0; i < size; i++) {
+        if (array[i] != other.array[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+template<typename T>
+bool Vector<T>::operator<(const Vector<T> &other) const {
+    if (size < other.size) {
+        return true;
+    } else if (size > other.size) {
+        return false;
+    } else {
+        for (size_t i = 0; i < size; i++) {
+            if (array[i] < other.array[i]) {
+                return true;
+            } else if (array[i] > other.array[i]) {
+                return false;
+            }
+        }
+        return false;
+    }
+}
+
+template <typename T>
+void Vector<T>::replace(const T& oldValue, const T& newValue) {
+    for (int i = 0; i < size; i++) {
+        if (array[i] == oldValue) {
+            array[i] = newValue;
+            break;
+            // If you want to replace only the first occurrence, you can add a break statement here.
+        }
+    }
+}
+template <typename T>
+void Vector<T>::remove(const T& value) {
+    int index = -1; // Initialize with an invalid index.
+
+    // Find the index of the element with the given value.
+    for (int i = 0; i < size; i++) {
+        if (array[i] == value) {
+            index = i;
+            break; // Stop searching once the value is found.
+        }
+    }
+
+    // If the value was found, remove it from the vector.
+    if (index != -1) {
+        // Shift elements to the left to fill the gap.
+        for (int i = index; i < size - 1; i++) {
+            array[i] = array[i + 1];
+        }
+
+        size--; // Decrement the size to reflect the removal.
+    }
+}\
 
 
 #endif //VECTOR_H

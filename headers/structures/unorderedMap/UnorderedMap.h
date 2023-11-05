@@ -26,8 +26,7 @@ public:
 
     Value get(const Key& key);
 
-
-    ~UnorderedMap();
+//    ~UnorderedMap();
 
 private:
     struct KeyValue {
@@ -43,6 +42,7 @@ private:
     // Hash function to map keys to array indices
     size_t hash(const Key& key);
 };
+
 
 template<typename Key, typename Value>
 Value UnorderedMap<Key, Value>::get(const Key &key) {
@@ -65,7 +65,7 @@ UnorderedMap<Key,Value>::UnorderedMap(): data(nullptr), capacity(1000) {
     for (size_t i = 0; i < capacity; i++) {
         data[i] = nullptr; // Initialize each bucket with nullptr
     }
-    LOG_INFO("UnorderedMap has been created!");
+//    LOG_INFO("UnorderedMap has been created!");
 }
 template<typename Key , typename Value>
 void UnorderedMap<Key,Value>::insert(const Key& key,  Value value) {
@@ -122,19 +122,19 @@ void UnorderedMap<Key,Value>::remove(const Key& key) {
         current = current->next;
     }
 }
-template<typename Key,typename Value>
-UnorderedMap<Key,Value>::~UnorderedMap() {
-    for (size_t i = 0; i < capacity; i++) {
-        KeyValue* current = data[i];
-        while (current) {
-            KeyValue* temp = current;
-            current = current->next;
-            delete temp;
-        }
-        data[i] = nullptr; // Set the bucket to nullptr after deleting
-    }
-    delete[] data;
-}
+//template<typename Key,typename Value>
+//UnorderedMap<Key,Value>::~UnorderedMap() {
+//    for (size_t i = 0; i < capacity; i++) {
+//        KeyValue* current = data[i];
+//        while (current) {
+//            KeyValue* temp = current;
+//            current = current->next;
+//            delete temp;
+//        }
+//        data[i] = nullptr; // Set the bucket to nullptr after deleting
+//    }
+//    delete[] data;
+//}
 
 //TODO change the function to be more efficient
 template <typename Key, typename Value>
@@ -152,6 +152,8 @@ void UnorderedMap<Key, Value>::print() {
         }
     }
 }
+
+
 
 
 #endif //PROJECT_2023_1_UNORDERMAP_H

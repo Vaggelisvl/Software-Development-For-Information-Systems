@@ -19,8 +19,8 @@ float Neighbors::getDistance() const {
     return this->distance;
 }
 
-void Neighbors::setDistance(float distance) {
-    this->distance = distance;
+void Neighbors::setDistance(float d) {
+    this->distance = d;
 
 }
 

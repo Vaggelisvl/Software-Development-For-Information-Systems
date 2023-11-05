@@ -12,7 +12,7 @@ public:
     Neighbors();
     int getId() const;
     float getDistance() const;
-    void setDistance(float distance);
+    void setDistance(float d);
     void setId(int id) override;
     bool operator<(const Neighbors& other) const;
 

@@ -16,7 +16,6 @@
 
 
 
-
 using namespace std;
 int main(int argc, char *argv[]) {
 
@@ -37,13 +36,12 @@ int main(int argc, char *argv[]) {
     Vector<Point> elements;
     dataset.readVectorFromFile(elements);
 
-    std::cout<<dataset.getNumOfPoints()<<std::endl;
-    std::cout<<" num"<<dataset.getNumOfPoints()<<endl;
-    for(int i=0;i<dataset.getNumOfPoints();i++){
-        cout<<"\n\n\n\n"<<endl;
-        cout<<"vector element: "<<elements.at(i).getId()<<endl;
-//        elements.at(i).getCoordinates().print();
-    }
+//    std::cout<<dataset.getNumOfPoints()<<std::endl;
+//    std::cout<<" num"<<dataset.getNumOfPoints()<<endl;
+//    for(int i=0;i<dataset.getNumOfPoints();i++){
+//        cout<<"\n\n\n\n"<<endl;
+//        cout<<"vector element: "<<elements.at(i).getId()<<endl;
+//    }
 
     //initialize graph, put points, set K, initialize random k neighbors
     GraphInitialization g;
@@ -55,6 +53,5 @@ int main(int argc, char *argv[]) {
     g.setKRandomNeighbors();
     cout<<"FINISH WITH RANDOM"<<endl;
     g.sortKNeighbors();
-    g.basicGraphAlgorithm();
-
+    while(!g.KNNAlgorithm());
 }
