@@ -36,9 +36,6 @@ int GraphInitialization::getNumOfPoints(){
     return this->numOfPoints;
 }
 
-UnorderedMap< Point, Vector<Neighbors>> & GraphInitialization::getGraph(){
-    return this->graph;
-}
 
 int GraphInitialization::checkRandomNum(Vector<Neighbors> neighborsVector, int randNum, int currentPointId) {
     int flag = 1;
@@ -265,5 +262,44 @@ int GraphInitialization::KNNAlgorithm() {
     return 1;
 
 }
+Vector<Neighbors> GraphInitialization::findKNearestNeighborsForPoint(const Point& queryPoint, int k) {
+    Vector<Neighbors> neighborsVector;
+    this->graph.find(queryPoint, neighborsVector);
+    neighborsVector.sort();
+
+    // If there are not enough neighbors, search for more from other points not in the graph
+    while (neighborsVector.getSize() < k) {
+        // Search for more neighbors from points not in the graph
+        for (int i = 0; i < this->numOfPoints; i++) {
+            Point currentPoint = this->points.at(i);
+            // Check if the current point is already in the neighbors list
+            if (currentPoint.getId() == queryPoint.getId()) {
+                continue;
+            }
+            Vector<Neighbors> currentNeighbors;
+            this->graph.find(currentPoint, currentNeighbors);
+            bool hasExceed=false;
+            for (int j = 0; j < currentNeighbors.getSize(); j++) {
+                for(int counter=0;counter<neighborsVector.getSize();counter++){
+                    if(neighborsVector.at(counter).getId()!=currentNeighbors.at(j).getId()){
+                        neighborsVector.push_back(currentNeighbors.at(j));
+                        if (neighborsVector.getSize() >= k) {
+                            hasExceed=true;
+                            break;
+                        }
+                    }
+                    if(hasExceed)
+                        break;
+                }
+
+            }
+        }
+    }
+
+    // Return the top-k neighbors
+    neighborsVector.reserve(k);
+    return neighborsVector;
+}
+
 
 

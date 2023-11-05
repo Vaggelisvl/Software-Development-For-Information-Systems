@@ -28,7 +28,7 @@ public:
     void setKRandomNeighbors();
     void sortKNeighbors();
     int KNNAlgorithm();
-    UnorderedMap< Point, Vector<Neighbors>> &getGraph();
+    Vector<Neighbors> findKNearestNeighborsForPoint(const Point& queryPoint, int k);
     void calculateAllPoints();
 //    ~GraphInitialization();
 

@@ -31,3 +31,13 @@ void Neighbors::setId(int id) {
 bool Neighbors::operator<(const Neighbors &other)  const {
     return distance < other.distance;
 }
+
+bool Neighbors::operator==(const Neighbors &other) const {
+    // First, check if the base class (Point) is equal.
+    if (!Point::operator==(other)) {
+        return false;
+    }
+
+    // Then, compare the distance.
+    return distance == other.distance;
+}

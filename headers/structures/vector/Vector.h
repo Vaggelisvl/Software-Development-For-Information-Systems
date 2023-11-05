@@ -10,8 +10,7 @@ public:
 
 
     void push_back(const T& value);
-    T begin();
-    T end();
+
     const T* begin() const {
         return array;
     };
@@ -28,6 +27,7 @@ public:
     void remove(const T& value) ;
     bool operator==(const Vector<T>& other) const;
 
+    size_t getCapacity() const ;
     // Define the less than operator
     bool operator<(const Vector<T>& other) const ;
 
@@ -44,6 +44,12 @@ private:
 
 
 };
+
+template<typename T>
+size_t Vector<T>::getCapacity() const {
+    return capacity;
+}
+
 template<typename T>
 Vector<T>::Vector():size(0), capacity(1) {
     array = new T[capacity];
@@ -82,15 +88,7 @@ void Vector<T>::reserve(size_t newCapacity) {
     capacity = newCapacity;
 }
 
-template<typename T>
-T Vector<T>::end() {
-    return array+size;
-}
 
-template<typename T>
-T Vector<T>::begin() {
-    return array;
-}
 template<typename T>
 void Vector<T>::print() {
     for (int i = 0; i < size; i++)
