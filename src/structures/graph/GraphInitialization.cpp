@@ -78,6 +78,16 @@ void GraphInitialization::printGraph(){
     }
 }
 
+void GraphInitialization::printNeighbors(int id) {
+    Point point = this->points.at(id-1);
+    Vector<Neighbors> neighborsVector;
+    this->graph.find(point,neighborsVector);
+    printf("%d nearest neighbors of Point %d:\n", this->K,id);
+    for(int i=0;i< this->K;i++){
+        printf("neighbor with id:%d\n",neighborsVector.at(i).getId());
+    }
+}
+
 void GraphInitialization::setKRandomNeighbors(){
     srand(static_cast<unsigned>(time(nullptr)));
 
@@ -101,7 +111,6 @@ void GraphInitialization::setKRandomNeighbors(){
                     randomNum = (rand() % (this->numOfPoints)) + 1;
 
                 }
-//                cout<<"randnum:"<<randomNum<<endl;
 
                 //if num is ok, stop the loop
                 loopFlag = checkRandomNum(neighborsVector, randomNum, i+1);
@@ -150,7 +159,7 @@ void GraphInitialization::setKRandomNeighbors(){
         this->graph.insert(currentPoint,neighborsVector);
 
     }
-    this->printGraph();
+//    this->printGraph();
 
 }
 
@@ -169,18 +178,34 @@ void GraphInitialization::sortKNeighbors(){
 }
 
 void GraphInitialization::calculateAllPoints() {
+    FILE *file;
+    file = fopen("results.txt", "w");
+    if (file == NULL) {
+        printf("Cant open the file\n");
+        return ;
+    }
     for(int i=0;i<this->numOfPoints;i++){
-        printf("point: %d\n", i + 1);
+        fprintf(file,"point: %d\n", i + 1);
         Point currentPoint = this->points.at(i);
-        for(int j=0;j< this->numOfPoints;j++){
+        Vector<float> n;
+        for(int j=0;j< this->numOfPoints;j++) {
             Point point2 = this->points.at(j);
-            if(point2.getId() == currentPoint.getId()){
+            if (point2.getId() == currentPoint.getId()) {
                 continue;
             }
-            float dist =  Metrics::eukl_Apostash(currentPoint.getCoordinates(), point2.getCoordinates(),this->dimensions);
-            printf("neighbor: %d with dist: %lf\n", j + 1, dist);
+            float dist = Metrics::eukl_Apostash(currentPoint.getCoordinates(), point2.getCoordinates(),
+                                                this->dimensions);
+            n.push_back(dist);
         }
+        n.sort();
+        for(int j=0;j< this->numOfPoints;j++) {
+            fprintf(file, "neighbor: %d with dist: %lf\n", j + 1, n.at(j));
+
+        }
+
+
     }
+    fclose(file);
 }
 
 
@@ -262,43 +287,91 @@ int GraphInitialization::KNNAlgorithm() {
     return 1;
 
 }
-Vector<Neighbors> GraphInitialization::findKNearestNeighborsForPoint(const Point& queryPoint, int k) {
-    Vector<Neighbors> neighborsVector;
-    this->graph.find(queryPoint, neighborsVector);
-    neighborsVector.sort();
+//Vector<Neighbors> GraphInitialization::findKNearestNeighborsForPoint(const Point& queryPoint) {
+//    Vector<Neighbors> neighborsVector;
+//    this->graph.find(queryPoint, neighborsVector);
+//    neighborsVector.sort();
+//
+//    // If there are not enough neighbors, search for more from other points not in the graph
+//    while (neighborsVector.getSize() < k) {
+//        // Search for more neighbors from points not in the graph
+//        for (int i = 0; i < this->numOfPoints; i++) {
+//            Point currentPoint = this->points.at(i);
+//            // Check if the current point is already in the neighbors list
+//            if (currentPoint.getId() == queryPoint.getId()) {
+//                continue;
+//            }
+//            Vector<Neighbors> currentNeighbors;
+//            this->graph.find(currentPoint, currentNeighbors);
+//            bool hasExceed=false;
+//            for (int j = 0; j < currentNeighbors.getSize(); j++) {
+//                for(int counter=0;counter<neighborsVector.getSize();counter++){
+//                    if(neighborsVector.at(counter).getId()!=currentNeighbors.at(j).getId()){
+//                        neighborsVector.push_back(currentNeighbors.at(j));
+//                        if (neighborsVector.getSize() >= k) {
+//                            hasExceed=true;
+//                            break;
+//                        }
+//                    }
+//                    if(hasExceed)
+//                        break;
+//                }
+//
+//            }
+//        }
+//    }
+//
+//    // Return the top-k neighbors
+//    neighborsVector.reserve(k);
+//    return neighborsVector;
+//}
 
-    // If there are not enough neighbors, search for more from other points not in the graph
-    while (neighborsVector.getSize() < k) {
-        // Search for more neighbors from points not in the graph
-        for (int i = 0; i < this->numOfPoints; i++) {
-            Point currentPoint = this->points.at(i);
-            // Check if the current point is already in the neighbors list
-            if (currentPoint.getId() == queryPoint.getId()) {
-                continue;
-            }
-            Vector<Neighbors> currentNeighbors;
-            this->graph.find(currentPoint, currentNeighbors);
-            bool hasExceed=false;
-            for (int j = 0; j < currentNeighbors.getSize(); j++) {
-                for(int counter=0;counter<neighborsVector.getSize();counter++){
-                    if(neighborsVector.at(counter).getId()!=currentNeighbors.at(j).getId()){
-                        neighborsVector.push_back(currentNeighbors.at(j));
-                        if (neighborsVector.getSize() >= k) {
-                            hasExceed=true;
-                            break;
-                        }
-                    }
-                    if(hasExceed)
-                        break;
+
+void GraphInitialization::findKNearestNeighborsForPoint(const Point& queryPoint) {
+    srand(time(nullptr));
+    Vector<Neighbors> uniqueNumbers;
+    int randomNumber;
+    int flag;
+    //generate K random neighbors for query point
+    for (int i = 0; i < this->K; i++) {
+        flag = 1;
+        while (flag){
+            flag = 0;
+            randomNumber = (rand() % this->numOfPoints) + 1;
+            for (int j=0;j<i;j++) {
+                if (uniqueNumbers.at(j).getId() == randomNumber) {
+                    flag = 1;
+                    break;
                 }
-
             }
         }
-    }
 
-    // Return the top-k neighbors
-    neighborsVector.reserve(k);
-    return neighborsVector;
+        //convert point to neighbor
+        Point neighborPoint = this->points.at(randomNumber-1);
+        float dist = Metrics::eukl_Apostash(neighborPoint.getCoordinates(),queryPoint.getCoordinates(), this->dimensions);
+        Neighbors neighbor(neighborPoint.getId(), dist, neighborPoint.getCoordinates());
+
+        uniqueNumbers.push_back(neighbor);
+    }
+    this->graph.insert(queryPoint,uniqueNumbers);
+    this->points.push_back(queryPoint);
+    this->numOfPoints++;
+    sortKNeighbors();
+    printGraph();
+    while (!KNNAlgorithm());
+    calculateAllPoints();
+    printNeighbors(queryPoint.getId());
+    this->graph.remove(queryPoint);
+this->points.remove(queryPoint);
+    this->numOfPoints--;
+}
+
+UnorderedMap< Point, Vector<Neighbors>> GraphInitialization::getGraph() {
+    return this->graph;
+}
+
+Point GraphInitialization::getPoint(int id){
+    return this->points.at(id-1);
 }
 
 

@@ -17,10 +17,9 @@ private:
     int checkRandomNum(Vector<Neighbors>,int,int);
     int dimensions;
 
-    int isEqual( Vector<Neighbors>&,  Vector<Neighbors>&);
 public:
-//    void setDistances();
     void printGraph();
+    void printNeighbors(int id);
     GraphInitialization();
     void putPoints(Vector<float> coordinates);
     void initializeK();
@@ -28,10 +27,10 @@ public:
     void setKRandomNeighbors();
     void sortKNeighbors();
     int KNNAlgorithm();
-    Vector<Neighbors> findKNearestNeighborsForPoint(const Point& queryPoint, int k);
+    void findKNearestNeighborsForPoint(const Point& queryPoint);
     void calculateAllPoints();
-//    ~GraphInitialization();
-
+    UnorderedMap< Point, Vector<Neighbors>> getGraph();
+    Point getPoint(int id);
 };
 
 
