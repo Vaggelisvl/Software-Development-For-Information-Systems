@@ -3,7 +3,7 @@
 //
 
 #include <cmath>
-#include "../headers/Metrics.h"
+#include "../../headers/utils/Metrics.h"
 
 float Metrics::eukl_Apostash(Vector<float> a, Vector<float> b,int dimensions){
     float apostash = 0.0;

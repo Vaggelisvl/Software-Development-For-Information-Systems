@@ -22,6 +22,10 @@ public:
     // Remove a key-value pair from the hashmap
     void remove(const Key& key);
 
+    //for testing purposes
+    Vector<Key> getKeys();
+    //
+
     void print();
 
     Value get(const Key& key);
@@ -43,6 +47,22 @@ private:
     size_t hash(const Key& key);
 };
 
+template<typename Key, typename Value>
+Vector<Key> UnorderedMap<Key, Value>::getKeys() {
+    Vector<Key> keys;
+    for (size_t i = 0; i < capacity; i++) {
+        KeyValue* current = data[i];
+        if(current== nullptr){
+            break;
+        }
+        while (current) {
+            keys.push_back(current->key);
+            current = current->next;
+        }
+    }
+    return keys;
+}
+
 
 template<typename Key, typename Value>
 Value UnorderedMap<Key, Value>::get(const Key &key) {
@@ -55,8 +75,9 @@ Value UnorderedMap<Key, Value>::get(const Key &key) {
         }
         current = current->next;
     }
+    static Value v;
 
-    return nullptr;
+    return  v;
 }
 
 template<typename Key , typename Value>
