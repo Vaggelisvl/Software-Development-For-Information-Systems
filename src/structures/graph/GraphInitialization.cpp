@@ -2,9 +2,8 @@
 #include <ctime>
 
 #include "../../../headers/structures/graph/GraphInitialization.h"
-#include "../../../headers/Metrics.h"
-
-
+#include "../../../headers/utils/Metrics.h"
+#include "../../../headers/structures/point/PointInfo.h"
 
 
 GraphInitialization::GraphInitialization() : numOfPoints(0), K(-1),dimensions(100){
@@ -373,6 +372,42 @@ UnorderedMap< Point, Vector<Neighbors>> GraphInitialization::getGraph() {
 Point GraphInitialization::getPoint(int id){
     return this->points.at(id-1);
 }
+
+int GraphInitialization::getK() {
+    return this->K;
+}
+
+Vector<Point> GraphInitialization::getPoints() {
+    return this->points;
+}
+
+Vector<Neighbors> GraphInitialization::getNeighborsOfPoint(Point point){
+    return graph.get(point);
+}
+
+void GraphInitialization::setK(int k) {
+    this->K = k;
+
+}
+
+void GraphInitialization::calculateAllDistances() {
+    PointInfo **pointInfo;
+    pointInfo = new PointInfo *[numOfPoints];
+    for (int i = 0; i < numOfPoints; i++) {
+        Point point = points.at(i);
+        pointInfo[i] = new PointInfo(point.getId(), numOfPoints);
+        for (int j = 0; j < numOfPoints; j++) {
+            Point point1 = points.at(j);
+            pointInfo[i]->insert(point1.getId(),
+                                 Metrics::eukl_Apostash(point.getCoordinates(), point1.getCoordinates(),this->dimensions));
+        }
+    }
+    for (int i = 0; i < numOfPoints; i++) {
+        pointInfo[i]->print();
+    }
+
+}
+
 
 
 

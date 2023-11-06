@@ -24,6 +24,13 @@ public:
     void putPoints(Vector<float> coordinates);
     void initializeK();
     int getNumOfPoints();
+    // for testing purposes
+    int getK();
+    Vector<Point> getPoints();
+    Vector<Neighbors> getNeighborsOfPoint(Point point);
+    void setK(int k);
+    //end of testing purposes
+    void calculateAllDistances();
     void setKRandomNeighbors();
     void sortKNeighbors();
     int KNNAlgorithm();
