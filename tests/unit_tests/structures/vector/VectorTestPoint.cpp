@@ -5,7 +5,7 @@
 #include "../../../../headers/structures/vector/Vector.h"
 #include "../../../../headers/structures/point/Point.h"
 
-TEST(VectorTest, GetSizePoint) {
+TEST(VectorTestPoint, GetSizePoint) {
 
     // given
     Vector<float> vec;
@@ -24,7 +24,7 @@ TEST(VectorTest, GetSizePoint) {
     // then
     ASSERT_EQ(size, 3);
 }
-TEST(VectorTest, PushBackPoint) {
+TEST(VectorTestPoint, PushBackPoint) {
 
     //given
     Vector<float> vec0;
@@ -44,7 +44,7 @@ TEST(VectorTest, PushBackPoint) {
     ASSERT_EQ(vec.at(0).getCoordinates().at(2),4.3f);
 }
 
-TEST(VectorTest, AtPoint) {
+TEST(VectorTestPoint, AtPoint) {
 
     // given
     Vector<float> vec;
@@ -68,7 +68,7 @@ TEST(VectorTest, AtPoint) {
     ASSERT_THROW(vec.at(3), const char*);
 }
 
-TEST(VectorTest, SortPoint) {
+TEST(VectorTestPoint, SortPoint) {
 
     //given
     Vector<float> vec;
@@ -156,7 +156,7 @@ TEST(VectorTest, OperatorLessThanPoint) {
     ASSERT_TRUE(vec0 < vec1);
     ASSERT_FALSE(vec1 < vec0);
 }
-TEST(VectorTest, OperatorEqualPoint) {
+TEST(VectorTestPoint, OperatorEqualPoint) {
     // Given
     Vector<float> vec;
     vec.push_back(1.1f);
@@ -180,7 +180,7 @@ TEST(VectorTest, OperatorEqualPoint) {
 }
 
 
-TEST(VectorTest, OperatorGreaterThanPoint) {
+TEST(VectorTestPoint, OperatorGreaterThanPoint) {
     // given
     Vector<float> vec1;
     vec1.push_back(3.3f);

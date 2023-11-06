@@ -21,3 +21,7 @@ TEST(DataSetTest, GenericTestLowBoundary) {
     ASSERT_EQ(dataset.getDimensions(), 100);
     ASSERT_EQ(vec.at(0).getCoordinates().getSize(),100);
 }
+int main(int argc, char **argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}

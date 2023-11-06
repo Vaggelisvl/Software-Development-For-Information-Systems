@@ -4,7 +4,7 @@
 #include <gtest/gtest.h>
 #include "../../../../headers/structures/vector/Vector.h"
 #include "../../../../headers/structures/point/Point.h"
-TEST(PointTest,CustomHash){
+TEST(PointTest,CustomHashPoint){
 //given
     Vector<float> vec;
     vec.push_back(1.1f);
@@ -17,7 +17,7 @@ TEST(PointTest,CustomHash){
     ASSERT_EQ(hash, 30817);
 }
 
-TEST(PointTest,HashValue){
+TEST(PointTest,HashValuePoint){
 //given
     Vector<float> vec;
     vec.push_back(1.1f);
@@ -31,7 +31,7 @@ TEST(PointTest,HashValue){
 
 }
 
-TEST(PointTest,SetId){
+TEST(PointTest,SetIdPoint){
 //given
     Vector<float> vec;
     vec.push_back(1.1f);

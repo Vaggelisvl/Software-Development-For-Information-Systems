@@ -3,10 +3,9 @@
 //
 #include <gtest/gtest.h>
 #include "../../../../headers/structures/vector/Vector.h"
-#include "../../../../headers/structures/point/Point.h"
 #include "../../../../headers/structures/point/Neighbors.h"
 
-TEST(VectorTest, GetSizeNeighbor) {
+TEST(VectorTestNeighbor, GetSizeNeighbor) {
 
     // given
     Vector<float> vec;
@@ -25,7 +24,7 @@ TEST(VectorTest, GetSizeNeighbor) {
     // then
     ASSERT_EQ(size, 3);
 }
-TEST(VectorTest, PushBackNeighbor) {
+TEST(VectorTestNeighbor, PushBackNeighbor) {
 
     //given
     Vector<float> vec0;
@@ -42,7 +41,7 @@ TEST(VectorTest, PushBackNeighbor) {
     ASSERT_EQ(vec.at(0), Neighbors(1,0.2f,vec0));
 }
 
-TEST(VectorTest, AtNeighbor) {
+TEST(VectorTestNeighbor, AtNeighbor) {
 
     // given
     Vector<float> vec;
@@ -66,7 +65,7 @@ TEST(VectorTest, AtNeighbor) {
     ASSERT_THROW(vec.at(3), const char*);
 }
 
-TEST(VectorTest, SortNeighbor) {
+TEST(VectorTestNeighbor, SortNeighbor) {
 
     //given
     Vector<float> vec;
@@ -92,7 +91,7 @@ TEST(VectorTest, SortNeighbor) {
 }
 
 
-TEST(VectorTest, ReplaceNeighbor) {
+TEST(VectorTestNeighbor, ReplaceNeighbor) {
 
     //given
     Vector<float> vec;
@@ -112,7 +111,7 @@ TEST(VectorTest, ReplaceNeighbor) {
     ASSERT_EQ(vec0.at(0), Neighbors(3,0.2f,vec));
 }
 
-TEST(VectorTest, RemoveNeighbor) {
+TEST(VectorTestNeighbor, RemoveNeighbor) {
 
     //given
     Vector<float> vec;
@@ -136,7 +135,7 @@ TEST(VectorTest, RemoveNeighbor) {
     ASSERT_EQ(vec0.at(1), Neighbors(3,0.2f,vec));
 }
 
-TEST(VectorTest, OperatorLessThanNeighbor) {
+TEST(VectorTestNeighbor, OperatorLessThanNeighbor) {
     // given
     Vector<float> vec;
     vec.push_back(1.1f);
@@ -156,7 +155,7 @@ TEST(VectorTest, OperatorLessThanNeighbor) {
     ASSERT_TRUE(vec0 < vec1);
     ASSERT_FALSE(vec1 < vec0);
 }
-TEST(VectorTest, OperatorEqualNeighbor) {
+TEST(VectorTestNeighbor, OperatorEqualNeighbor) {
     // Given
     Vector<float> vec;
     vec.push_back(1.1f);
@@ -168,7 +167,7 @@ TEST(VectorTest, OperatorEqualNeighbor) {
     vec0.push_back(Neighbors(3,0.1f,vec));
 
     Vector<Neighbors> vec1;
-    vec1.push_back(Neighbors(1,0.2f,vec));
+    vec1.push_back(Neighbors(1,0.1f,vec));
     vec1.push_back(Neighbors(2,0.1f,vec));
     vec1.push_back(Neighbors(3,0.1f,vec));
 
@@ -180,7 +179,7 @@ TEST(VectorTest, OperatorEqualNeighbor) {
 }
 
 
-TEST(VectorTest, OperatorGreaterThanNeighbor) {
+TEST(VectorTestNeighbor, OperatorGreaterThanNeighbor) {
     // given
     Vector<float> vec1;
     vec1.push_back(3.3f);

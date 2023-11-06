@@ -38,3 +38,7 @@ TEST(GraphInitializationTest, GraphInitializationPutPoints) {
     ASSERT_EQ(graph.getNumOfPoints(), 3);
 
 }
+int main(int argc, char **argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}

@@ -15,6 +15,7 @@ public:
     void setDistance(float d);
     void setId(int id) override;
     bool operator<(const Neighbors& other) const;
+    bool operator>(const Neighbors& other) const;
     bool operator==(const Neighbors& other) const ;
 
 };
