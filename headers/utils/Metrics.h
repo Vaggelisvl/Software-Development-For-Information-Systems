@@ -9,6 +9,7 @@
 class Metrics {
 public:
     static float eukl_Apostash(Vector<float> a, Vector<float> b,int dimenstion);
+     static float manhat_apostas(Vector<float> a, Vector<float> b,int dimension);
 };
 
 

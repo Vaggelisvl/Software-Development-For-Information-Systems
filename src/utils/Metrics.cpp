@@ -13,3 +13,13 @@ float Metrics::eukl_Apostash(Vector<float> a, Vector<float> b,int dimensions){
     }
     return sqrt(apostash);
 }
+
+float Metrics::manhat_apostas(Vector<float> a, Vector<float> b, int dimension) {
+    float apostash = 0.0;
+
+    for (int i = 0; i < dimension; i++) {
+        apostash += abs(a.at(i) - b.at(i));
+    }
+    return apostash;
+
+}
