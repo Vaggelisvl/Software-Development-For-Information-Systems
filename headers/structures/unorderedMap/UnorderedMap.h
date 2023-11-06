@@ -168,7 +168,6 @@ void UnorderedMap<Key, Value>::print() {
     for (size_t i = 0; i < capacity; i++) {
         KeyValue* current = data[i];
         while (current) {
-            LOG_INFO( (current->key +" " + current->value ).c_str());
             current = current->next;
         }
     }

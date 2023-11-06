@@ -35,7 +35,6 @@ public:
     void sortKNeighbors();
     int KNNAlgorithm();
     void findKNearestNeighborsForPoint(const Point& queryPoint);
-    void calculateAllPoints();
     UnorderedMap< Point, Vector<Neighbors>> getGraph();
     Point getPoint(int id);
 };

@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
     }
     g.initializeK();
     g.setKRandomNeighbors();
-    g.calculateAllPoints();
+    g.calculateAllDistances();
     printf("okk\n");
     g.sortKNeighbors();
     while(!g.KNNAlgorithm());
@@ -46,7 +46,7 @@ int randQuery = 21;
     if(randQuery == dataset.getNumOfPoints() + 1){
         srand(static_cast<unsigned>(time(nullptr)));
         Vector<float> queryVector;
-        float randomFloat;
+//        float randomFloat;
         //generate random coordinates
         for (int i = 0; i < dataset.getDimensions(); i++) {
 //          in space [-1.0-1.0]
@@ -60,4 +60,7 @@ int randQuery = 21;
         g.printNeighbors(randQuery);
 
     }
+    g.sortKNeighbors();
+    while(!g.KNNAlgorithm());
+    g.printNeighbors(5);
 }

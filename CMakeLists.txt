@@ -27,4 +27,4 @@ add_library(_project
         tests/unit_tests/structures/unorderedMap/UnorderedMapTest.cpp
         tests/unit_tests/structures/graph/GraphInitializationTest.cpp
 
-)
+        src/structures/point/PointInfo.cpp)

@@ -51,14 +51,19 @@ int PointInfo::partition(int low, int high) {
     return i + 1;
 }
 
-void PointInfo::print() {
-    sortDistances();
-    std::cout << "Point with id: " << this->id << " distances with : {" << std::endl;
-    for (int i = 0; i < pointsInserted; i++){
-
-        std::cout << "\t point with id: " <<std::to_string(distances[i]->id )<< " distance: "
-                  << std::to_string(distances[i]->distance) << std::endl;
-    }
-std::cout<<"}"<<std::endl;
-
+int PointInfo::getPointsInserted() {
+    return this->pointsInserted;
 }
+
+float PointInfo::getDistance(int i) {
+    return this->distances[i]->distance;
+}
+
+int PointInfo::getId() {
+    return this->id;
+}
+
+int PointInfo::getNeighborId(int i) {
+    return this->distances[i]->id;
+}
+
