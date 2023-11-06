@@ -6,7 +6,7 @@
 #include "../../../headers/structures/point/PointInfo.h"
 
 
-GraphInitialization::GraphInitialization() : numOfPoints(0), K(-1), dimensions(100) {
+GraphInitialization::GraphInitialization() : numOfPoints(0), K(-1), dimensions(0) {
 }
 
 void GraphInitialization::putPoints(Vector<float> coordinates) {
@@ -22,11 +22,15 @@ void GraphInitialization::putPoints(Vector<float> coordinates) {
 }
 
 void GraphInitialization::initializeK() {
-    if (this->numOfPoints > 1000) {
-        this->K = (int) (this->numOfPoints * 0.01);
+    if (this->numOfPoints > 100) {
+        this->K = 10;
     } else {
         this->K = 5;
     }
+}
+
+void GraphInitialization::initializeDimensions(int num){
+    this->dimensions = num;
 }
 
 
@@ -158,7 +162,6 @@ void GraphInitialization::setKRandomNeighbors() {
         this->graph.insert(currentPoint, neighborsVector);
 
     }
-//    this->printGraph();
 
 }
 
@@ -257,44 +260,6 @@ int GraphInitialization::KNNAlgorithm() {
     return 1;
 
 }
-//Vector<Neighbors> GraphInitialization::findKNearestNeighborsForPoint(const Point& queryPoint) {
-//    Vector<Neighbors> neighborsVector;
-//    this->graph.find(queryPoint, neighborsVector);
-//    neighborsVector.sort();
-//
-//    // If there are not enough neighbors, search for more from other points not in the graph
-//    while (neighborsVector.getSize() < k) {
-//        // Search for more neighbors from points not in the graph
-//        for (int i = 0; i < this->numOfPoints; i++) {
-//            Point currentPoint = this->points.at(i);
-//            // Check if the current point is already in the neighbors list
-//            if (currentPoint.getId() == queryPoint.getId()) {
-//                continue;
-//            }
-//            Vector<Neighbors> currentNeighbors;
-//            this->graph.find(currentPoint, currentNeighbors);
-//            bool hasExceed=false;
-//            for (int j = 0; j < currentNeighbors.getSize(); j++) {
-//                for(int counter=0;counter<neighborsVector.getSize();counter++){
-//                    if(neighborsVector.at(counter).getId()!=currentNeighbors.at(j).getId()){
-//                        neighborsVector.push_back(currentNeighbors.at(j));
-//                        if (neighborsVector.getSize() >= k) {
-//                            hasExceed=true;
-//                            break;
-//                        }
-//                    }
-//                    if(hasExceed)
-//                        break;
-//                }
-//
-//            }
-//        }
-//    }
-//
-//    // Return the top-k neighbors
-//    neighborsVector.reserve(k);
-//    return neighborsVector;
-//}
 
 
 void GraphInitialization::findKNearestNeighborsForPoint(const Point &queryPoint) {
@@ -382,7 +347,8 @@ void GraphInitialization::calculateAllDistances() {
 
         fprintf(file, "point: %d{\n", pointInfo[i]->getId());
         pointInfo[i]->sortDistances();
-        for(int j=0;j<pointInfo[i]->getPointsInserted();j++){
+        //print 20 nearest neighbors points
+        for(int j=0;j<20;j++){
 
             fprintf(file,"point: %d", pointInfo[i]->getNeighborId(j));
             fprintf(file," distance: %f\n", pointInfo[i]->getDistance(j));
