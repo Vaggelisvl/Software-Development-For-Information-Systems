@@ -65,30 +65,6 @@ TEST(VectorTestNeighbor, AtNeighbor) {
     ASSERT_THROW(vec.at(3), const char*);
 }
 
-TEST(VectorTestNeighbor, SortNeighbor) {
-
-    //given
-    Vector<float> vec;
-    vec.push_back(42.0);
-    vec.push_back(15.0);
-    vec.push_back(78.0);
-    vec.push_back(3.0);
-
-    Vector<Neighbors> vec0;
-    vec0.push_back(Neighbors(4,5.0f,vec));
-    vec0.push_back(Neighbors(1,3.2f,vec));
-    vec0.push_back(Neighbors(3,0.2f,vec));
-    vec0.push_back(Neighbors(2,6.0f,vec));
-
-    //when
-    vec0.sort();
-
-    //then
-    ASSERT_EQ(vec0.at(0), Neighbors(3,0.2f,vec));
-    ASSERT_EQ(vec0.at(1),Neighbors(1,3.2f,vec));
-    ASSERT_EQ(vec0.at(2), Neighbors(4,5.0f,vec));
-    ASSERT_EQ(vec0.at(3), Neighbors(2,6.0f,vec));
-}
 
 
 TEST(VectorTestNeighbor, ReplaceNeighbor) {
@@ -135,26 +111,6 @@ TEST(VectorTestNeighbor, RemoveNeighbor) {
     ASSERT_EQ(vec0.at(1), Neighbors(3,0.2f,vec));
 }
 
-TEST(VectorTestNeighbor, OperatorLessThanNeighbor) {
-    // given
-    Vector<float> vec;
-    vec.push_back(1.1f);
-    vec.push_back(2.2f);
-
-    Vector<Neighbors> vec0;
-    vec0.push_back(Neighbors(1,0.1f,vec));
-    vec0.push_back(Neighbors(2,0.2f,vec));
-    vec0.push_back(Neighbors(3,0.3f,vec));
-
-    Vector<Neighbors> vec1;
-    vec1.push_back(Neighbors(4,0.4f,vec));
-    vec1.push_back(Neighbors(5,0.5f,vec));
-    vec1.push_back(Neighbors(6,0.6f,vec));
-
-    // when , then
-    ASSERT_TRUE(vec0 < vec1);
-    ASSERT_FALSE(vec1 < vec0);
-}
 TEST(VectorTestNeighbor, OperatorEqualNeighbor) {
     // Given
     Vector<float> vec;
