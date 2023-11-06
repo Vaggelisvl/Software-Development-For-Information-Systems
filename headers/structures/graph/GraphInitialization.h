@@ -23,6 +23,7 @@ public:
     GraphInitialization();
     void putPoints(Vector<float> coordinates);
     void initializeK();
+    void initializeDimensions(int num);
     int getNumOfPoints();
     // for testing purposes
     int getK();
