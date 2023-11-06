@@ -54,7 +54,7 @@ template<typename T>
 Vector<T>::Vector():size(0), capacity(1) {
     array = new T[capacity];
 
-//    LOG_INFO("Vector has been created!");
+//    LOG_INFO("vector has been created!");
 }
 
 template<typename T>

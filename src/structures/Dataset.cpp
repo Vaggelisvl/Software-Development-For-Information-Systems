@@ -37,12 +37,12 @@ void Dataset::readVectorFromFile(Vector<Point>& elements) {
     }
 
     int num=0;
-    // Reserve capacity in the Vector to accommodate N elements.
+    // Reserve capacity in the vector to accommodate N elements.
     elements.reserve(this->numOfPoints);
     for (uint32_t i = 0; i < this->numOfPoints; i++) {
         Vector<float> coordinates;
         for(int j=0;j< this->dimensions;j++){
-            float element;  // Use the same type as the Vector
+            float element;  // Use the same type as the vector
             fread(&element, sizeof(float ), 1, file);
             coordinates.push_back(element);
         }
