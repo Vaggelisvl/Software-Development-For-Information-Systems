@@ -29,9 +29,6 @@ void Neighbors::setId(int id) {
 }
 
 bool Neighbors::operator<(const Neighbors &other)  const {
-    if (!Point::operator<(other)) {
-        return false;
-    }
     return distance < other.distance;
 }
 
@@ -45,9 +42,9 @@ bool Neighbors::operator==(const Neighbors &other) const {
     return distance == other.distance;
 }
 
-bool Neighbors::operator>(const Neighbors &other) const {
-    if (!Point::operator>(other)) {
-        return false;
-    }
-    return distance > other.distance;
-}
+//bool Neighbors::operator>(const Neighbors &other) const {
+//    if (!Point::operator>(other)) {
+//        return false;
+//    }
+//    return distance > other.distance;
+//}

@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
     g.initializeK();
     g.initializeDimensions(dataset.getDimensions());
     g.setKRandomNeighbors();
-    g.calculateAllDistances();
+//    g.calculateAllDistances();
     g.sortKNeighbors();
     while(!g.KNNAlgorithm());
 
