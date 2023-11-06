@@ -15,7 +15,16 @@ add_library(_project
         src/structures/point/Neighbors.cpp
         src/structures/point/Point.cpp
         src/library.cpp headers/structures/Dataset.h
-        headers/Metrics.h
-        src/Metrics.cpp
+        headers/utils/Metrics.h
+        src/utils/Metrics.cpp
         src/structures/Dataset.cpp
-        headers/library.h)
+        headers/library.h
+        tests/unit_tests/structures/vector/VectorTestFloat.cpp
+        tests/unit_tests/structures/vector/VectorTestPoint.cpp
+        tests/unit_tests/structures/vector/VectorTestNeighbor.cpp
+        tests/unit_tests/structures/point/PointTest.cpp
+        tests/unit_tests/structures/dataset/DatasetTest.cpp
+        tests/unit_tests/structures/unorderedMap/UnorderedMapTest.cpp
+        tests/unit_tests/structures/graph/GraphInitializationTest.cpp
+
+)
