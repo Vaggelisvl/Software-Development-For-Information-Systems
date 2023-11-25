@@ -329,8 +329,10 @@ void GraphInitialization::setK(int k) {
 }
 
 void GraphInitialization::calculateAllDistances() {
+    printf("calculate all distances\n");
     PointInfo **pointInfo;
     pointInfo = new PointInfo *[numOfPoints];
+    printf("calculate all  \n");
     for (int i = 0; i < numOfPoints; i++) {
         Point point = points.at(i);
         pointInfo[i] = new PointInfo(point.getId(), numOfPoints);
@@ -341,17 +343,28 @@ void GraphInitialization::calculateAllDistances() {
                                                         this->dimensions));
         }
     }
+    printf("calculate all distances 1 \n");
     FILE *file;
     file = fopen("results.txt", "w");
-    for (int i = 0; i < numOfPoints; i++) {
+    if(file == nullptr){
+        LOG_ERROR("Cannot open results.txt file");
+        exit(1);
+    }
 
+    for (int i = 0; i < numOfPoints; i++) {
         fprintf(file, "point: %d{\n", pointInfo[i]->getId());
         pointInfo[i]->sortDistances();
         //print 20 nearest neighbors points
-        for(int j=0;j<20;j++){
+        for(int j=0;j<pointInfo[i]->getPointsInserted();j++){
+            if(fprintf(file,"point: %d", pointInfo[i]->getNeighborId(j))<0){
+                LOG_ERROR("Cannot write point to results.txt file");
+                exit(1);
+            }
 
-            fprintf(file,"point: %d", pointInfo[i]->getNeighborId(j));
-            fprintf(file," distance: %f\n", pointInfo[i]->getDistance(j));
+            if(fprintf(file," distance: %f\n", pointInfo[i]->getDistance(j))<0){
+                LOG_ERROR("Cannot write distance to results.txt file");
+                exit(1);
+            }
 
 
         }
