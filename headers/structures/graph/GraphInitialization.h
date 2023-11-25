@@ -16,20 +16,21 @@ private:
     UnorderedMap< Point, Vector<Neighbors>> graph;
     int checkRandomNum(Vector<Neighbors>,int,int);
     int dimensions;
+    char* metrics;
 
 public:
     void printGraph();
     void printNeighbors(int id);
     GraphInitialization();
     void putPoints(Vector<float> coordinates);
-    void initializeK();
-    void initializeDimensions(int num);
+    void setDimensions(int num);
     int getNumOfPoints();
+    void setMetrics(char*);
     // for testing purposes
     int getK();
     Vector<Point> getPoints();
     Vector<Neighbors> getNeighborsOfPoint(Point point);
-    void setK(int k);
+    void setK(int);
     //end of testing purposes
     void calculateAllDistances();
     void setKRandomNeighbors();

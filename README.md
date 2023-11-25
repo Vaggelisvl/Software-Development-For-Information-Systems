@@ -74,10 +74,10 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:bin
 g++ -o main src/library.cpp -Lbin -ldataforge
 
 Εκτέλεση για τα αρχεία με το format που μας δόθηκαν: 
-./main src/inpu1.bin 100
+ ./main src/input1.bin 100 20 5 2 manhattan
 
 Εκτέλεση για το δικό μας αρχείο:
-./main src/inpu1.bin 20 100
+ ./main src/data.bin 20 100 5 2 manhattan
 
 
 

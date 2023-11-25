@@ -8,8 +8,8 @@
 #include "../structures/vector/Vector.h"
 class Metrics {
 public:
-    static float eukl_Apostash(Vector<float> a, Vector<float> b,int dimenstion);
-     static float manhat_apostas(Vector<float> a, Vector<float> b,int dimension);
+    static float euclideanDistance(Vector<float> a, Vector<float> b,int dimenstion);
+     static float manhattanDistance(Vector<float> a, Vector<float> b,int dimension);
 };
 
 
