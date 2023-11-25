@@ -42,8 +42,10 @@ int main(int argc, char *argv[]) {
     g.setMetrics(metrics);
     g.setDimensions(dataset.getDimensions());
     g.setKRandomNeighbors();
-//    g.sortKNeighbors();
+    g.sortKNeighbors();
 //    while(!g.KNNAlgorithm());
+//    g.printNeighbors(queryId);
+//    g.printGraph();
 
     //if query out of the graph
     if(queryId == dataset.getNumOfPoints() + 1){
@@ -57,6 +59,7 @@ int main(int argc, char *argv[]) {
         }
         Point queryPoint(queryId,queryVector);
         g.findKNearestNeighborsForPoint(queryPoint);
+//        g.calculateAllDistances();
 
     }
     else{
@@ -64,6 +67,7 @@ int main(int argc, char *argv[]) {
         while(!g.KNNAlgorithm());
         g.printNeighbors(queryId);
         g.printGraph();
+        g.calculateAllDistances();
     }
-//    g.calculateAllDistances();
+
 }
