@@ -35,7 +35,7 @@ TESTS = $(patsubst $(TESTDIR)/%.cpp,$(OUTDIR)/%,$(TEST_SRCS))
 
 .PHONY: all clean test
 
-all: shared_library static_library
+all: shared_library static_library export_library_path main_executable
 
 shared_library: $(LIB_SHARED)
 
@@ -56,11 +56,15 @@ $(OUTDIR)/%: $(TESTDIR)/%.cpp
 	$(MKDIR_P) $(OUTDIR)
 	$(CXX) $(CXXFLAGS) -o $@ $< $(LIB_SRCS) $(INCLUDES) $(LIBS)
 
+export_library_path:
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(OUTDIR)
 
+main_executable: create_outdir
+	g++ -o main $(SRCDIR)/library.cpp -L$(OUTDIR) -l$(LIB_NAME)
 
 
 clean:
-	rm -f $(LIB_SHARED) $(LIB_STATIC) $(TESTS)
+	rm -f $(LIB_SHARED) $(LIB_STATIC) $(TESTS) main
 
 create_outdir:
 	@mkdir -p $(OUTDIR)
