@@ -1,5 +1,7 @@
 #include <cstdlib>
 #include <ctime>
+#include <stdio.h>
+#include <string.h>
 
 #include "../../../headers/structures/graph/GraphInitialization.h"
 #include "../../../headers/utils/Metrics.h"
@@ -21,15 +23,7 @@ void GraphInitialization::putPoints(Vector<float> coordinates) {
 
 }
 
-void GraphInitialization::initializeK() {
-    if (this->numOfPoints > 100) {
-        this->K = 10;
-    } else {
-        this->K = 5;
-    }
-}
-
-void GraphInitialization::initializeDimensions(int num){
+void GraphInitialization::setDimensions(int num){
     this->dimensions = num;
 }
 
@@ -38,6 +32,9 @@ int GraphInitialization::getNumOfPoints() {
     return this->numOfPoints;
 }
 
+void GraphInitialization::setMetrics(char* nameOfMetrics) {
+    this->metrics = nameOfMetrics;
+}
 
 int GraphInitialization::checkRandomNum(Vector<Neighbors> neighborsVector, int randNum, int currentPointId) {
     int flag = 1;
@@ -64,20 +61,25 @@ int GraphInitialization::checkRandomNum(Vector<Neighbors> neighborsVector, int r
 }
 
 void GraphInitialization::printGraph() {
+    FILE *file;
+    file = fopen("graph.txt", "w");
     for (int i = 0; i < this->numOfPoints; ++i) {
         Vector<Neighbors> neighborsVector;
         //print graph
+        fprintf(file, "point: %d{\n", i);
         for (int j = 0; j < this->K; j++) {
             this->graph.find(this->points.at(i), neighborsVector);
-//            char buffer[100]; // Adjust the buffer size as needed
-//            int neighborId = neighborsVector.at(j).getId();
-//            float neighborDistance = neighborsVector.at(j).getDistance();
-//            sprintf(buffer, "neighbor: %d [%.2f] ", neighborId, neighborDistance);
-//            LOG_INFO(buffer);
+            char buffer[100]; // Adjust the buffer size as needed
+            int neighborId = neighborsVector.at(j).getId();
+            float neighborDistance = neighborsVector.at(j).getDistance();
+            fprintf(file,"point: %d", neighborId);
+            fprintf(file," distance: %f\n", neighborDistance);
+            LOG_INFO(buffer);
 
         }
-
+        fprintf(file, "\n}\n");
     }
+    fclose(file);
 }
 
 void GraphInitialization::printNeighbors(int id) {
@@ -136,8 +138,15 @@ void GraphInitialization::setKRandomNeighbors() {
             for (int p = 0; p < this->points.getSize(); p++) {
                 //find neighbor from points
                 if (this->points.at(p).getId() == randomNum) {
-                    float distance = Metrics::eukl_Apostash(currentPoint.getCoordinates(),
-                                                            this->points.at(p).getCoordinates(), this->dimensions);
+                    float distance;
+                    if(strcmp(this->metrics, "manhattan") == 0) {
+                        distance = Metrics::manhattanDistance(currentPoint.getCoordinates(),
+                                                                this->points.at(p).getCoordinates(), this->dimensions);
+                    }
+                    else{
+                        distance = Metrics::euclideanDistance(currentPoint.getCoordinates(),
+                                                                    this->points.at(p).getCoordinates(), this->dimensions);
+                    }
 
                     //init current point neighbor
                     Neighbors neighborsOfPoint(randomNum, distance, this->points.at(p).getCoordinates());
@@ -176,7 +185,6 @@ void GraphInitialization::sortKNeighbors() {
     }
     char buffer[50];
     sprintf(buffer, "SORTED GRAPH:");
-    this->printGraph();
 }
 
 
@@ -223,9 +231,17 @@ int GraphInitialization::KNNAlgorithm() {
                     continue;
                 }
 
-                float extendedDistance = Metrics::eukl_Apostash(currentPoint.getCoordinates(),
-                                                                extendedNeighborsVector.at(p).getCoordinates(),
-                                                                this->dimensions);
+                float extendedDistance;
+                if(strcmp(this->metrics, "manhatan") == 0) {
+                    extendedDistance = Metrics::manhattanDistance(currentPoint.getCoordinates(),
+                                                          extendedNeighborsVector.at(p).getCoordinates(),
+                                                          this->dimensions);
+                }
+                else{
+                    extendedDistance = Metrics::euclideanDistance(currentPoint.getCoordinates(),
+                                                          extendedNeighborsVector.at(p).getCoordinates(),
+                                                          this->dimensions);
+                }
 
                 //if is closer to current point
                 if (maxNeighborDistance > extendedDistance) {
@@ -255,7 +271,6 @@ int GraphInitialization::KNNAlgorithm() {
     }
 
     this->sortKNeighbors();
-    this->printGraph();
     LOG_INFO("FINISH ALGORITHM");
     return 1;
 
@@ -283,20 +298,32 @@ void GraphInitialization::findKNearestNeighborsForPoint(const Point &queryPoint)
 
         //convert point to neighbor
         Point neighborPoint = this->points.at(randomNumber - 1);
-        float dist = Metrics::eukl_Apostash(neighborPoint.getCoordinates(), queryPoint.getCoordinates(),
-                                            this->dimensions);
+        float dist;
+        if(strcmp(this->metrics, "manhatan") == 0) {
+            dist = Metrics::manhattanDistance(neighborPoint.getCoordinates(), queryPoint.getCoordinates(),
+                                                          this->dimensions);
+        }
+        else{
+            dist = Metrics::euclideanDistance(neighborPoint.getCoordinates(), queryPoint.getCoordinates(),
+                                                          this->dimensions);
+        }
+
         Neighbors neighbor(neighborPoint.getId(), dist, neighborPoint.getCoordinates());
 
         uniqueNumbers.push_back(neighbor);
     }
+    //insert query point to the graph
     this->graph.insert(queryPoint, uniqueNumbers);
     this->points.push_back(queryPoint);
     this->numOfPoints++;
+
     sortKNeighbors();
+    printGraph();
     while (!KNNAlgorithm());
     calculateAllDistances();
     sortKNeighbors();
 
+    //remove query point from the graph
     printNeighbors(queryPoint.getId());
     this->graph.remove(queryPoint);
     this->points.remove(queryPoint);
@@ -335,10 +362,18 @@ void GraphInitialization::calculateAllDistances() {
         Point point = points.at(i);
         pointInfo[i] = new PointInfo(point.getId(), numOfPoints);
         for (int j = 0; j < numOfPoints; j++) {
+
             Point point1 = points.at(j);
-            pointInfo[i]->insert(point1.getId(),
-                                 Metrics::eukl_Apostash(point.getCoordinates(), point1.getCoordinates(),
-                                                        this->dimensions));
+            float dist;
+            if(this->metrics == "manhattan\n") {
+                dist = Metrics::manhattanDistance(point.getCoordinates(), point1.getCoordinates(),
+                                                  this->dimensions);
+            }
+            else{
+                dist = Metrics::euclideanDistance(point.getCoordinates(), point1.getCoordinates(),
+                                                  this->dimensions);
+            }
+            pointInfo[i]->insert(point1.getId(),dist);
         }
     }
     FILE *file;

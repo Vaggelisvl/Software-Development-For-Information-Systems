@@ -1,11 +1,9 @@
-//
-// Created by snz on 11/3/2023.
-//
+#include <stdlib.h>
+#include <math.h>
 
-#include <cmath>
 #include "../../headers/utils/Metrics.h"
 
-float Metrics::eukl_Apostash(Vector<float> a, Vector<float> b,int dimensions){
+float Metrics::euclideanDistance(Vector<float> a, Vector<float> b,int dimensions){
     float apostash = 0.0;
 
     for (int i = 0; i < dimensions; i++) {
@@ -14,7 +12,7 @@ float Metrics::eukl_Apostash(Vector<float> a, Vector<float> b,int dimensions){
     return sqrt(apostash);
 }
 
-float Metrics::manhat_apostas(Vector<float> a, Vector<float> b, int dimension) {
+float Metrics::manhattanDistance(Vector<float> a, Vector<float> b, int dimension) {
     float apostash = 0.0;
 
     for (int i = 0; i < dimension; i++) {
