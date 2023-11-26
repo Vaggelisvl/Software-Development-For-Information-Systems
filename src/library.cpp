@@ -1,11 +1,10 @@
 #include <fstream>
-
+#include <ctime>
 #include "../headers/structures/vector/Vector.h"
 #include "../headers/structures/point/Point.h"
 #include "../headers/structures/graph/GraphInitialization.h"
 #include "../headers/structures/Dataset.h"
-
-
+#include "../headers/utils/Statistics.h"
 
 
 using namespace std;
@@ -42,6 +41,8 @@ int main(int argc, char *argv[]) {
     g.setMetrics(metrics);
     g.setDimensions(dataset.getDimensions());
     g.setKRandomNeighbors();
+    Statistics* statistics=new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
+    statistics->calculateAllDistances("euclidean");
     g.sortKNeighbors();
 //    while(!g.KNNAlgorithm());
 //    g.printNeighbors(queryId);
@@ -67,7 +68,14 @@ int main(int argc, char *argv[]) {
         while(!g.KNNAlgorithm());
         g.printNeighbors(queryId);
         g.printGraph();
-        g.calculateAllDistances();
     }
 
+
+    statistics->calculateStatistics(K,&g);
+    if(numOfPoints>20)
+        statistics->printStatistics(K);
+    else
+        statistics->printInMatrixForm(K);
+
+    statistics->printTotalPercentage(K);
 }
