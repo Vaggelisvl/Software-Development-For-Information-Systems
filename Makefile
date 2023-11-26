@@ -6,6 +6,9 @@ SRCDIR = src
 TESTDIR = tests/unit_tests
 OUTDIR = bin
 MKDIR_P = mkdir -p
+SCRIPTS_DIR = scripts
+INSTALL_GPP_SCRIPT = $(SCRIPTS_DIR)/gplusplus_install.sh
+INSTALL_GTEST_SCRIPT = $(SCRIPTS_DIR)/install_gtest.sh
 # Source files for the library
 LIB_SRCS = $(SRCDIR)/structures/point/Point.cpp \
            $(SRCDIR)/structures/point/PointInfo.cpp \
@@ -37,7 +40,12 @@ TESTS = $(patsubst $(TESTDIR)/%.cpp,$(OUTDIR)/%,$(TEST_SRCS))
 
 .PHONY: all clean test
 
-all: shared_library static_library export_library_path main_executable
+all: install_dependencies  shared_library static_library export_library_path main_executable
+install_dependencies:
+	@chmod +x $(INSTALL_GPP_SCRIPT)
+	@$(SHELL) $(INSTALL_GPP_SCRIPT)
+	@chmod +x $(INSTALL_GTEST_SCRIPT)
+	@$(SHELL) $(INSTALL_GTEST_SCRIPT)
 
 shared_library: $(LIB_SHARED)
 
