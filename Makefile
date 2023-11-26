@@ -13,6 +13,8 @@ LIB_SRCS = $(SRCDIR)/structures/point/Point.cpp \
            $(SRCDIR)/structures/Dataset.cpp \
            $(SRCDIR)/structures/graph/GraphInitialization.cpp \
            $(SRCDIR)/utils/Metrics.cpp \
+           $(SRCDIR)/utils/Statistics.cpp \
+           $(SRCDIR)/utils/StatisticInfo.cpp \
            $(SRCDIR)/config/Logger.cpp
 
 # Shared library (SO) and Static library (A) names
@@ -60,7 +62,9 @@ export_library_path:
 	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(OUTDIR)
 
 main_executable: create_outdir
-	g++ -o main $(SRCDIR)/library.cpp -L$(OUTDIR) -l$(LIB_NAME)
+	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(OUTDIR) g++ -o main $(SRCDIR)/library.cpp -L$(OUTDIR) -l$(LIB_NAME)
+
+
 
 
 clean:

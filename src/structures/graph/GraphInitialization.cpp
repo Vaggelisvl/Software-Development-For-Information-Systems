@@ -183,8 +183,7 @@ void GraphInitialization::sortKNeighbors() {
 
         neighborsVector.sort();
     }
-    char buffer[50];
-    sprintf(buffer, "SORTED GRAPH:");
+
 }
 
 
