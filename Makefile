@@ -9,6 +9,8 @@ MKDIR_P = mkdir -p
 SCRIPTS_DIR = scripts
 INSTALL_GPP_SCRIPT = $(SCRIPTS_DIR)/gplusplus_install.sh
 INSTALL_GTEST_SCRIPT = $(SCRIPTS_DIR)/install_gtest.sh
+
+
 # Source files for the library
 LIB_SRCS = $(SRCDIR)/structures/point/Point.cpp \
            $(SRCDIR)/structures/point/PointInfo.cpp \
@@ -70,7 +72,7 @@ export_library_path:
 	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(OUTDIR)
 
 main_executable: create_outdir
-	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(OUTDIR) g++ -o main $(SRCDIR)/library.cpp -L$(OUTDIR) -l$(LIB_NAME)
+	$(CXX) -o main $(SRCDIR)/library.cpp -L$(OUTDIR) -Wl,-rpath,'$$ORIGIN/$(OUTDIR)' -ldataforge
 
 
 
