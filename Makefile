@@ -6,6 +6,11 @@ SRCDIR = src
 TESTDIR = tests/unit_tests
 OUTDIR = bin
 MKDIR_P = mkdir -p
+SCRIPTS_DIR = scripts
+INSTALL_GPP_SCRIPT = $(SCRIPTS_DIR)/gplusplus_install.sh
+INSTALL_GTEST_SCRIPT = $(SCRIPTS_DIR)/install_gtest.sh
+
+
 # Source files for the library
 LIB_SRCS = $(SRCDIR)/structures/point/Point.cpp \
            $(SRCDIR)/structures/point/PointInfo.cpp \
@@ -37,7 +42,12 @@ TESTS = $(patsubst $(TESTDIR)/%.cpp,$(OUTDIR)/%,$(TEST_SRCS))
 
 .PHONY: all clean test
 
-all: shared_library static_library export_library_path main_executable
+all: install_dependencies  shared_library static_library export_library_path main_executable
+install_dependencies:
+	@chmod +x $(INSTALL_GPP_SCRIPT)
+	@$(SHELL) $(INSTALL_GPP_SCRIPT)
+	@chmod +x $(INSTALL_GTEST_SCRIPT)
+	@$(SHELL) $(INSTALL_GTEST_SCRIPT)
 
 shared_library: $(LIB_SHARED)
 
@@ -62,7 +72,7 @@ export_library_path:
 	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(OUTDIR)
 
 main_executable: create_outdir
-	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(OUTDIR) g++ -o main $(SRCDIR)/library.cpp -L$(OUTDIR) -l$(LIB_NAME)
+	$(CXX) -o main $(SRCDIR)/library.cpp -L$(OUTDIR) -Wl,-rpath,'$$ORIGIN/$(OUTDIR)' -ldataforge
 
 
 
