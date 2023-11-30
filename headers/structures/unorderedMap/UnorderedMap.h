@@ -38,7 +38,7 @@ private:
         Value value;
         KeyValue* next;
 
-        KeyValue(const Key& k, const Value v) : key(k), value(v), next(nullptr) {}
+        KeyValue(const Key& k, const Value v) : key(k), value(v), next(NULL) {}
     };
     KeyValue ** data;
     size_t capacity;
@@ -52,7 +52,7 @@ Vector<Key> UnorderedMap<Key, Value>::getKeys() {
     Vector<Key> keys;
     for (size_t i = 0; i < capacity; i++) {
         KeyValue* current = data[i];
-        if(current== nullptr){
+        if(current== NULL){
             break;
         }
         while (current) {
@@ -81,10 +81,10 @@ Value UnorderedMap<Key, Value>::get(const Key &key) {
 }
 
 template<typename Key , typename Value>
-UnorderedMap<Key,Value>::UnorderedMap(): data(nullptr), capacity(1000) {
+UnorderedMap<Key,Value>::UnorderedMap(): data(NULL), capacity(1000) {
     data = new KeyValue*[capacity]; // Create an array of pointers
     for (size_t i = 0; i < capacity; i++) {
-        data[i] = nullptr; // Initialize each bucket with nullptr
+        data[i] = NULL; // Initialize each bucket with nullptr
     }
 //    LOG_INFO("UnorderedMap has been created!");
 }
@@ -127,7 +127,7 @@ template<typename Key,typename Value>
 void UnorderedMap<Key,Value>::remove(const Key& key) {
     size_t index = hash(key);
     KeyValue* current = data[index];
-    KeyValue* prev = nullptr;
+    KeyValue* prev = NULL;
 
     while (current) {
         if (current->key == key) {
