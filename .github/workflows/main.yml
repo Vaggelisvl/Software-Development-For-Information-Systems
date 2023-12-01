@@ -26,5 +26,4 @@ jobs:
           ./scripts/install_gtest.sh
 
       - name: Build and run tests
-        run: |
-          make test
+        run: make test
