@@ -34,9 +34,9 @@ public:
 //    int getNumOfPoints();
     void setMetrics(char*);
     // for testing purposes
-//    int getK();
-//    Vector<Point> getPoints();
-//    Vector<Neighbors> getNeighborsOfPoint(Point point);
+    int getK();
+    Vector<Point> getPoints();
+    Vector<Neighbors> getNeighborsOfPoint(Point point);
     void setK(int);
     //end of testing purposes
     void calculateAllDistances();

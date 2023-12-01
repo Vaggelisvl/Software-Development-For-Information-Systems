@@ -16,7 +16,8 @@ private:
 
 public:
     int localJoin();
-    void setKRandomNeighbors() override;
+    // void setKRandomNeighbors() override
+    void sampling();
 };
 
 

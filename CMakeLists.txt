@@ -26,6 +26,7 @@ add_library(_project
         tests/unit_tests/structures/dataset/DatasetTest.cpp
         tests/unit_tests/structures/unorderedMap/UnorderedMapTest.cpp
         tests/unit_tests/structures/graph/GraphInitializationTest.cpp
+        tests/unit_tests/utils/MetricsTest.cpp
 
         src/structures/point/PointInfo.cpp
         headers/utils/Statistics.h

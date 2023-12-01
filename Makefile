@@ -35,7 +35,8 @@ TEST_SRCS = $(TESTDIR)/structures/point/PointTest.cpp \
             $(TESTDIR)/structures/vector/VectorTestFloat.cpp \
             $(TESTDIR)/structures/vector/VectorTestNeighbor.cpp \
             $(TESTDIR)/structures/vector/VectorTestPoint.cpp \
-            $(TESTDIR)/structures/unorderedMap/UnorderedMapTest.cpp
+            $(TESTDIR)/structures/unorderedMap/UnorderedMapTest.cpp \
+            $(TESTDIR)/utils/MetricsTest.cpp
 
 
 # Test executables
