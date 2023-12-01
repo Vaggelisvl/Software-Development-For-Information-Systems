@@ -6,12 +6,13 @@
 typedef struct neighborList{
     Neighbors neighbor;
     bool flag;
+//    neighborList(Neighbors, bool);
 }neighborList;
 
 class Optimizations : public GraphInitialization{
 private:
     UnorderedMap< Point, Vector<neighborList> > graph;
-    int checkDuplicate(Vector<Neighbors>, Vector<Neighbors>, int, int);
+    int checkDuplicate(Vector<neighborList>, Vector<neighborList>, int, int);
     int checkRandomNum(Vector<neighborList>,int,int);
 
 public:

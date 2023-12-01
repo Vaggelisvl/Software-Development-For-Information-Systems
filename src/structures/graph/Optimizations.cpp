@@ -1,19 +1,19 @@
 #include "../../../headers/structures/graph/Optimizations.h"
 
-int Optimizations::checkDuplicate(Vector<Neighbors> neighborsVector1, Vector<Neighbors> neighborsVector2, int j, int k){
-    if(neighborsVector1.at(j).getId() == neighborsVector2.at(k).getId()){
+int Optimizations::checkDuplicate(Vector<neighborList> neighborsList1, Vector<neighborList> neighborsList2, int j, int k){
+    if(neighborsList1.at(j).neighbor.getId() == neighborsList2.at(k).neighbor.getId()){
         return 1;
     }
 
     //if extended neighbor exist in the neighbor list
     for (int l = 0; l < this->K; l++) {
-        if (neighborsVector1.at(l).getId() == neighborsVector2.at(k).getId()) {
+        if (neighborsList1.at(l).neighbor.getId() == neighborsList2.at(k).neighbor.getId()) {
             return 1;
         }
     }
 
     for (int l = 0; l < this->K; l++) {
-        if (neighborsVector2.at(l).getId() == neighborsVector1.at(j).getId()) {
+        if (neighborsList2.at(l).neighbor.getId() == neighborsList1.at(j).neighbor.getId()) {
             return 1;
         }
     }
@@ -23,9 +23,9 @@ int Optimizations::checkDuplicate(Vector<Neighbors> neighborsVector1, Vector<Nei
 int Optimizations::checkRandomNum(Vector<neighborList> neighborListArg, int randNum, int currentPointId) {
     int flag = 0;
 
-    for (int p = 0; p < neighborList.getSize(); p++) {
+    for (int p = 0; p < neighborListArg.getSize(); p++) {
         //if num already in the neighbor list
-        if (neighborList.at(p).neighbor.getId() == randNum) {
+        if (neighborListArg.at(p).neighbor.getId() == randNum) {
             flag = 1;
             break;
         }
@@ -104,25 +104,31 @@ void Optimizations::setKRandomNeighbors() {
 
                     //init current point neighbor
                     Neighbors neighborsOfPoint(randomNum, distance, this->points.at(p).getCoordinates());
-                    neighborsVector.push_back(neighborsOfPoint);
+                    neighborList neighborsOfPointArg;
+                    neighborsOfPointArg.neighbor = neighborsOfPoint;
+                    neighborsOfPointArg.flag = true;
+                    neighborListArg.push_back(neighborsOfPointArg);
 
                     //find reverse neighbor from point(currentPoint)
-                    Vector<Neighbors> reverseNeighborsVector;
+                    Vector<neighborList> reverseNeighborsList;
                     Point reversePoint = this->points.at(randomNum - 1);
-                    this->graph.find(reversePoint, reverseNeighborsVector);
+                    this->graph.find(reversePoint, reverseNeighborsList);
 
                     //init neighbor reserve neighbor
                     Neighbors reverseNeighborsOfPoint(i + 1, distance, currentPoint.getCoordinates());
-                    reverseNeighborsVector.push_back(reverseNeighborsOfPoint);
+                    neighborList reverseNeighborsOfPointArg;
+                    reverseNeighborsOfPointArg.neighbor = reverseNeighborsOfPoint;
+                    reverseNeighborsOfPointArg.flag = true;
+                    reverseNeighborsList.push_back(reverseNeighborsOfPointArg);
 
                     //put neighbor reverse neighbor
-                    this->graph.insert(reversePoint, reverseNeighborsVector);
+                    this->graph.insert(reversePoint, reverseNeighborsList);
                     break;
                 }
             }
 
         }
-        this->graph.insert(currentPoint, neighborsVector);
+        this->graph.insert(currentPoint, neighborListArg);
 
     }
 
@@ -133,40 +139,40 @@ int Optimizations::localJoin() {
 
     //for every point in the graph
     for (int i = 0; i < this->numOfPoints; i++) {
-        UnorderedMap<Point, Vector<Neighbors> > tempGraph;
+        UnorderedMap<Point, Vector<neighborList> > tempGraph;
         int count = 0;
         Vector<Point> tempPointVector;
 
         //find current point with the neighbor vector of it
         Point currentPoint = this->points.at(i);
-        Vector<Neighbors> currentNeighborsVector;
-        this->graph.find(currentPoint, currentNeighborsVector);
+        Vector<neighborList> currentNeighborsList;
+        this->graph.find(currentPoint, currentNeighborsList);
 
 
 
         for (int j = 0; j < this->K; j++) {
 
             //find neighbor point with the neighbor vector of it
-            Point neighborPoint1 = this->points.at(currentNeighborsVector.at(j).getId() - 1);
-            Vector<Neighbors> neighborsVector1;
-            this->graph.find(neighborPoint1, neighborsVector1);
+            Point neighborPoint1 = this->points.at(currentNeighborsList.at(j).neighbor.getId() - 1);
+            Vector<neighborList> neighborsList1;
+            this->graph.find(neighborPoint1, neighborsList1);
 
 
             for (int k = j + 1; k < this->K; k++) {
 
                 //find max distance of neighbors
-                neighborsVector1.sort();
-                float maxDistance1 = neighborsVector1.at(this->K - 1).getDistance();
+                neighborsList1.sort();
+                float maxDistance1 = neighborsList1.at(this->K - 1).neighbor.getDistance();
 
-                Point neighborPoint2 = this->points.at(currentNeighborsVector.at(k).getId() - 1);
-                Vector<Neighbors> neighborsVector2;
-                this->graph.find(neighborPoint2, neighborsVector2);
+                Point neighborPoint2 = this->points.at(currentNeighborsList.at(k).neighbor.getId() - 1);
+                Vector<neighborList> neighborsList2;
+                this->graph.find(neighborPoint2, neighborsList2);
 
                 //find max distance of neighbors
-                neighborsVector2.sort();
-                float maxDistance2 = neighborsVector2.at(this->K - 1).getDistance();
+                neighborsList2.sort();
+                float maxDistance2 = neighborsList2.at(this->K - 1).neighbor.getDistance();
 
-                if(checkDuplicate(neighborsVector1, neighborsVector2,j ,k)){
+                if(checkDuplicate(neighborsList1, neighborsList2,j ,k)){
                     continue;
                 }
 
@@ -183,9 +189,9 @@ int Optimizations::localJoin() {
                 //put neighbor point 2 to point 1
                 if (dist < maxDistance1) {
                     Neighbors tempNeighbor(neighborPoint2.getId(), dist, neighborPoint2.getCoordinates());
-                    neighborsVector1.at(this->K - 1) = tempNeighbor;
-                    neighborsVector1.sort();
-                    tempGraph.insert(neighborPoint1, neighborsVector1);
+                    neighborsList1.at(this->K - 1).neighbor = tempNeighbor;
+                    neighborsList1.sort();
+                    tempGraph.insert(neighborPoint1, neighborsList1);
                     tempPointVector.push_back(neighborPoint1);
                     count++;
                 }
@@ -193,9 +199,9 @@ int Optimizations::localJoin() {
                 if (dist < maxDistance2) {
 //                    printf("ok2\n");
                     Neighbors tempNeighbor(neighborPoint1.getId(), dist, neighborPoint1.getCoordinates());
-                    neighborsVector2.at(this->K - 1) = tempNeighbor;
-                    neighborsVector2.sort();
-                    tempGraph.insert(neighborPoint2, neighborsVector2);
+                    neighborsList2.at(this->K - 1).neighbor = tempNeighbor;
+                    neighborsList2.sort();
+                    tempGraph.insert(neighborPoint2, neighborsList2);
                     tempPointVector.push_back(neighborPoint2);
                     count++;
                 }
@@ -204,7 +210,7 @@ int Optimizations::localJoin() {
         }
         //for every new neighbor vector of points
         for(int p=0;p<count;p++){
-            Vector<Neighbors> neighborsV;
+            Vector<neighborList> neighborsV;
             tempGraph.find(tempPointVector.at(p),neighborsV);
             //replace the Point with the new neighbor vector
             this->graph.insert(tempPointVector.at(p), neighborsV);
@@ -214,3 +220,4 @@ int Optimizations::localJoin() {
     return flag;
 
 }
+
