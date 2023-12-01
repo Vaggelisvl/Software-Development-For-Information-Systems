@@ -1,5 +1,8 @@
 #include <fstream>
 #include <ctime>
+#include <cstdlib>
+#include<cstdio>
+#include<time.h>
 #include "../headers/structures/vector/Vector.h"
 #include "../headers/structures/point/Point.h"
 #include "../headers/structures/graph/GraphInitialization.h"
