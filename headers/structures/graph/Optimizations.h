@@ -3,17 +3,20 @@
 
 #include "GraphInitialization.h"
 
-struct incrementalSearch{
-    int pointId;
-    int
-};
+typedef struct neighborList{
+    Neighbors neighbor;
+    bool flag;
+}neighborList;
 
 class Optimizations : public GraphInitialization{
 private:
-    UnorderedMap< Point, Vector<Neighbors, bool> > graph;
+    UnorderedMap< Point, Vector<neighborList> > graph;
     int checkDuplicate(Vector<Neighbors>, Vector<Neighbors>, int, int);
+    int checkRandomNum(Vector<neighborList>,int,int);
+
 public:
     int localJoin();
+    void setKRandomNeighbors() override;
 };
 
 
