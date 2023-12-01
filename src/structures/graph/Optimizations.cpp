@@ -107,12 +107,6 @@ int Optimizations::localJoin() {
 
 void Optimizations::sampling(){
     float randomFloat = 0.01 + 1.0 * ((float)rand() / (float)RAND_MAX);
-    int numOfPoints = this->numOfPoints * randomFloat;
-    Vector<Point> tempPoints;
-    for(int i=0;i<numOfPoints;i++){
-        int randomPoint = rand() % this->numOfPoints;
-        tempPoints.push_back(this->points.at(randomPoint));
-    }
-    this->sortKNeighbors();
+
 
 }
