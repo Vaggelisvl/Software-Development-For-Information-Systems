@@ -3,8 +3,15 @@
 
 #include "GraphInitialization.h"
 
+struct incrementalSearch{
+    int pointId;
+    int
+};
+
 class Optimizations : public GraphInitialization{
 private:
+    UnorderedMap< Point, Vector<Neighbors, bool> > graph;
+    int checkDuplicate(Vector<Neighbors>, Vector<Neighbors>, int, int);
 public:
     int localJoin();
 };

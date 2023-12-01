@@ -1,5 +1,25 @@
 #include "../../../headers/structures/graph/Optimizations.h"
 
+int Optimizations::checkDuplicate(Vector<Neighbors> neighborsVector1, Vector<Neighbors> neighborsVector2, int j, int k){
+    if(neighborsVector1.at(j).getId() == neighborsVector2.at(k).getId()){
+        return 1;
+    }
+
+    //if extended neighbor exist in the neighbor list
+    for (int l = 0; l < this->K; l++) {
+        if (neighborsVector1.at(l).getId() == neighborsVector2.at(k).getId()) {
+            return 1;
+        }
+    }
+
+    for (int l = 0; l < this->K; l++) {
+        if (neighborsVector2.at(l).getId() == neighborsVector1.at(j).getId()) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 int Optimizations::localJoin() {
     int flag = 0;
 
@@ -36,28 +56,7 @@ int Optimizations::localJoin() {
                 neighborsVector2.sort();
                 float maxDistance2 = neighborsVector2.at(this->K - 1).getDistance();
 
-                if(neighborsVector1.at(j).getId() == neighborsVector2.at(k).getId()){
-                    continue;
-                }
-
-                //if extended neighbor exist in the neighbor list
-                int exist = 0;
-                for (int l = 0; l < this->K; l++) {
-                    if (neighborsVector1.at(l).getId() == neighborsVector2.at(k).getId()) {
-                        exist = 1;
-                    }
-                }
-                if (exist) {
-                    continue;
-                }
-
-                exist = 0;
-                for (int l = 0; l < this->K; l++) {
-                    if (neighborsVector2.at(l).getId() == neighborsVector1.at(j).getId()) {
-                        exist = 1;
-                    }
-                }
-                if (exist) {
+                if(checkDuplicate(neighborsVector1, neighborsVector2,j ,k)){
                     continue;
                 }
 
