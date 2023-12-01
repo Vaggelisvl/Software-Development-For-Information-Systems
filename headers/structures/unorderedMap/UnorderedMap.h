@@ -84,7 +84,7 @@ template<typename Key , typename Value>
 UnorderedMap<Key,Value>::UnorderedMap(): data(NULL), capacity(1000) {
     data = new KeyValue*[capacity]; // Create an array of pointers
     for (size_t i = 0; i < capacity; i++) {
-        data[i] = NULL; // Initialize each bucket with NULL
+        data[i] = NULL; // Initialize each bucket with nullptr
     }
 //    LOG_INFO("UnorderedMap has been created!");
 }
@@ -152,7 +152,7 @@ void UnorderedMap<Key,Value>::remove(const Key& key) {
 //            current = current->next;
 //            delete temp;
 //        }
-//        data[i] = NULL; // Set the bucket to NULL after deleting
+//        data[i] = nullptr; // Set the bucket to nullptr after deleting
 //    }
 //    delete[] data;
 //}

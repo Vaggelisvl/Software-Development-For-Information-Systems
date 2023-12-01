@@ -6,9 +6,12 @@
 #include "../headers/structures/vector/Vector.h"
 #include "../headers/structures/point/Point.h"
 #include "../headers/structures/graph/GraphInitialization.h"
+#include "../headers/structures/graph/Optimizations.h"
 #include "../headers/structures/Dataset.h"
 #include "../headers/utils/Statistics.h"
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 using namespace std;
 int main(int argc, char *argv[]) {
@@ -40,12 +43,13 @@ int main(int argc, char *argv[]) {
     for(int i=0;i<dataset.getNumOfPoints();i++){
         g.putPoints(elements.at(i).getCoordinates());
     }
+
     g.setK(K);
     g.setMetrics(metrics);
     g.setDimensions(dataset.getDimensions());
     g.setKRandomNeighbors();
     Statistics* statistics=new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
-    statistics->calculateAllDistances("euclidean");
+    statistics->calculateAllDistances(metrics);
     g.sortKNeighbors();
 //    while(!g.KNNAlgorithm());
 //    g.printNeighbors(queryId);
@@ -81,4 +85,51 @@ int main(int argc, char *argv[]) {
         statistics->printInMatrixForm(K);
 
     statistics->printTotalPercentage(K);
+
+
+    //for project 2
+    printf("OPTIMIZATIONS\n");
+    Optimizations op;
+    for(int i=0;i<dataset.getNumOfPoints();i++){
+        op.putPoints(elements.at(i).getCoordinates());
+    }
+
+    op.setK(K);
+    op.setMetrics(metrics);
+    op.setDimensions(dataset.getDimensions());
+    op.setKRandomNeighbors();
+    Statistics* statistics2 = new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
+    statistics2->calculateAllDistances(metrics);
+    op.sortKNeighbors();
+
+    //if query out of the graph
+    if(queryId == dataset.getNumOfPoints() + 1){
+        srand(static_cast<unsigned>(time(NULL)));
+        Vector<float> queryVector;
+        //generate random coordinates
+        for (int i = 0; i < dataset.getDimensions(); i++) {
+//          in space [-1.0-1.0]
+            float randomFloat = -1.0 + 2.0 * ((float)rand() / (float)RAND_MAX);
+            queryVector.push_back(randomFloat);
+        }
+        Point queryPoint(queryId,queryVector);
+        op.findKNearestNeighborsForPoint(queryPoint);
+
+    }
+    else{
+        op.sortKNeighbors();
+        while(op.localJoin());
+        op.printNeighbors(queryId);
+        op.printGraph();
+    }
+
+
+    statistics->calculateStatistics(K,&op);
+    if(numOfPoints>20)
+        statistics->printStatistics(K);
+    else
+        statistics->printInMatrixForm(K);
+
+    statistics->printTotalPercentage(K);
+
 }

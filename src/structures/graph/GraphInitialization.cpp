@@ -1,12 +1,4 @@
-#include <cstdlib>
-#include <ctime>
-#include <stdio.h>
-#include <string.h>
-
 #include "../../../headers/structures/graph/GraphInitialization.h"
-#include "../../../headers/utils/Metrics.h"
-#include "../../../headers/structures/point/PointInfo.h"
-
 
 GraphInitialization::GraphInitialization() : numOfPoints(0), K(-1), dimensions(0) {
 }
@@ -19,8 +11,6 @@ void GraphInitialization::putPoints(Vector<float> coordinates) {
     this->points.push_back(currentPoint);
     Vector<Neighbors> neighborsVector;
     this->graph.insert(currentPoint, neighborsVector);
-    printf("put point with id: %d\n", currentPoint.getId());
-
 }
 
 void GraphInitialization::setDimensions(int num){
@@ -88,7 +78,7 @@ void GraphInitialization::printNeighbors(int id) {
     this->graph.find(point, neighborsVector);
     printf("%d nearest neighbors of Point %d:\n", this->K, id);
     for (int i = 0; i < this->K; i++) {
-        printf("neighbor with id:%d\n", neighborsVector.at(i).getId());
+        printf("neighbor with id:%d     %f\n", neighborsVector.at(i).getId(),neighborsVector.at(i).getDistance());
     }
 }
 
@@ -142,6 +132,7 @@ void GraphInitialization::setKRandomNeighbors() {
                     if(strcmp(this->metrics, "manhattan") == 0) {
                         distance = Metrics::manhattanDistance(currentPoint.getCoordinates(),
                                                                 this->points.at(p).getCoordinates(), this->dimensions);
+
                     }
                     else{
                         distance = Metrics::euclideanDistance(currentPoint.getCoordinates(),
@@ -231,7 +222,7 @@ int GraphInitialization::KNNAlgorithm() {
                 }
 
                 float extendedDistance;
-                if(strcmp(this->metrics, "manhatan") == 0) {
+                if(strcmp(this->metrics, "manhattan") == 0) {
                     extendedDistance = Metrics::manhattanDistance(currentPoint.getCoordinates(),
                                                           extendedNeighborsVector.at(p).getCoordinates(),
                                                           this->dimensions);
@@ -298,7 +289,7 @@ void GraphInitialization::findKNearestNeighborsForPoint(const Point &queryPoint)
         //convert point to neighbor
         Point neighborPoint = this->points.at(randomNumber - 1);
         float dist;
-        if(strcmp(this->metrics, "manhatan") == 0) {
+        if(strcmp(this->metrics, "manhattan") == 0) {
             dist = Metrics::manhattanDistance(neighborPoint.getCoordinates(), queryPoint.getCoordinates(),
                                                           this->dimensions);
         }

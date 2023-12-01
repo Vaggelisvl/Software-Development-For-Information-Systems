@@ -31,4 +31,4 @@ add_library(_project
         headers/utils/Statistics.h
         src/utils/Statistics.cpp
         headers/utils/StatisticInfo.h
-        src/utils/StatisticInfo.cpp)
+        src/utils/StatisticInfo.cpp headers/structures/graph/Optimizations.h src/structures/graph/Optimizations.cpp)
