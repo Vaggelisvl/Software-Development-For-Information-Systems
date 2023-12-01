@@ -7,6 +7,7 @@ class Optimizations : public GraphInitialization{
 private:
 public:
     int localJoin();
+    void sampling();
 };
 
 

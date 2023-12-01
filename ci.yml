@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up C++ environment
+        uses: actions/setup-cpp@v2
+        with:
+          cpp-version: '11'
+
+      - name: Install dependencies
+        run: |
+          chmod +x scripts/gplusplus_install.sh
+          ./scripts/gplusplus_install.sh
+          chmod +x scripts/install_gtest.sh
+          ./scripts/install_gtest.sh
+
+      - name: Build and run tests
+        run: |
+          make test

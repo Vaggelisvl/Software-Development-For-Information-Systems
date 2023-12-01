@@ -3,7 +3,7 @@
 int Optimizations::localJoin() {
     int flag = 0;
 
-    //for every point in the graph
+          //for every point in the graph
     for (int i = 0; i < this->numOfPoints; i++) {
         UnorderedMap<Point, Vector<Neighbors> > tempGraph;
         int count = 0;
@@ -20,7 +20,6 @@ int Optimizations::localJoin() {
             Point neighborPoint1 = this->points.at(currentNeighborsVector.at(j).getId() - 1);
             Vector<Neighbors> neighborsVector1;
             this->graph.find(neighborPoint1, neighborsVector1);
-
 
             for (int k = j + 1; k < this->K; k++) {
 
@@ -103,5 +102,17 @@ int Optimizations::localJoin() {
         }
     }
     return flag;
+
+}
+
+void Optimizations::sampling(){
+    float randomFloat = 0.01 + 1.0 * ((float)rand() / (float)RAND_MAX);
+    int numOfPoints = this->numOfPoints * randomFloat;
+    Vector<Point> tempPoints;
+    for(int i=0;i<numOfPoints;i++){
+        int randomPoint = rand() % this->numOfPoints;
+        tempPoints.push_back(this->points.at(randomPoint));
+    }
+    this->sortKNeighbors();
 
 }
