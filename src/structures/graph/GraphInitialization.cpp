@@ -93,7 +93,7 @@ void GraphInitialization::printNeighbors(int id) {
 }
 
 void GraphInitialization::setKRandomNeighbors() {
-    srand(static_cast<unsigned>(time(nullptr)));
+    srand(static_cast<unsigned>(time(NULL)));
 
     //for every point
     for (int i = 0; i < this->numOfPoints; i++) {
@@ -277,7 +277,7 @@ int GraphInitialization::KNNAlgorithm() {
 
 
 void GraphInitialization::findKNearestNeighborsForPoint(const Point &queryPoint) {
-    srand(time(nullptr));
+    srand(time(NULL));
     Vector<Neighbors> uniqueNumbers;
     int randomNumber;
     int flag;
@@ -380,7 +380,7 @@ void GraphInitialization::calculateAllDistances() {
     printf("calculate all distances 1 \n");
     FILE *file;
     file = fopen("results.txt", "w");
-    if(file == nullptr){
+    if(file == NULL){
         LOG_ERROR("Cannot open results.txt file");
         exit(1);
     }

@@ -27,7 +27,7 @@ void Logger::Error(const char *message) {
 
 void Logger::Log(const char *logLevel, const char *message, const char *color) {
     const char *resetColor = "\x1b[0m"; // ANSI reset color escape code
-    time_t now = time(nullptr);
+    time_t now = time(NULL);
     struct tm *timeinfo = localtime(&now); // Use localtime
     char timestamp[80];
     strftime(timestamp, sizeof(timestamp), "[%Y-%m-%d %H:%M:%S]", timeinfo);

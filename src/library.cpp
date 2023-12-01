@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 
     //if query out of the graph
     if(queryId == dataset.getNumOfPoints() + 1){
-        srand(static_cast<unsigned>(time(nullptr)));
+        srand(static_cast<unsigned>(time(NULL)));
         Vector<float> queryVector;
         //generate random coordinates
         for (int i = 0; i < dataset.getDimensions(); i++) {
