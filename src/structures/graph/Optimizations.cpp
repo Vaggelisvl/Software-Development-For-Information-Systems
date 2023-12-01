@@ -1,5 +1,16 @@
 #include "../../../headers/structures/graph/Optimizations.h"
 
+bool neighborList::operator<(const neighborList& other) const
+{
+    return this->neighbor.getDistance()<other.neighbor.getDistance();
+}
+
+bool neighborList::operator==(const neighborList& other) const
+{
+   return  this->neighbor.getId() == other.neighbor.getId() && this->neighbor.getDistance() == other.neighbor.getDistance();
+
+}
+
 int Optimizations::checkDuplicate(Vector<neighborList> neighborsList1, Vector<neighborList> neighborsList2, int j, int k){
     if(neighborsList1.at(j).neighbor.getId() == neighborsList2.at(k).neighbor.getId()){
         return 1;

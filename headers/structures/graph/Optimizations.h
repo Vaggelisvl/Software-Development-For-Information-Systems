@@ -7,6 +7,9 @@ typedef struct neighborList{
     Neighbors neighbor;
     bool flag;
 //    neighborList(Neighbors, bool);
+    bool operator<(const neighborList& other) const;
+    //    bool operator>(const Neighbors& other) const;
+    bool operator==(const neighborList& other) const ;
 }neighborList;
 
 class Optimizations : public GraphInitialization{
