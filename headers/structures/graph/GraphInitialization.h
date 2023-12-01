@@ -31,12 +31,12 @@ public:
     GraphInitialization();
     void putPoints(Vector<float> coordinates);
     void setDimensions(int num);
-    int getNumOfPoints();
+//    int getNumOfPoints();
     void setMetrics(char*);
     // for testing purposes
-    int getK();
-    Vector<Point> getPoints();
-    Vector<Neighbors> getNeighborsOfPoint(Point point);
+//    int getK();
+//    Vector<Point> getPoints();
+//    Vector<Neighbors> getNeighborsOfPoint(Point point);
     void setK(int);
     //end of testing purposes
     void calculateAllDistances();
@@ -45,7 +45,7 @@ public:
     int KNNAlgorithm();
     void findKNearestNeighborsForPoint(const Point& queryPoint);
     UnorderedMap< Point, Vector<Neighbors> > getGraph();
-    Point getPoint(int id);
+//    Point getPoint(int id);
 };
 
 

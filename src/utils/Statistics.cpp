@@ -28,7 +28,7 @@ void Statistics::calculateAllDistances(char*metric) {
 
             Point point1 = points.at(j);
             float dist;
-            if(compareStrings(metric, "manhattan\n")) {
+            if(compareStrings(metric, "manhattan")) {
                 dist = Metrics::manhattanDistance(point.getCoordinates(), point1.getCoordinates(),
                                                   this->dimensions);
             }
