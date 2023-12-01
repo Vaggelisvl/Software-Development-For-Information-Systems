@@ -34,6 +34,8 @@ int Optimizations::localJoin() {
         Vector<Neighbors> currentNeighborsVector;
         this->graph.find(currentPoint, currentNeighborsVector);
 
+
+
         for (int j = 0; j < this->K; j++) {
 
             //find neighbor point with the neighbor vector of it
