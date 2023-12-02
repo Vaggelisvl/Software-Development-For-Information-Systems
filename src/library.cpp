@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
     op.setMetrics(metrics);
     op.setDimensions(dataset.getDimensions());
     op.setKRandomNeighbors();
-    Statistics* statistics2 = new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
+//    Statistics* statistics2 = new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
 //    statistics2->calculateAllDistances(metrics);
 //    op.sortKNeighbors();
 
@@ -114,13 +114,11 @@ int main(int argc, char *argv[]) {
 
     }
     else{
-//        op.sortKNeighbors();
-        while(op.localJoin());
-        printf("oke\n");
-
-//        op.printNeighbors(queryId);
         op.printGraph();
+        while(op.localJoin());
+//        op.printNeighbors(queryId);
     }
+    op.printdup();
 
 
 //    statistics2->calculateStatistics(K,&op);

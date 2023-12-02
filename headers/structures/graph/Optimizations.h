@@ -19,15 +19,17 @@ typedef struct DistanceContents {
 class Optimizations : public GraphInitialization{
 private:
     UnorderedMap< Point, Vector<NeighborList> > graph;
-    int checkDuplicate(Vector<NeighborList>, Vector<NeighborList>, int, int);
+    int checkDuplicate(NeighborList,NeighborList,Vector<NeighborList>, Vector<NeighborList>);
     int checkRandomNum(Vector<NeighborList>,int,int);
-    int hashingDuplicateDistances(const Point&, const Point&);
+    int hashingDuplicateDistances(Point&, Point&);
     UnorderedMap<Point, DistanceContents > hashMap;
+    int counter = 0;
 public:
     int localJoin();
     void setKRandomNeighbors() override;
     int incrementalSearch(NeighborList, NeighborList);
     void printGraph() override;
+    void printdup();
 };
 
 

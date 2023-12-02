@@ -180,7 +180,7 @@ void GraphInitialization::sortKNeighbors() {
 
 int GraphInitialization::KNNAlgorithm() {
     int flag = 0;
-
+    printf("again\n");
     //for every point in the graph
     for (int i = 0; i < this->numOfPoints; i++) {
 
@@ -398,12 +398,12 @@ void GraphInitialization::calculateAllDistances() {
     fclose(file);
 }
 
-GraphInitialization::~GraphInitialization() {
-    for(int i=0;i<this->numOfPoints;i++){
-        this->points.remove(this->points.at(i));
-    }
-    this->numOfPoints = 0;
-}
+//GraphInitialization::~GraphInitialization() {
+//    for(int i=0;i<this->numOfPoints;i++){
+//        this->points.remove(this->points.at(i));
+//    }
+//    this->numOfPoints = 0;
+//}
 
 
 
