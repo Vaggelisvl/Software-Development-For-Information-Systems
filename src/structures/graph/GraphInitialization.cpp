@@ -307,11 +307,11 @@ void GraphInitialization::findKNearestNeighborsForPoint(const Point &queryPoint)
     this->points.push_back(queryPoint);
     this->numOfPoints++;
 
-    sortKNeighbors();
+//    sortKNeighbors();
     printGraph();
     while (!KNNAlgorithm());
     calculateAllDistances();
-    sortKNeighbors();
+//    sortKNeighbors();
 
     //remove query point from the graph
     printNeighbors(queryPoint.getId());
@@ -396,6 +396,13 @@ void GraphInitialization::calculateAllDistances() {
         fprintf(file, "\n}\n");
     }
     fclose(file);
+}
+
+GraphInitialization::~GraphInitialization() {
+    for(int i=0;i<this->numOfPoints;i++){
+        this->points.remove(this->points.at(i));
+    }
+    this->numOfPoints = 0;
 }
 
 

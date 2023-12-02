@@ -26,13 +26,14 @@ protected:
     int dimensions;
     char* metrics;
 public:
-    void printGraph();
-    void printNeighbors(int id);
     GraphInitialization();
+    ~GraphInitialization();
+    virtual void printGraph();
+    void printNeighbors(int id);
     void putPoints(Vector<float> coordinates);
     void setDimensions(int num);
-//    int getNumOfPoints();
     void setMetrics(char*);
+
     // for testing purposes
     int getNumOfPoints();
     int getK();

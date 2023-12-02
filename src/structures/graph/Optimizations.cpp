@@ -1,49 +1,49 @@
 #include "../../../headers/structures/graph/Optimizations.h"
 
-bool neighborList::operator<(const neighborList& other) const
+bool NeighborList::operator<(const NeighborList& other) const
 {
     return this->neighbor.getDistance()<other.neighbor.getDistance();
 }
 
-bool neighborList::operator==(const neighborList& other) const
+bool NeighborList::operator==(const NeighborList& other) const
 {
    return  this->neighbor.getId() == other.neighbor.getId() && this->neighbor.getDistance() == other.neighbor.getDistance();
 
 }
 
-int Optimizations::checkDuplicate(Vector<neighborList> neighborsList1, Vector<neighborList> neighborsList2, int j, int k){
+int Optimizations::checkDuplicate(Vector<NeighborList> neighborsList1, Vector<NeighborList> neighborsList2, int j, int k){
     if(neighborsList1.at(j).neighbor.getId() == neighborsList2.at(k).neighbor.getId()){
         return 1;
     }
 
-    //if extended neighbor exist in the neighbor list
-    for (int l = 0; l < this->K; l++) {
-        if (neighborsList1.at(l).neighbor.getId() == neighborsList2.at(k).neighbor.getId()) {
-            return 1;
-        }
-    }
-
-    for (int l = 0; l < this->K; l++) {
-        if (neighborsList2.at(l).neighbor.getId() == neighborsList1.at(j).neighbor.getId()) {
-            return 1;
-        }
-    }
+//    //if extended neighbor exist in the neighbor list
+//    for (int l = 0; l < this->K; l++) {
+//        if (neighborsList1.at(l).neighbor.getId() == neighborsList2.at(k).neighbor.getId()) {
+//            return 1;
+//        }
+//    }
+//
+//    for (int l = 0; l < this->K; l++) {
+//        if (neighborsList2.at(l).neighbor.getId() == neighborsList1.at(j).neighbor.getId()) {
+//            return 1;
+//        }
+//    }
     return 0;
 }
 
-int Optimizations::checkRandomNum(Vector<neighborList> neighborListArg, int randNum, int currentPointId) {
+int Optimizations::checkRandomNum(Vector<NeighborList> NeighborListArg, int randNum, int currentPointId) {
     int flag = 0;
 
-    for (int p = 0; p < neighborListArg.getSize(); p++) {
+    for (int p = 0; p < NeighborListArg.getSize(); p++) {
         //if num already in the neighbor list
-        if (neighborListArg.at(p).neighbor.getId() == randNum) {
+        if (NeighborListArg.at(p).neighbor.getId() == randNum) {
             flag = 1;
             break;
         }
 
     }
     //find reverse neighbor vector from point(currentPoint)
-    Vector<neighborList> neighborCheckList;
+    Vector<NeighborList> neighborCheckList;
     Point reverseCheckPoint = this->points.at(randNum - 1);
     this->graph.find(reverseCheckPoint, neighborCheckList);
 
@@ -62,11 +62,11 @@ void Optimizations::setKRandomNeighbors() {
     //for every point
     for (int i = 0; i < this->numOfPoints; i++) {
         int randomNum;
-        Vector<neighborList> neighborListArg;
+        Vector<NeighborList> NeighborListArg;
         Point currentPoint = this->points.at(i);
-        this->graph.find(currentPoint, neighborListArg);
+        this->graph.find(currentPoint, NeighborListArg);
 
-        int neighborCapacity = this->K - neighborListArg.getSize();
+        int neighborCapacity = this->K - NeighborListArg.getSize();
         //for every neighbor
         for (int j = 0; j < neighborCapacity; j++) {
             int loopFlag = 1;
@@ -81,7 +81,7 @@ void Optimizations::setKRandomNeighbors() {
                 }
 
                 //if num is ok, stop the loop
-                loopFlag = checkRandomNum(neighborListArg, randomNum, i + 1);
+                loopFlag = checkRandomNum(NeighborListArg, randomNum, i + 1);
 
                 count++;
                 if (count == 20) {
@@ -113,21 +113,21 @@ void Optimizations::setKRandomNeighbors() {
                                                               this->points.at(p).getCoordinates(), this->dimensions);
                     }
 
-                    //init current point neighbor
+                    //init current point neighbor with flag true
                     Neighbors neighborsOfPoint(randomNum, distance, this->points.at(p).getCoordinates());
-                    neighborList neighborsOfPointArg;
+                    NeighborList neighborsOfPointArg;
                     neighborsOfPointArg.neighbor = neighborsOfPoint;
                     neighborsOfPointArg.flag = true;
-                    neighborListArg.push_back(neighborsOfPointArg);
+                    NeighborListArg.push_back(neighborsOfPointArg);
 
                     //find reverse neighbor from point(currentPoint)
-                    Vector<neighborList> reverseNeighborsList;
+                    Vector<NeighborList> reverseNeighborsList;
                     Point reversePoint = this->points.at(randomNum - 1);
                     this->graph.find(reversePoint, reverseNeighborsList);
 
-                    //init neighbor reserve neighbor
+                    //init neighbor reserve neighbor with flag true
                     Neighbors reverseNeighborsOfPoint(i + 1, distance, currentPoint.getCoordinates());
-                    neighborList reverseNeighborsOfPointArg;
+                    NeighborList reverseNeighborsOfPointArg;
                     reverseNeighborsOfPointArg.neighbor = reverseNeighborsOfPoint;
                     reverseNeighborsOfPointArg.flag = true;
                     reverseNeighborsList.push_back(reverseNeighborsOfPointArg);
@@ -139,24 +139,50 @@ void Optimizations::setKRandomNeighbors() {
             }
 
         }
-        this->graph.insert(currentPoint, neighborListArg);
+        this->graph.insert(currentPoint, NeighborListArg);
 
     }
 
 }
 
+int Optimizations::incrementalSearch(NeighborList point1, NeighborList point2) {
+    if(point1.flag || point2.flag){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+int Optimizations::hashingDuplicateDistances(const Point& point1, const Point& point2) {
+    DistanceContents hashNum;
+    this->hashMap.find(point1, hashNum);
+    if(hashNum.id == point2.getId()){
+        return point1.getId();
+    }
+    this->hashMap.find(point2, hashNum);
+    if(hashNum.id == point1.getId()){
+        return point2.getId();
+    }
+
+    else{
+        return 0;
+    }
+
+}
+
 int Optimizations::localJoin() {
-    int flag = 0;
+    int repeatFlag = 0;
 
     //for every point in the graph
     for (int i = 0; i < this->numOfPoints; i++) {
-        UnorderedMap<Point, Vector<neighborList> > tempGraph;
+        UnorderedMap<Point, Vector<NeighborList> > tempGraph;
         int count = 0;
         Vector<Point> tempPointVector;
 
         //find current point with the neighbor vector of it
         Point currentPoint = this->points.at(i);
-        Vector<neighborList> currentNeighborsList;
+        Vector<NeighborList> currentNeighborsList;
         this->graph.find(currentPoint, currentNeighborsList);
 
 
@@ -165,7 +191,7 @@ int Optimizations::localJoin() {
 
             //find neighbor point with the neighbor vector of it
             Point neighborPoint1 = this->points.at(currentNeighborsList.at(j).neighbor.getId() - 1);
-            Vector<neighborList> neighborsList1;
+            Vector<NeighborList> neighborsList1;
             this->graph.find(neighborPoint1, neighborsList1);
 
 
@@ -176,7 +202,7 @@ int Optimizations::localJoin() {
                 float maxDistance1 = neighborsList1.at(this->K - 1).neighbor.getDistance();
 
                 Point neighborPoint2 = this->points.at(currentNeighborsList.at(k).neighbor.getId() - 1);
-                Vector<neighborList> neighborsList2;
+                Vector<NeighborList> neighborsList2;
                 this->graph.find(neighborPoint2, neighborsList2);
 
                 //find max distance of neighbors
@@ -187,48 +213,99 @@ int Optimizations::localJoin() {
                     continue;
                 }
 
-                float dist;
-                if (strcmp(this->metrics, "manhattan") == 0) {
-                    dist = Metrics::manhattanDistance(neighborPoint1.getCoordinates(),
-                                                      neighborPoint2.getCoordinates(),
-                                                      this->dimensions);
-                } else {
-                    dist = Metrics::euclideanDistance(neighborPoint1.getCoordinates(),
-                                                      neighborPoint2.getCoordinates(),
-                                                      this->dimensions);
-                }
-                //put neighbor point 2 to point 1
-                if (dist < maxDistance1) {
-                    Neighbors tempNeighbor(neighborPoint2.getId(), dist, neighborPoint2.getCoordinates());
-                    neighborsList1.at(this->K - 1).neighbor = tempNeighbor;
-                    neighborsList1.sort();
-                    tempGraph.insert(neighborPoint1, neighborsList1);
-                    tempPointVector.push_back(neighborPoint1);
-                    count++;
-                }
-                //put neighbor point 1 to point 2
-                if (dist < maxDistance2) {
-//                    printf("ok2\n");
-                    Neighbors tempNeighbor(neighborPoint1.getId(), dist, neighborPoint1.getCoordinates());
-                    neighborsList2.at(this->K - 1).neighbor = tempNeighbor;
-                    neighborsList2.sort();
-                    tempGraph.insert(neighborPoint2, neighborsList2);
-                    tempPointVector.push_back(neighborPoint2);
-                    count++;
+                //if neighbor1 or neighbor2 is new in the local join
+                if(incrementalSearch(currentNeighborsList.at(j), currentNeighborsList.at(k))) {
+//                    printf("ok\n");
+
+                    //neighbor1 and neighbor2 participate in the local join
+                    currentNeighborsList.at(j).flag = false;
+                    currentNeighborsList.at(k).flag = false;
+
+                    float dist;
+                    int hashNum = hashingDuplicateDistances(neighborPoint1, neighborPoint2);
+                    if (hashNum == 0) {
+
+                        if (strcmp(this->metrics, "manhattan") == 0) {
+                            dist = Metrics::manhattanDistance(neighborPoint1.getCoordinates(),
+                                                              neighborPoint2.getCoordinates(),
+                                                              this->dimensions);
+                        } else {
+                            dist = Metrics::euclideanDistance(neighborPoint1.getCoordinates(),
+                                                              neighborPoint2.getCoordinates(),
+                                                              this->dimensions);
+                        }
+                        //put dist in to the hashMap
+                        DistanceContents newHashNum;
+                        newHashNum.id = neighborPoint2.getId();
+                        newHashNum.dist = dist;
+                        this->hashMap.insert(neighborPoint1, newHashNum);
+                    }
+                    else {
+                        DistanceContents content;
+                        Point hashPoint = this->points.at(hashNum - 1);
+                        this->hashMap.find(hashPoint, content);
+                        dist = content.dist;
+                    }
+
+                    //put neighbor point 2 to point 1
+                    if (dist < maxDistance1) {
+                        Neighbors tempNeighbor(neighborPoint2.getId(), dist, neighborPoint2.getCoordinates());
+                        neighborsList1.at(this->K - 1).neighbor = tempNeighbor;
+                        neighborsList1.at(this->K - 1).flag = true;
+                        neighborsList1.sort();
+                        tempGraph.insert(neighborPoint1, neighborsList1);
+                        tempPointVector.push_back(neighborPoint1);
+                        count++;
+                    }
+                    //put neighbor point 1 to point 2
+                    if (dist < maxDistance2) {
+                        Neighbors tempNeighbor(neighborPoint1.getId(), dist, neighborPoint1.getCoordinates());
+                        neighborsList2.at(this->K - 1).neighbor = tempNeighbor;
+                        neighborsList2.at(this->K - 1).flag = true;
+                        neighborsList2.sort();
+                        tempGraph.insert(neighborPoint2, neighborsList2);
+                        tempPointVector.push_back(neighborPoint2);
+                        count++;
+                    }
                 }
 
             }
         }
         //for every new neighbor vector of points
         for(int p=0;p<count;p++){
-            Vector<neighborList> neighborsV;
+            printf("ok\n");
+            Vector<NeighborList> neighborsV;
             tempGraph.find(tempPointVector.at(p),neighborsV);
             //replace the Point with the new neighbor vector
             this->graph.insert(tempPointVector.at(p), neighborsV);
-            flag = 1;
+            repeatFlag = 1;
         }
+        printf("count: %d\n", count);
     }
-    return flag;
+    return repeatFlag;
 
+}
+
+
+void Optimizations::printGraph() {
+    FILE *file;
+    file = fopen("optimizedGraph.txt", "w");
+    for (int i = 0; i < this->numOfPoints; ++i) {
+        Vector<NeighborList> neighborsListArg;
+        //print graph
+        fprintf(file, "point: %d{\n", i+1);
+        for (int j = 0; j < this->K; j++) {
+            this->graph.find(this->points.at(i), neighborsListArg);
+            char buffer[100]; // Adjust the buffer size as needed
+            int neighborId = neighborsListArg.at(j).neighbor.getId();
+            float neighborDistance = neighborsListArg.at(j).neighbor.getDistance();
+            fprintf(file,"point: %d", neighborId);
+            fprintf(file," distance: %f\n", neighborDistance);
+//            LOG_INFO(buffer);
+
+        }
+        fprintf(file, "\n}\n");
+    }
+    fclose(file);
 }
 

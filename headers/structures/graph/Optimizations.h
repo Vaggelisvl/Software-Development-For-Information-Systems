@@ -3,24 +3,31 @@
 
 #include "GraphInitialization.h"
 
-typedef struct neighborList{
+typedef struct NeighborList{
     Neighbors neighbor;
     bool flag;
-//    neighborList(Neighbors, bool);
-    bool operator<(const neighborList& other) const;
+    bool operator<(const NeighborList& other) const;
     //    bool operator>(const Neighbors& other) const;
-    bool operator==(const neighborList& other) const ;
-}neighborList;
+    bool operator==(const NeighborList& other) const ;
+}NeighborList;
+
+typedef struct DistanceContents {
+    int id;
+    float dist;
+}DistanceContents;
 
 class Optimizations : public GraphInitialization{
 private:
-    UnorderedMap< Point, Vector<neighborList> > graph;
-    int checkDuplicate(Vector<neighborList>, Vector<neighborList>, int, int);
-    int checkRandomNum(Vector<neighborList>,int,int);
-
+    UnorderedMap< Point, Vector<NeighborList> > graph;
+    int checkDuplicate(Vector<NeighborList>, Vector<NeighborList>, int, int);
+    int checkRandomNum(Vector<NeighborList>,int,int);
+    int hashingDuplicateDistances(const Point&, const Point&);
+    UnorderedMap<Point, DistanceContents > hashMap;
 public:
     int localJoin();
     void setKRandomNeighbors() override;
+    int incrementalSearch(NeighborList, NeighborList);
+    void printGraph() override;
 };
 
 
