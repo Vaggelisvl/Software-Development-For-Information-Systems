@@ -32,7 +32,9 @@ private:
     int hashingDuplicateDistances(Point&, Point&);
     UnorderedMap<Point, DistanceContents > hashMap;
     int counter = 0;
+    float d;
 public:
+    void setd(float);
     UnorderedMap<Point, Vector<Neighbors> > localJoin(int,int&,Vector<Point>&);
     int KNN();
     void initFlags();

@@ -15,6 +15,10 @@ bool incrementalSearchContents::operator==(const incrementalSearchContents &othe
     return id == other.id;
 }
 
+void Optimizations::setd(float d) {
+    this->d = d;
+}
+
 int Optimizations::checkDuplicate(Neighbors point1, Neighbors point2, Vector<Neighbors> neighborsList1, Vector<Neighbors> neighborsList2){
     if(point1.getId() == point2.getId()){
         return 1;
@@ -252,14 +256,20 @@ int Optimizations::KNN() {
         int count = 0;
         Vector<Point> tempPointVector;
         UnorderedMap<Point, Vector<Neighbors> > tempGraph = localJoin(i,count,tempPointVector);
+
+
         //for every new neighbor vector of points
         for(int p=0;p<count;p++){
             Vector<Neighbors> neighborsV;
             tempGraph.find(tempPointVector.at(p),neighborsV);
             //replace the Point with the new neighbor vector
             this->graph.insert(tempPointVector.at(p), neighborsV);
-//            initFlags();
             repeatFlag = 1;
+        }
+        //early termination
+        if(count < static_cast<int>(d * this->K)){
+            printf("Early termination\n");
+            return 0;
         }
     }
     return repeatFlag;

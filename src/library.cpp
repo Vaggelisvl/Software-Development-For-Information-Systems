@@ -47,10 +47,6 @@ int main(int argc, char *argv[]) {
     g.setKRandomNeighbors();
     Statistics* statistics=new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
     statistics->calculateAllDistances(metrics);
-//    g.sortKNeighbors();
-//    while(!g.KNNAlgorithm());
-//    g.printNeighbors(queryId);
-//    g.printGraph();
 
     //if query out of the graph
     if(queryId == dataset.getNumOfPoints() + 1){
@@ -94,6 +90,7 @@ int main(int argc, char *argv[]) {
     op.setK(K);
     op.setMetrics(metrics);
     op.setDimensions(dataset.getDimensions());
+    op.setd(0.1);
     op.setKRandomNeighbors();
     op.initFlags();
     Statistics* statistics2 = new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
