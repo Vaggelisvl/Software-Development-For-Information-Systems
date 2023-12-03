@@ -17,7 +17,6 @@
 class GraphInitialization{
 private:
     Vector<float> pointsMaxDistance;
-    UnorderedMap< Point, Vector<Neighbors> > graph;
     int checkRandomNum(Vector<Neighbors>,int,int);
 protected:
     int numOfPoints;
@@ -25,6 +24,7 @@ protected:
     Vector<Point> points;
     int dimensions;
     char* metrics;
+    UnorderedMap< Point, Vector<Neighbors> > graph;
 public:
     GraphInitialization();
 //    ~GraphInitialization();

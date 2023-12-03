@@ -52,7 +52,7 @@ int GraphInitialization::checkRandomNum(Vector<Neighbors> neighborsVector, int r
 
 void GraphInitialization::printGraph() {
     FILE *file;
-    file = fopen("graph.txt", "w");
+    file = fopen("fdgfd.txt", "w");
     for (int i = 0; i < this->numOfPoints; ++i) {
         Vector<Neighbors> neighborsVector;
         //print graph

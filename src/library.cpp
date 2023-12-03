@@ -36,52 +36,52 @@ int main(int argc, char *argv[]) {
     dataset.readVectorFromFile(elements);
 
     //initialize graph, put points, set K, initialize random k neighbors...
-    GraphInitialization g;
-    for(int i=0;i<dataset.getNumOfPoints();i++){
-        g.putPoints(elements.at(i).getCoordinates());
-    }
-
-    g.setK(K);
-    g.setMetrics(metrics);
-    g.setDimensions(dataset.getDimensions());
-    g.setKRandomNeighbors();
-    Statistics* statistics=new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
-    statistics->calculateAllDistances(metrics);
-//    g.sortKNeighbors();
-//    while(!g.KNNAlgorithm());
-//    g.printNeighbors(queryId);
-//    g.printGraph();
-
-    //if query out of the graph
-    if(queryId == dataset.getNumOfPoints() + 1){
-        srand(static_cast<unsigned>(time(NULL)));
-        Vector<float> queryVector;
-        //generate random coordinates
-        for (int i = 0; i < dataset.getDimensions(); i++) {
-//          in space [-1.0-1.0]
-            float randomFloat = -1.0 + 2.0 * ((float)rand() / (float)RAND_MAX);
-            queryVector.push_back(randomFloat);
-        }
-        Point queryPoint(queryId,queryVector);
-        g.findKNearestNeighborsForPoint(queryPoint);
-//        g.calculateAllDistances();
-
-    }
-    else{
-//        g.sortKNeighbors();
-        while(!g.KNNAlgorithm());
-        g.printNeighbors(queryId);
-        g.printGraph();
-    }
-
-
-    statistics->calculateStatistics(K,&g);
-    if(numOfPoints>20)
-        statistics->printStatistics(K);
-    else
-        statistics->printInMatrixForm(K);
-
-    statistics->printTotalPercentage(K);
+//    GraphInitialization g;
+//    for(int i=0;i<dataset.getNumOfPoints();i++){
+//        g.putPoints(elements.at(i).getCoordinates());
+//    }
+//
+//    g.setK(K);
+//    g.setMetrics(metrics);
+//    g.setDimensions(dataset.getDimensions());
+//    g.setKRandomNeighbors();
+//    Statistics* statistics=new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
+//    statistics->calculateAllDistances(metrics);
+////    g.sortKNeighbors();
+////    while(!g.KNNAlgorithm());
+////    g.printNeighbors(queryId);
+////    g.printGraph();
+//
+//    //if query out of the graph
+//    if(queryId == dataset.getNumOfPoints() + 1){
+//        srand(static_cast<unsigned>(time(NULL)));
+//        Vector<float> queryVector;
+//        //generate random coordinates
+//        for (int i = 0; i < dataset.getDimensions(); i++) {
+////          in space [-1.0-1.0]
+//            float randomFloat = -1.0 + 2.0 * ((float)rand() / (float)RAND_MAX);
+//            queryVector.push_back(randomFloat);
+//        }
+//        Point queryPoint(queryId,queryVector);
+//        g.findKNearestNeighborsForPoint(queryPoint);
+////        g.calculateAllDistances();
+//
+//    }
+//    else{
+////        g.sortKNeighbors();
+//        while(!g.KNNAlgorithm());
+//        g.printNeighbors(queryId);
+//        g.printGraph();
+//    }
+//
+//
+//    statistics->calculateStatistics(K,&g);
+//    if(numOfPoints>20)
+//        statistics->printStatistics(K);
+//    else
+//        statistics->printInMatrixForm(K);
+//
+//    statistics->printTotalPercentage(K);
 
 
     //for project 2
@@ -95,6 +95,7 @@ int main(int argc, char *argv[]) {
     op.setMetrics(metrics);
     op.setDimensions(dataset.getDimensions());
     op.setKRandomNeighbors();
+    op.initFlags();
 //    Statistics* statistics2 = new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
 //    statistics2->calculateAllDistances(metrics);
 //    op.sortKNeighbors();
@@ -114,8 +115,9 @@ int main(int argc, char *argv[]) {
 
     }
     else{
-        op.printGraph();
+        op.sortKNeighbors();
         while(op.localJoin());
+        op.printGraph();
 //        op.printNeighbors(queryId);
     }
     op.printdup();
