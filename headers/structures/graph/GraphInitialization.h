@@ -17,7 +17,6 @@
 class GraphInitialization{
 private:
     Vector<float> pointsMaxDistance;
-    UnorderedMap< Point, Vector<Neighbors> > graph;
     int checkRandomNum(Vector<Neighbors>,int,int);
 protected:
     int numOfPoints;
@@ -25,10 +24,11 @@ protected:
     Vector<Point> points;
     int dimensions;
     char* metrics;
+    UnorderedMap< Point, Vector<Neighbors> > graph;
 public:
     GraphInitialization();
-    ~GraphInitialization();
-    virtual void printGraph();
+//    ~GraphInitialization();
+    virtual void printGraph(char*);
     void printNeighbors(int id);
     void putPoints(Vector<float> coordinates);
     void setDimensions(int num);
@@ -45,7 +45,7 @@ public:
     virtual void setKRandomNeighbors();
     void sortKNeighbors();
     int KNNAlgorithm();
-    void findKNearestNeighborsForPoint(const Point& queryPoint);
+    virtual void findKNearestNeighborsForPoint(const Point& queryPoint);
     UnorderedMap< Point, Vector<Neighbors> > getGraph();
     Point getPoint(int id);
 };
