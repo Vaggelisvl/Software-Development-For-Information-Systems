@@ -50,9 +50,9 @@ int GraphInitialization::checkRandomNum(Vector<Neighbors> neighborsVector, int r
     return !flag;
 }
 
-void GraphInitialization::printGraph() {
+void GraphInitialization::printGraph(char* outputFile) {
     FILE *file;
-    file = fopen("graph.txt", "w");
+    file = fopen(outputFile, "w");
     for (int i = 0; i < this->numOfPoints; ++i) {
         Vector<Neighbors> neighborsVector;
         //print graph
@@ -308,7 +308,7 @@ void GraphInitialization::findKNearestNeighborsForPoint(const Point &queryPoint)
     this->numOfPoints++;
 
 //    sortKNeighbors();
-    printGraph();
+    printGraph("graph.txt");
     while (!KNNAlgorithm());
     calculateAllDistances();
 //    sortKNeighbors();

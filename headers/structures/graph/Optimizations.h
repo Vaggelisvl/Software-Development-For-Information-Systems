@@ -19,6 +19,7 @@ typedef struct DistanceContents {
 typedef struct incrementalSearchContents{
     bool flag;
     int id;
+    bool operator==(const incrementalSearchContents& other) const ;
 //    float dist;
 }incrementalSearchContents;
 
@@ -32,15 +33,18 @@ private:
     UnorderedMap<Point, DistanceContents > hashMap;
     int counter = 0;
 public:
-    int localJoin();
+    UnorderedMap<Point, Vector<Neighbors> > localJoin(int,int&,Vector<Point>&);
+    int KNN();
     void initFlags();
     void changeFlag(int, bool, int);
     void newParticipation(int, int);
+    void removeParticipation(int, int);
 //    void setKRandomNeighbors() override;
     int incrementalSearch(int,int,int);
     void findKNearestNeighborsForPoint(const Point& queryPoint) override;
 //    void printGraph() override;
     void printdup();
+    void printParticipation(int);
 };
 
 

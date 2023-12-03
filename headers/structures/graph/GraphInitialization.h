@@ -28,7 +28,7 @@ protected:
 public:
     GraphInitialization();
 //    ~GraphInitialization();
-    virtual void printGraph();
+    virtual void printGraph(char*);
     void printNeighbors(int id);
     void putPoints(Vector<float> coordinates);
     void setDimensions(int num);
