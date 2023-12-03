@@ -45,7 +45,7 @@ public:
     virtual void setKRandomNeighbors();
     void sortKNeighbors();
     int KNNAlgorithm();
-    void findKNearestNeighborsForPoint(const Point& queryPoint);
+    virtual void findKNearestNeighborsForPoint(const Point& queryPoint);
     UnorderedMap< Point, Vector<Neighbors> > getGraph();
     Point getPoint(int id);
 };

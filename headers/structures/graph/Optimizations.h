@@ -38,6 +38,7 @@ public:
     void newParticipation(int, int);
 //    void setKRandomNeighbors() override;
     int incrementalSearch(int,int,int);
+    void findKNearestNeighborsForPoint(const Point& queryPoint) override;
 //    void printGraph() override;
     void printdup();
 };

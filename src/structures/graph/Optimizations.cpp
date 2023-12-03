@@ -111,6 +111,18 @@ void Optimizations::newParticipation(int pointId, int localJoinPointId){
     this->incrementalSearchMap.insert(this->points.at(pointId-1), localJoinParticipationVector);
 }
 
+//void Optimizations::removeParticipation(int pointId, int localJoinPointId){
+//    Vector<incrementalSearchContents> localJoinParticipationVector;
+//    this->incrementalSearchMap.find(this->points.at(pointId-1), localJoinParticipationVector);
+//    int size = localJoinParticipationVector.getSize();
+//    for(int i=0;i<size;i++){
+//        if(localJoinParticipationVector.at(i).id == localJoinPointId){
+//            localJoinParticipationVector.remove(localJoinParticipationVector.at(i));
+//            break;
+//        }
+//        this->incrementalSearchMap.insert(this->points.at(pointId-1), localJoinParticipationVector);
+//}
+
 int Optimizations::localJoin() {
     printf("again\n");
     int repeatFlag = 0;
@@ -154,7 +166,7 @@ int Optimizations::localJoin() {
                 }
 
                 //if neighbor1 or neighbor2 is new in the local join
-//                if(incrementalSearch(currentNeighborsList.at(j), currentNeighborsList.at(k))) {
+                if(incrementalSearch(currentNeighborsList.at(j).getId(), currentNeighborsList.at(k).getId(),currentPoint.getId())){
 //                    printf("ok\n");
 
                     //neighbor1 and neighbor2 participate in the local join
@@ -212,7 +224,7 @@ int Optimizations::localJoin() {
                         tempPointVector.push_back(neighborPoint2);
                         count++;
                     }
-//                }
+                }
 
             }
         }
@@ -228,6 +240,60 @@ int Optimizations::localJoin() {
     return repeatFlag;
 
 }
+
+//void Optimizations::findKNearestNeighborsForPoint(const Point &queryPoint) {
+//    srand(time(nullptr));
+//    Vector<Neighbors> uniqueNumbers;
+//    int randomNumber;
+//    int flag;
+//    //generate K random neighbors for query point
+//    for (int i = 0; i < this->K; i++) {
+//        flag = 1;
+//        while (flag) {
+//            flag = 0;
+//            randomNumber = (rand() % this->numOfPoints) + 1;
+//            for (int j = 0; j < i; j++) {
+//                if (uniqueNumbers.at(j).getId() == randomNumber) {
+//                    flag = 1;
+//                    break;
+//                }
+//            }
+//        }
+//
+//        //convert point to neighbor
+//        Point neighborPoint = this->points.at(randomNumber - 1);
+//        float dist;
+//        if(strcmp(this->metrics, "manhattan") == 0) {
+//            dist = Metrics::manhattanDistance(neighborPoint.getCoordinates(), queryPoint.getCoordinates(),
+//                                              this->dimensions);
+//        }
+//        else{
+//            dist = Metrics::euclideanDistance(neighborPoint.getCoordinates(), queryPoint.getCoordinates(),
+//                                              this->dimensions);
+//        }
+//
+//        Neighbors neighbor(neighborPoint.getId(), dist, neighborPoint.getCoordinates());
+//
+//        uniqueNumbers.push_back(neighbor);
+//        changeFlag(neighborPoint.getId(),true,queryPoint.getId());
+//    }
+//    //insert query point to the graph
+//    this->graph.insert(queryPoint, uniqueNumbers);
+//    this->points.push_back(queryPoint);
+//    this->numOfPoints++;
+//
+////    sortKNeighbors();
+//    printGraph();
+//    while (!KNNAlgorithm());
+//    calculateAllDistances();
+////    sortKNeighbors();
+//
+//    //remove query point from the graph
+//    printNeighbors(queryPoint.getId());
+//    this->graph.remove(queryPoint);
+//    this->points.remove(queryPoint);
+//    this->numOfPoints--;
+//}
 
 void Optimizations::printdup(){
     printf("this->hashMap.getSize()=%d\n",this->counter);

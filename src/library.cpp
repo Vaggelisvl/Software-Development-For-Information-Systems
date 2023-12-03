@@ -96,9 +96,9 @@ int main(int argc, char *argv[]) {
     op.setDimensions(dataset.getDimensions());
     op.setKRandomNeighbors();
     op.initFlags();
-//    Statistics* statistics2 = new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
-//    statistics2->calculateAllDistances(metrics);
-//    op.sortKNeighbors();
+    Statistics* statistics2 = new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
+    statistics2->calculateAllDistances(metrics);
+    op.sortKNeighbors();
 
     //if query out of the graph
     if(queryId == dataset.getNumOfPoints() + 1){
@@ -118,17 +118,17 @@ int main(int argc, char *argv[]) {
         op.sortKNeighbors();
         while(op.localJoin());
         op.printGraph();
-//        op.printNeighbors(queryId);
+        op.printNeighbors(queryId);
     }
     op.printdup();
 
 
-//    statistics2->calculateStatistics(K,&op);
-//    if(numOfPoints>20)
-//        statistics2->printStatistics(K);
-//    else
-//        statistics2->printInMatrixForm(K);
-//
-//    statistics2->printTotalPercentage(K);
+    statistics2->calculateStatistics(K,&op);
+    if(numOfPoints>20)
+        statistics2->printStatistics(K);
+    else
+        statistics2->printInMatrixForm(K);
+
+    statistics2->printTotalPercentage(K);
 
 }
