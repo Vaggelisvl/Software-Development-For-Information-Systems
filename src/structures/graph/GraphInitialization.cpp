@@ -50,9 +50,9 @@ int GraphInitialization::checkRandomNum(Vector<Neighbors> neighborsVector, int r
     return !flag;
 }
 
-void GraphInitialization::printGraph() {
+void GraphInitialization::printGraph(char* outputFile) {
     FILE *file;
-    file = fopen("graph.txt", "w");
+    file = fopen(outputFile, "w");
     for (int i = 0; i < this->numOfPoints; ++i) {
         Vector<Neighbors> neighborsVector;
         //print graph
@@ -180,7 +180,7 @@ void GraphInitialization::sortKNeighbors() {
 
 int GraphInitialization::KNNAlgorithm() {
     int flag = 0;
-
+    printf("again\n");
     //for every point in the graph
     for (int i = 0; i < this->numOfPoints; i++) {
 
@@ -307,11 +307,11 @@ void GraphInitialization::findKNearestNeighborsForPoint(const Point &queryPoint)
     this->points.push_back(queryPoint);
     this->numOfPoints++;
 
-    sortKNeighbors();
-    printGraph();
+//    sortKNeighbors();
+    printGraph("graph.txt");
     while (!KNNAlgorithm());
     calculateAllDistances();
-    sortKNeighbors();
+//    sortKNeighbors();
 
     //remove query point from the graph
     printNeighbors(queryPoint.getId());
@@ -397,6 +397,13 @@ void GraphInitialization::calculateAllDistances() {
     }
     fclose(file);
 }
+
+//GraphInitialization::~GraphInitialization() {
+//    for(int i=0;i<this->numOfPoints;i++){
+//        this->points.remove(this->points.at(i));
+//    }
+//    this->numOfPoints = 0;
+//}
 
 
 

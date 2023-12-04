@@ -22,30 +22,32 @@ protected:
     int numOfPoints;
     int K;
     Vector<Point> points;
-    UnorderedMap< Point, Vector<Neighbors> > graph;
     int dimensions;
     char* metrics;
+    UnorderedMap< Point, Vector<Neighbors> > graph;
 public:
-    void printGraph();
-    void printNeighbors(int id);
     GraphInitialization();
+//    ~GraphInitialization();
+    virtual void printGraph(char*);
+    void printNeighbors(int id);
     void putPoints(Vector<float> coordinates);
     void setDimensions(int num);
-//    int getNumOfPoints();
     void setMetrics(char*);
+
     // for testing purposes
+    int getNumOfPoints();
     int getK();
     Vector<Point> getPoints();
     Vector<Neighbors> getNeighborsOfPoint(Point point);
     void setK(int);
     //end of testing purposes
     void calculateAllDistances();
-    void setKRandomNeighbors();
+    virtual void setKRandomNeighbors();
     void sortKNeighbors();
     int KNNAlgorithm();
-    void findKNearestNeighborsForPoint(const Point& queryPoint);
+    virtual void findKNearestNeighborsForPoint(const Point& queryPoint);
     UnorderedMap< Point, Vector<Neighbors> > getGraph();
-//    Point getPoint(int id);
+    Point getPoint(int id);
 };
 
 

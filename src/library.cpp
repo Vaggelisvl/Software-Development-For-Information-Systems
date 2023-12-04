@@ -50,10 +50,6 @@ int main(int argc, char *argv[]) {
     g.setKRandomNeighbors();
     Statistics* statistics=new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
     statistics->calculateAllDistances(metrics);
-    g.sortKNeighbors();
-//    while(!g.KNNAlgorithm());
-//    g.printNeighbors(queryId);
-//    g.printGraph();
 
     //if query out of the graph
     if(queryId == dataset.getNumOfPoints() + 1){
@@ -74,7 +70,7 @@ int main(int argc, char *argv[]) {
         g.sortKNeighbors();
         while(!g.KNNAlgorithm());
         g.printNeighbors(queryId);
-        g.printGraph();
+        g.printGraph("graph.txt");
     }
 
 
@@ -97,7 +93,9 @@ int main(int argc, char *argv[]) {
     op.setK(K);
     op.setMetrics(metrics);
     op.setDimensions(dataset.getDimensions());
+    op.setd(0.1);
     op.setKRandomNeighbors();
+    op.initFlags();
     Statistics* statistics2 = new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
     statistics2->calculateAllDistances(metrics);
     op.sortKNeighbors();
@@ -118,18 +116,20 @@ int main(int argc, char *argv[]) {
     }
     else{
         op.sortKNeighbors();
-        while(op.localJoin());
+        while(op.KNN());
         op.printNeighbors(queryId);
-        op.printGraph();
+//        op.printParticipation(queryId);
     }
+    op.printGraph("optimizedGraph.txt");
+//    op.printdup();
 
 
-    statistics->calculateStatistics(K,&op);
+    statistics2->calculateStatistics(K,&op);
     if(numOfPoints>20)
-        statistics->printStatistics(K);
+        statistics2->printStatistics(K);
     else
-        statistics->printInMatrixForm(K);
+        statistics2->printInMatrixForm(K);
 
-    statistics->printTotalPercentage(K);
+    statistics2->printTotalPercentage(K);
 
 }
