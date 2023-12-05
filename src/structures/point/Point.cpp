@@ -21,6 +21,15 @@ Vector<float> Point::getCoordinates() const {
     return this->coordinates;
 }
 
+bool Point::getIsSampled() const{
+    return this->isSampled;
+}
+
+void Point::setIsSampled(bool isSampled)
+{
+    this->isSampled = isSampled;
+}
+
 void Point::setCoordinates(Vector<float> coordinates) {
     this->coordinates = coordinates;
 }
@@ -28,6 +37,7 @@ void Point::setCoordinates(Vector<float> coordinates) {
 void Point::setId(int id) {
     this->id = id;
 }
+
 
 Point::Point(Point const &point) {
     this->id = point.getId();

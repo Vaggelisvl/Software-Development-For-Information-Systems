@@ -39,6 +39,7 @@ public:
     int getK();
     Vector<Point> getPoints();
     Vector<Neighbors> getNeighborsOfPoint(Point point);
+
     void setK(int);
     //end of testing purposes
     void calculateAllDistances();

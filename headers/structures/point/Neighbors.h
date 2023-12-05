@@ -9,6 +9,7 @@ private:
     float distance;
 public:
     Neighbors(int id, float distance, Vector<float> coordinates);
+    Neighbors(const Neighbors& other) : Point(other), distance(other.distance) {};
     Neighbors();
     int getId() const;
     float getDistance() const;
