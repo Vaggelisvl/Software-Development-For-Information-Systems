@@ -32,10 +32,10 @@ private:
     int hashingDuplicateDistances(Point&, Point&);
     UnorderedMap<Point, DistanceContents > hashMap;
     int counter = 0;
-    float d;
+    void tmpPrint(UnorderedMap<Point, Vector<Neighbors> >);
 public:
-    void setd(float);
     UnorderedMap<Point, Vector<Neighbors> > localJoin(int,int&,Vector<Point>&);
+    void setGraph(UnorderedMap<Point, Vector<Neighbors> >);
     int KNN();
     void initFlags();
     void changeFlag(int, bool, int);
@@ -44,9 +44,13 @@ public:
 //    void setKRandomNeighbors() override;
     int incrementalSearch(int,int,int);
     void findKNearestNeighborsForPoint(const Point& queryPoint) override;
+    UnorderedMap<Point,Vector<Neighbors>>  updateGraph( Vector<Vector<Neighbors>>& updates);
+    Vector<Vector<Neighbors>> computeUpdates();
+    Vector<Vector<Neighbors>> fillNeighborsUpdatesDefault();
 //    void printGraph() override;
     void printdup();
     void printParticipation(int);
+    void samplingAndReverseJoin();
 };
 
 

@@ -7,6 +7,7 @@ void GraphInitialization::putPoints(Vector<float> coordinates) {
     Point currentPoint;
     currentPoint.setId(++this->numOfPoints);
     currentPoint.setCoordinates(coordinates);
+    currentPoint.setIsSampled(true);
 
     this->points.push_back(currentPoint);
     Vector<Neighbors> neighborsVector;
@@ -180,7 +181,7 @@ void GraphInitialization::sortKNeighbors() {
 
 int GraphInitialization::KNNAlgorithm() {
     int flag = 0;
-    printf("again\n");
+
     //for every point in the graph
     for (int i = 0; i < this->numOfPoints; i++) {
 
@@ -308,7 +309,7 @@ void GraphInitialization::findKNearestNeighborsForPoint(const Point &queryPoint)
     this->numOfPoints++;
 
 //    sortKNeighbors();
-    printGraph("graph.txt");
+    // printGraph();
     while (!KNNAlgorithm());
     calculateAllDistances();
 //    sortKNeighbors();
@@ -397,13 +398,13 @@ void GraphInitialization::calculateAllDistances() {
     }
     fclose(file);
 }
-
-//GraphInitialization::~GraphInitialization() {
-//    for(int i=0;i<this->numOfPoints;i++){
-//        this->points.remove(this->points.at(i));
-//    }
-//    this->numOfPoints = 0;
-//}
+//
+// GraphInitialization::~GraphInitialization() {
+//     for(int i=0;i<this->numOfPoints;i++){
+//         this->points.remove(this->points.at(i));
+//     }
+//     this->numOfPoints = 0;
+// }
 
 
 

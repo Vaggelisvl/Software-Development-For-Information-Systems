@@ -7,7 +7,7 @@ template <typename T>
 class Vector {
 public:
     Vector<T>();
-
+    Vector(const Vector<T>& other) ;
 
     void push_back(const T& value);
 
@@ -199,6 +199,15 @@ void Vector<T>::remove(const T& value) {
         }
 
         size--; // Decrement the size to reflect the removal.
+    }
+}
+template <typename T>
+Vector<T>::Vector(const Vector<T>& other) : size(other.size), capacity(other.capacity) {
+    array = new T[capacity];
+
+    // Copy the elements from the other vector to the new vector
+    for (int i = 0; i < size; i++) {
+        array[i] = other.array[i];
     }
 }
 
