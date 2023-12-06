@@ -25,28 +25,18 @@ typedef struct incrementalSearchContents{
 
 class Optimizations : public GraphInitialization{
 private:
-//    UnorderedMap< Point, Vector<Neighbors> > graph;
     UnorderedMap<Point, Vector<incrementalSearchContents> > incrementalSearchMap;
     int checkDuplicate(Neighbors,Neighbors,Vector<Neighbors>, Vector<Neighbors>);
-    int checkRandomNum(Vector<Neighbors>,int,int);
     int hashingDuplicateDistances(Point&, Point&);
     UnorderedMap<Point, DistanceContents > hashMap;
-    int counter = 0;
     float d;
 public:
     void setd(float);
     UnorderedMap<Point, Vector<Neighbors> > localJoin(int,int&,Vector<Point>&);
     int KNN();
     void initFlags();
-    void changeFlag(int, bool, int);
-    void newParticipation(int, int);
-    void removeParticipation(int, int);
-//    void setKRandomNeighbors() override;
-    int incrementalSearch(int,int,int);
+    int incrementalSearch(bool,bool);
     void findKNearestNeighborsForPoint(const Point& queryPoint) override;
-//    void printGraph() override;
-    void printdup();
-    void printParticipation(int);
 };
 
 

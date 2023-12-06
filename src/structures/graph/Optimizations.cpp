@@ -36,28 +36,28 @@ int Optimizations::checkDuplicate(Neighbors point1, Neighbors point2, Vector<Nei
     return 0;
 }
 
-int Optimizations::incrementalSearch(int pointId1, int pointId2, int currentPointId) {
-    bool flag1;
-    bool flag2;
-    //find flag from point1 int the current local join
-    Vector<incrementalSearchContents> localJoinParticipationVector;
-    this->incrementalSearchMap.find(this->points.at(pointId1-1), localJoinParticipationVector);
-    int size = localJoinParticipationVector.getSize();
-    for(int i=0;i<size;i++){
-        if(localJoinParticipationVector.at(i).id == currentPointId){
-            flag1 = localJoinParticipationVector.at(i).flag;
-            break;
-        }
-    }
-    //find flag from point2 in the current local join
-    this->incrementalSearchMap.find(this->points.at(pointId2-1), localJoinParticipationVector);
-    size = localJoinParticipationVector.getSize();
-    for(int i=0;i<size;i++){
-        if(localJoinParticipationVector.at(i).id == currentPointId){
-            flag2 = localJoinParticipationVector.at(i).flag;
-            break;
-        }
-    }
+int Optimizations::incrementalSearch(bool flag1, bool flag2) {
+//    bool flag1;
+//    bool flag2;
+//    //find flag from point1 int the current local join
+//    Vector<incrementalSearchContents> localJoinParticipationVector;
+//    this->incrementalSearchMap.find(this->points.at(pointId1-1), localJoinParticipationVector);
+//    int size = localJoinParticipationVector.getSize();
+//    for(int i=0;i<size;i++){
+//        if(localJoinParticipationVector.at(i).id == currentPointId){
+//            flag1 = localJoinParticipationVector.at(i).flag;
+//            break;
+//        }
+//    }
+//    //find flag from point2 in the current local join
+//    this->incrementalSearchMap.find(this->points.at(pointId2-1), localJoinParticipationVector);
+//    size = localJoinParticipationVector.getSize();
+//    for(int i=0;i<size;i++){
+//        if(localJoinParticipationVector.at(i).id == currentPointId){
+//            flag2 = localJoinParticipationVector.at(i).flag;
+//            break;
+//        }
+//    }
     if(flag1 || flag2){
         return 1;
     }
@@ -91,58 +91,16 @@ void Optimizations::initFlags() {
         this->graph.find(this->points.at(i),neighborsV);
         for(int v=0;v<neighborsV.getSize();v++){
             //for every neighbor change the flag
-            changeFlag(neighborsV.at(v).getId(),true,this->points.at(i).getId());
+
+            neighborsV.at(v).setFlag(true);
+//            changeFlag(neighborsV.at(v).getId(),true,this->points.at(i).getId());
 
         }
     }
-}
-
-void Optimizations::changeFlag(int pointId, bool flag, int localJoinPointId){
-    Vector<incrementalSearchContents> localJoinParticipationVector;
-    this->incrementalSearchMap.find(this->points.at(pointId-1), localJoinParticipationVector);
-    int size = localJoinParticipationVector.getSize();
-    int exist = 0;
-    for(int i=0;i<size;i++){
-        if(localJoinParticipationVector.at(i).id == localJoinPointId){
-            localJoinParticipationVector.at(i).flag = flag;
-            localJoinParticipationVector.push_back(localJoinParticipationVector.at(i));
-            exist = 1;
-            break;
-        }
-    }
-    if(!exist){
-        incrementalSearchContents newPoint;
-        newPoint.id = localJoinPointId;
-        newPoint.flag = flag;
-        localJoinParticipationVector.push_back(newPoint);
-    }
-    this->incrementalSearchMap.insert(this->points.at(pointId-1), localJoinParticipationVector);
-}
-
-void Optimizations::newParticipation(int pointId, int localJoinPointId){
-    Vector<incrementalSearchContents> localJoinParticipationVector;
-    this->incrementalSearchMap.find(this->points.at(pointId-1), localJoinParticipationVector);
-    incrementalSearchContents newParticipation;
-    newParticipation.id = localJoinPointId;
-    newParticipation.flag = false;
-    localJoinParticipationVector.push_back(newParticipation);
-    this->incrementalSearchMap.insert(this->points.at(pointId-1), localJoinParticipationVector);
-}
-
-void Optimizations::removeParticipation(int pointId, int localJoinPointId){
-    Vector<incrementalSearchContents> localJoinParticipationVector;
-    this->incrementalSearchMap.find(this->points.at(pointId-1), localJoinParticipationVector);
-    int size = localJoinParticipationVector.getSize();
-    for(int i=0;i<size;i++){
-        if(localJoinParticipationVector.at(i).id == localJoinPointId) {
-            localJoinParticipationVector.remove( localJoinParticipationVector.at(i));
-            break;
-        }
-    }
-    this->incrementalSearchMap.insert(this->points.at(pointId-1), localJoinParticipationVector);
 }
 
 UnorderedMap<Point, Vector<Neighbors> > Optimizations::localJoin(int i,int& count,Vector<Point>& tempPointVector){
+    //save the changes temporary
     UnorderedMap<Point, Vector<Neighbors> > tempGraph;
 
 
@@ -162,15 +120,14 @@ UnorderedMap<Point, Vector<Neighbors> > Optimizations::localJoin(int i,int& coun
 
         //for every second neighbor of the current point
         for (int k = 0; k < this->K; k++) {
-            //find max distance of neighbors
-            neighborsList1.sort();
-            float maxDistance1 = neighborsList1.at(this->K - 1).getDistance();
-
             Point neighborPoint2 = this->points.at(currentNeighborsList.at(k).getId() - 1);
             Vector<Neighbors> neighborsList2;
             this->graph.find(neighborPoint2, neighborsList2);
 
             //find max distance of neighbors
+            neighborsList1.sort();
+            float maxDistance1 = neighborsList1.at(this->K - 1).getDistance();
+
             neighborsList2.sort();
             float maxDistance2 = neighborsList2.at(this->K - 1).getDistance();
 
@@ -179,12 +136,8 @@ UnorderedMap<Point, Vector<Neighbors> > Optimizations::localJoin(int i,int& coun
             }
 
             //if neighbor1 or neighbor2 is new in the local join
-            if(incrementalSearch(currentNeighborsList.at(j).getId(), currentNeighborsList.at(k).getId(),currentPoint.getId())){
-
-//            //neighbor1 and neighbor2 participate in the local join
-//            changeFlag(currentNeighborsList.at(j).getId(), false, currentPoint.getId());
-//            changeFlag(currentNeighborsList.at(k).getId(), false, currentPoint.getId());
-
+            if(incrementalSearch(currentNeighborsList.at(j).getFlag(), currentNeighborsList.at(k).getFlag())){
+                //calculate distance between neighbor1 and neighbor2
                 float dist;
                 int hashNum = hashingDuplicateDistances(neighborPoint1, neighborPoint2);
                 if (hashNum == 0) {
@@ -211,16 +164,13 @@ UnorderedMap<Point, Vector<Neighbors> > Optimizations::localJoin(int i,int& coun
                     this->hashMap.find(hashPoint, content);
                     dist = content.dist;
                 }
-                this->counter++;
 
                 //put neighbor point 2 to point 1
                 if (dist < maxDistance1) {
                     //and remove max neighbor of point1
-//                    removeParticipation(neighborsList1.at(this->K - 1).getId(), neighborPoint1.getId());
-
                     Neighbors tempNeighbor(neighborPoint2.getId(), dist, neighborPoint2.getCoordinates());
+                    tempNeighbor.setFlag(false);
                     neighborsList1.at(this->K - 1) = tempNeighbor;
-                    changeFlag(neighborPoint2.getId(),false,neighborPoint1.getId());
                     neighborsList1.sort();
                     tempGraph.insert(neighborPoint1, neighborsList1);
                     tempPointVector.push_back(neighborPoint1);
@@ -229,11 +179,9 @@ UnorderedMap<Point, Vector<Neighbors> > Optimizations::localJoin(int i,int& coun
                 //put neighbor point 1 to point 2
                 if (dist < maxDistance2) {
                     //and remove max neighbor of point2
-//                    removeParticipation(neighborsList2.at(this->K - 1).getId(), neighborPoint2.getId());
-
                     Neighbors tempNeighbor(neighborPoint1.getId(), dist, neighborPoint1.getCoordinates());
+                    tempNeighbor.setFlag(false);
                     neighborsList2.at(this->K - 1) = tempNeighbor;
-                    changeFlag(neighborPoint1.getId(),false,neighborPoint2.getId());
                     neighborsList2.sort();
                     tempGraph.insert(neighborPoint2, neighborsList2);
                     tempPointVector.push_back(neighborPoint2);
@@ -243,7 +191,6 @@ UnorderedMap<Point, Vector<Neighbors> > Optimizations::localJoin(int i,int& coun
 
         }
     }
-//    initFlags();
     return tempGraph;
 }
 
@@ -254,6 +201,7 @@ int Optimizations::KNN() {
     //for every point in the graph
     for (int i = 0; i < this->numOfPoints; i++) {
         int count = 0;
+        //save the points that will be inserted in the graph
         Vector<Point> tempPointVector;
         UnorderedMap<Point, Vector<Neighbors> > tempGraph = localJoin(i,count,tempPointVector);
 
@@ -308,9 +256,8 @@ void Optimizations::findKNearestNeighborsForPoint(const Point &queryPoint) {
         }
 
         Neighbors neighbor(neighborPoint.getId(), dist, neighborPoint.getCoordinates());
-
+        neighbor.setFlag(true);
         uniqueNumbers.push_back(neighbor);
-        changeFlag(neighborPoint.getId(),false,queryPoint.getId());
     }
     //insert query point to the graph
     this->graph.insert(queryPoint, uniqueNumbers);
@@ -318,40 +265,21 @@ void Optimizations::findKNearestNeighborsForPoint(const Point &queryPoint) {
     this->numOfPoints++;
 
     sortKNeighbors();
-//    printGraph("optimizedGraph.txt");
-    initFlags();
     while (!KNN());
-    calculateAllDistances();
-    sortKNeighbors();
+//    sortKNeighbors();
 
-    //remove reverse neighbor of query point
-    Vector<Neighbors> neighborsV;
-    this->graph.find(queryPoint,neighborsV);
-    for(int j=0;j<this->K;j++){
-        removeParticipation(neighborsV.at(j).getId(),queryPoint.getId());
-    }
 
-    //remove query point from the graph
-    printNeighbors(queryPoint.getId());
-    this->graph.remove(queryPoint);
-    this->points.remove(queryPoint);
-    this->numOfPoints--;
+
+//    //remove query point from the graph
+//    printNeighbors(queryPoint.getId());
+//    this->graph.remove(queryPoint);
+//    this->points.remove(queryPoint);
+//    this->numOfPoints--;
 }
 
-void Optimizations::printdup(){
-    printf("this->hashMap.getSize()=%d\n",this->counter);
-}
 
-//void Optimizations::printParticipation(int queryId) {
-////    for(int i=0;i<this->numOfPoints;i++){
-//        Vector<incrementalSearchContents> localJoinParticipationVector;
-//        this->incrementalSearchMap.find(this->points.at(queryId-1), localJoinParticipationVector);
-//        printf("point=%d\n",this->points.at(queryId-1).getId());
-//        for(int j=0;j<localJoinParticipationVector.getSize();j++){
-//            printf("id=%d flag=%d\n",localJoinParticipationVector.at(j).id,localJoinParticipationVector.at(j).flag);
-//        }
-////    }
-//}
+
+
 
 
 
