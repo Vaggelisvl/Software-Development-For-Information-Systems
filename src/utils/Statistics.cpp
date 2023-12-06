@@ -85,6 +85,7 @@ bool Statistics::compareStrings(const char *str1, const char *str2) {
 }
 
 void Statistics::calculateStatistics(int k,GraphInitialization *graph) {
+    bool hasBeenCalculated=false;
     for(int i =0;i<this->numOfPoints;i++){
         if(k>pointInfo[i]->getPointsInserted()){
             k=pointInfo[i]->getPointsInserted();
@@ -97,15 +98,19 @@ void Statistics::calculateStatistics(int k,GraphInitialization *graph) {
             LOG_WARN("K is bigger than the number of neighbors of the point");
         }
         for(int counter=0;counter<k;counter++){
-                if(pointInfo[i]->getNeighborId(counter)==neighborsVector.at(counter).getId()){
+            for(int j=0;j<k;j++){
+                if(pointInfo[i]->getNeighborId(counter)==neighborsVector.at(j).getId()){
                     statisticInfo[i]->increaseRightDecision();
                     statisticInfo[i]->increaseTotal();
+                    hasBeenCalculated=true;
+                    break;
+                }
+            }
+            if(hasBeenCalculated){
+                statisticInfo[i]->increaseWrongDecision();
+                statisticInfo[i]->increaseTotal();
+            }
 
-                }
-                else{
-                    statisticInfo[i]->increaseWrongDecision();
-                    statisticInfo[i]->increaseTotal();
-                }
         }
         statisticInfo[i]->calculatePercentage();
     }

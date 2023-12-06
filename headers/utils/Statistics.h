@@ -17,7 +17,7 @@ private:
     PointInfo **pointInfo;
     Vector<Point> points;
     int numOfPoints;
-    bool compareStrings(const char* str1, const char* str2);
+    static bool compareStrings(const char* str1, const char* str2);
     int dimensions;
     StatisticInfo** statisticInfo;
     StatisticInfo* totalStatisticInfo;
