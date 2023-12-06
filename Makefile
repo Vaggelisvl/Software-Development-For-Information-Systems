@@ -4,6 +4,11 @@ LIBS = -lgtest -lgtest_main -pthread
 INCLUDES = -Iheaders
 SRCDIR = src
 TESTDIR = tests/unit_tests
+TESTFOLDERPOINT = structures/point
+TESTFOLDERGRAPH = structures/graph
+TESTFOLDERMAP= structures/unorderedMap
+TESTFOLDERVECTOR= structures/vector
+TESTFOLDERDATASET = structures/dataset
 OUTDIR = bin
 MKDIR_P = mkdir -p
 SCRIPTS_DIR = scripts
@@ -67,6 +72,11 @@ test: create_outdir $(TESTS)
 
 $(OUTDIR)/%: $(TESTDIR)/%.cpp
 	$(MKDIR_P) $(OUTDIR)
+	$(MKDIR_P) $(OUTDIR)/$(TESTFOLDERPOINT)
+	$(MKDIR_P) $(OUTDIR)/$(TESTFOLDERGRAPH)
+	$(MKDIR_P) $(OUTDIR)/$(TESTFOLDERMAP)
+	$(MKDIR_P) $(OUTDIR)/$(TESTFOLDERVECTOR)
+	$(MKDIR_P) $(OUTDIR)/$(TESTFOLDERDATASET)
 	$(CXX) $(CXXFLAGS) -o $@ $< $(LIB_SRCS) $(INCLUDES) $(LIBS)
 
 export_library_path:
