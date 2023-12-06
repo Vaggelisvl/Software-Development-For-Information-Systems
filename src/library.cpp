@@ -61,12 +61,12 @@ int main(int argc, char *argv[]) {
         }
         Point queryPoint(queryId,queryVector);
         g.findKNearestNeighborsForPoint(queryPoint);
-//        g.calculateAllDistances();
 
     }
     else{
         g.sortKNeighbors();
         while(!g.KNNAlgorithm());
+        g.calculateAllDistances("firstResults.txt");
         g.printNeighbors(queryId);
         g.printGraph("graph.txt");
     }
@@ -91,11 +91,14 @@ int main(int argc, char *argv[]) {
     op.setK(K);
     op.setMetrics(metrics);
     op.setDimensions(dataset.getDimensions());
-    op.setd(0.1);
+    op.setd(0.01);
     op.setKRandomNeighbors();
     op.initFlags();
     op.initReverseNN();
     op.sortKNeighbors();
+
+    Statistics* statistics2 = new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
+    statistics2->calculateAllDistances(metrics);
 
     //if query out of the graph
     if(queryId == dataset.getNumOfPoints() + 1){
@@ -103,7 +106,7 @@ int main(int argc, char *argv[]) {
         Vector<float> queryVector;
         //generate random coordinates
         for (int i = 0; i < dataset.getDimensions(); i++) {
-//          in space [-1.0-1.0]
+            //in space [-1.0-1.0]
             float randomFloat = -1.0 + 2.0 * ((float)rand() / (float)RAND_MAX);
             queryVector.push_back(randomFloat);
         }
@@ -114,10 +117,9 @@ int main(int argc, char *argv[]) {
     else{
         op.sortKNeighbors();
         while(op.KNN());
+        op.calculateAllDistances("optimizedResults.txt");
         op.printNeighbors(queryId);
     }
-    Statistics* statistics2 = new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
-    statistics2->calculateAllDistances(metrics);
 
     op.printGraph("optimizedGraph.txt");
     op.printReverseNN("reverseNN.txt");

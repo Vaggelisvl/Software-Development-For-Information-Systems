@@ -1,24 +1,5 @@
 #include "../../../headers/structures/graph/Optimizations.h"
 
-//bool Neighbors::operator<(const Neighbors& other) const
-//{
-//    return this->neighbor.getDistance()<other.neighbor.getDistance();
-//}
-//
-//bool Neighbors::operator==(const Neighbors& other) const
-//{
-//   return  this->neighbor.getId() == other.neighbor.getId() && this->neighbor.getDistance() == other.neighbor.getDistance();
-//
-//}
-
-bool incrementalSearchContents::operator==(const incrementalSearchContents &other) const {
-    return id == other.id;
-}
-
-void Optimizations::setd(float d) {
-    this->d = d;
-}
-
 int Optimizations::checkDuplicate(Neighbors point1, Neighbors point2, Vector<Neighbors> neighborsList1, Vector<Neighbors> neighborsList2){
     if(point1.getId() == point2.getId()){
         return 1;
@@ -46,6 +27,7 @@ int Optimizations::incrementalSearch(bool flag1, bool flag2) {
 }
 
 int Optimizations::hashingDuplicateDistances(Point& point1, Point& point2) {
+    //search if the distance between point1 and point2 already calculated
     DistanceContents hashNum;
     this->hashMap.find(point1, hashNum);
     if(hashNum.id == point2.getId()){
@@ -156,7 +138,7 @@ UnorderedMap<Point, Vector<Neighbors> > Optimizations::localJoin(int i,int& coun
                     count++;
 
                     //put reverse point1 to reverse point2
-                    putReverseNeighbor(tempNeighbor, currentPoint);
+                    putReverseNeighbor(tempNeighbor, neighborPoint1);
                 }
                 //put neighbor point 1 to point 2
                 if (dist < maxDistance2) {
@@ -172,7 +154,7 @@ UnorderedMap<Point, Vector<Neighbors> > Optimizations::localJoin(int i,int& coun
                     count++;
 
                     //put reverse point2 to reverse point1
-                    putReverseNeighbor(tempNeighbor, currentPoint);
+                    putReverseNeighbor(tempNeighbor, neighborPoint2);
                 }
             }
 
@@ -245,6 +227,7 @@ void Optimizations::findKNearestNeighborsForPoint(const Point &queryPoint) {
         Neighbors neighbor(neighborPoint.getId(), dist, neighborPoint.getCoordinates());
         neighbor.setFlag(true);
         uniqueNumbers.push_back(neighbor);
+        putReverseNeighbor(neighbor, queryPoint);
     }
     //insert query point to the graph
     this->graph.insert(queryPoint, uniqueNumbers);
@@ -253,28 +236,25 @@ void Optimizations::findKNearestNeighborsForPoint(const Point &queryPoint) {
 
     sortKNeighbors();
     while (!KNN());
-//    sortKNeighbors();
+    calculateAllDistances("optimizedResults.txt");
 
-
-
-//    //remove query point from the graph
-//    printNeighbors(queryPoint.getId());
-//    this->graph.remove(queryPoint);
-//    this->points.remove(queryPoint);
-//    this->numOfPoints--;
+    //remove query point from the graph
+    printNeighbors(queryPoint.getId());
+    this->graph.remove(queryPoint);
+    this->points.remove(queryPoint);
+    this->numOfPoints--;
 }
 
 void Optimizations::initReverseNN() {
     //for every point in the graph
     for(int i=0;i<this->numOfPoints;i++){
         Vector<Neighbors> neighborsV;
-//        //find neighbors of the point
+        //find neighbors of the point
         this->graph.find(this->points.at(i),neighborsV);
         for(int v=0;v<neighborsV.getSize();v++){
             putReverseNeighbor(neighborsV.at(v),this->points.at(i));
         }
     }
-
 }
 
 void Optimizations::removeReverseNeighbor(const Neighbors& neighbor, const Point& point) {
@@ -326,6 +306,10 @@ void Optimizations::printReverseNN(char* outputFile) {
         fprintf(file, "\n}\n");
     }
     fclose(file);
+}
+
+void Optimizations::setd(float d) {
+    this->d = d;
 }
 
 

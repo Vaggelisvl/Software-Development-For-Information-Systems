@@ -41,7 +41,7 @@ public:
     Vector<Neighbors> getNeighborsOfPoint(Point point);
     void setK(int);
     //end of testing purposes
-    void calculateAllDistances();
+    void calculateAllDistances(char*);
     virtual void setKRandomNeighbors();
     void sortKNeighbors();
     int KNNAlgorithm();

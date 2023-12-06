@@ -59,12 +59,10 @@ void GraphInitialization::printGraph(char* outputFile) {
         fprintf(file, "point: %d{\n", i+1);
         for (int j = 0; j < this->K; j++) {
             this->graph.find(this->points.at(i), neighborsVector);
-            char buffer[100]; // Adjust the buffer size as needed
             int neighborId = neighborsVector.at(j).getId();
             float neighborDistance = neighborsVector.at(j).getDistance();
             fprintf(file,"point: %d", neighborId);
             fprintf(file," distance: %f\n", neighborDistance);
-//            LOG_INFO(buffer);
 
         }
         fprintf(file, "\n}\n");
@@ -174,13 +172,11 @@ void GraphInitialization::sortKNeighbors() {
 
         neighborsVector.sort();
     }
-
 }
 
 
 int GraphInitialization::KNNAlgorithm() {
     int flag = 0;
-    printf("again\n");
     //for every point in the graph
     for (int i = 0; i < this->numOfPoints; i++) {
 
@@ -309,8 +305,7 @@ void GraphInitialization::findKNearestNeighborsForPoint(const Point &queryPoint)
 //    sortKNeighbors();
     printGraph("graph.txt");
     while (!KNNAlgorithm());
-    calculateAllDistances();
-//    sortKNeighbors();
+    calculateAllDistances("firstResults.txt");
 
     //remove query point from the graph
     printNeighbors(queryPoint.getId());
@@ -344,7 +339,7 @@ void GraphInitialization::setK(int k) {
 
 }
 
-void GraphInitialization::calculateAllDistances() {
+void GraphInitialization::calculateAllDistances(char* outputFile) {
     printf("calculate all distances\n");
     PointInfo **pointInfo;
     pointInfo = new PointInfo *[numOfPoints];
@@ -356,7 +351,7 @@ void GraphInitialization::calculateAllDistances() {
 
             Point point1 = points.at(j);
             float dist;
-            if(this->metrics == "manhattan\n") {
+            if(this->metrics == "manhattan") {
                 dist = Metrics::manhattanDistance(point.getCoordinates(), point1.getCoordinates(),
                                                   this->dimensions);
             }
@@ -369,7 +364,7 @@ void GraphInitialization::calculateAllDistances() {
     }
     printf("calculate all distances 1 \n");
     FILE *file;
-    file = fopen("results.txt", "w");
+    file = fopen(outputFile, "w");
     if(file == nullptr){
         LOG_ERROR("Cannot open results.txt file");
         exit(1);
