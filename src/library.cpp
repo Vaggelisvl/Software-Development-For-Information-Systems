@@ -45,6 +45,7 @@ int main(int argc, char *argv[]) {
     g.setMetrics(metrics);
     g.setDimensions(dataset.getDimensions());
     g.setKRandomNeighbors();
+
     Statistics* statistics=new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
     statistics->calculateAllDistances(metrics);
 
@@ -93,8 +94,6 @@ int main(int argc, char *argv[]) {
     op.setd(0.1);
     op.setKRandomNeighbors();
     op.initFlags();
-    Statistics* statistics2 = new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
-    statistics2->calculateAllDistances(metrics);
     op.sortKNeighbors();
 
     //if query out of the graph
@@ -115,10 +114,11 @@ int main(int argc, char *argv[]) {
         op.sortKNeighbors();
         while(op.KNN());
         op.printNeighbors(queryId);
-//        op.printParticipation(queryId);
     }
+    Statistics* statistics2 = new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
+    statistics2->calculateAllDistances(metrics);
+
     op.printGraph("optimizedGraph.txt");
-//    op.printdup();
 
 
     statistics2->calculateStatistics(K,&op);

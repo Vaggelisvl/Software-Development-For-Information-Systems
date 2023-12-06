@@ -205,7 +205,7 @@ int GraphInitialization::KNNAlgorithm() {
             //for every extended neighbor
             for (int p = 0; p < this->K; p++) {
 
-                //if is the revers neighbor ignore it
+                //if is the reverse neighbor ignore it
                 if (extendedNeighborsVector.at(p).getId() == currentPoint.getId()) {
                     continue;
                 }
@@ -248,7 +248,6 @@ int GraphInitialization::KNNAlgorithm() {
                     neighborsVector.at(this->K - 1).setDistance(extendedDistance);
                     neighborsVector.sort();
                     maxNeighborDistance = neighborsVector.at(this->K - 1).getDistance();
-
                     this->graph.insert(currentPoint, neighborsVector);
 
                 }
@@ -397,6 +396,8 @@ void GraphInitialization::calculateAllDistances() {
     }
     fclose(file);
 }
+
+
 
 //GraphInitialization::~GraphInitialization() {
 //    for(int i=0;i<this->numOfPoints;i++){
