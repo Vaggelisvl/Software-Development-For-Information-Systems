@@ -113,6 +113,7 @@ int main(int argc, char *argv[]) {
     }
     else{
         op.sortKNeighbors();
+        op.initSampling();
         while(op.KNN());
         op.printNeighbors(queryId);
     }
