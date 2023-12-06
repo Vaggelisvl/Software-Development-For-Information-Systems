@@ -37,27 +37,6 @@ int Optimizations::checkDuplicate(Neighbors point1, Neighbors point2, Vector<Nei
 }
 
 int Optimizations::incrementalSearch(bool flag1, bool flag2) {
-//    bool flag1;
-//    bool flag2;
-//    //find flag from point1 int the current local join
-//    Vector<incrementalSearchContents> localJoinParticipationVector;
-//    this->incrementalSearchMap.find(this->points.at(pointId1-1), localJoinParticipationVector);
-//    int size = localJoinParticipationVector.getSize();
-//    for(int i=0;i<size;i++){
-//        if(localJoinParticipationVector.at(i).id == currentPointId){
-//            flag1 = localJoinParticipationVector.at(i).flag;
-//            break;
-//        }
-//    }
-//    //find flag from point2 in the current local join
-//    this->incrementalSearchMap.find(this->points.at(pointId2-1), localJoinParticipationVector);
-//    size = localJoinParticipationVector.getSize();
-//    for(int i=0;i<size;i++){
-//        if(localJoinParticipationVector.at(i).id == currentPointId){
-//            flag2 = localJoinParticipationVector.at(i).flag;
-//            break;
-//        }
-//    }
     if(flag1 || flag2){
         return 1;
     }
@@ -93,8 +72,6 @@ void Optimizations::initFlags() {
             //for every neighbor change the flag
 
             neighborsV.at(v).setFlag(true);
-//            changeFlag(neighborsV.at(v).getId(),true,this->points.at(i).getId());
-
         }
     }
 }
@@ -168,6 +145,8 @@ UnorderedMap<Point, Vector<Neighbors> > Optimizations::localJoin(int i,int& coun
                 //put neighbor point 2 to point 1
                 if (dist < maxDistance1) {
                     //and remove max neighbor of point1
+                    removeReverseNeighbor(neighborsList1.at(this->K - 1), neighborPoint1);
+
                     Neighbors tempNeighbor(neighborPoint2.getId(), dist, neighborPoint2.getCoordinates());
                     tempNeighbor.setFlag(false);
                     neighborsList1.at(this->K - 1) = tempNeighbor;
@@ -175,10 +154,15 @@ UnorderedMap<Point, Vector<Neighbors> > Optimizations::localJoin(int i,int& coun
                     tempGraph.insert(neighborPoint1, neighborsList1);
                     tempPointVector.push_back(neighborPoint1);
                     count++;
+
+                    //put reverse point1 to reverse point2
+                    putReverseNeighbor(tempNeighbor, currentPoint);
                 }
                 //put neighbor point 1 to point 2
                 if (dist < maxDistance2) {
                     //and remove max neighbor of point2
+                    removeReverseNeighbor(neighborsList2.at(this->K - 1), neighborPoint2);
+
                     Neighbors tempNeighbor(neighborPoint1.getId(), dist, neighborPoint1.getCoordinates());
                     tempNeighbor.setFlag(false);
                     neighborsList2.at(this->K - 1) = tempNeighbor;
@@ -186,6 +170,9 @@ UnorderedMap<Point, Vector<Neighbors> > Optimizations::localJoin(int i,int& coun
                     tempGraph.insert(neighborPoint2, neighborsList2);
                     tempPointVector.push_back(neighborPoint2);
                     count++;
+
+                    //put reverse point2 to reverse point1
+                    putReverseNeighbor(tempNeighbor, currentPoint);
                 }
             }
 
@@ -275,6 +262,70 @@ void Optimizations::findKNearestNeighborsForPoint(const Point &queryPoint) {
 //    this->graph.remove(queryPoint);
 //    this->points.remove(queryPoint);
 //    this->numOfPoints--;
+}
+
+void Optimizations::initReverseNN() {
+    //for every point in the graph
+    for(int i=0;i<this->numOfPoints;i++){
+        Vector<Neighbors> neighborsV;
+//        //find neighbors of the point
+        this->graph.find(this->points.at(i),neighborsV);
+        for(int v=0;v<neighborsV.getSize();v++){
+            putReverseNeighbor(neighborsV.at(v),this->points.at(i));
+        }
+    }
+
+}
+
+void Optimizations::removeReverseNeighbor(const Neighbors& neighbor, const Point& point) {
+    //convert neighbor to point
+    Point reversePoint = this->points.at(neighbor.getId()-1);
+
+    Vector<Neighbors> tempNeighborsV;
+    this->reverseNN.find(reversePoint, tempNeighborsV);
+
+    //convert point to neighbor
+    Neighbors reverseNeighbor(point.getId(), neighbor.getDistance(), point.getCoordinates());
+    tempNeighborsV.remove(reverseNeighbor);
+
+    this->reverseNN.insert(reversePoint,tempNeighborsV);
+}
+
+void Optimizations::putReverseNeighbor(const Neighbors& neighbor, const Point& point) {
+    //convert neighbor to point
+    Point reversePoint = this->points.at(neighbor.getId()-1);
+
+    Vector<Neighbors> tempNeighborsV;
+    if(!this->reverseNN.find(reversePoint, tempNeighborsV)){
+        this->reverseNN.insert(reversePoint,tempNeighborsV);
+    }
+
+    //convert point to neighbor
+    Neighbors reverseNeighbor(point.getId(), neighbor.getDistance(), point.getCoordinates());
+    tempNeighborsV.push_back(reverseNeighbor);
+
+    this->reverseNN.insert(reversePoint,tempNeighborsV);
+
+}
+
+void Optimizations::printReverseNN(char* outputFile) {
+    FILE *file;
+    file = fopen(outputFile, "w");
+    for (int i = 0; i < this->numOfPoints; ++i) {
+        Vector<Neighbors> neighborsVector;
+        //print graph
+        this->reverseNN.find(this->points.at(i), neighborsVector);
+        fprintf(file, "point: %d{\n", i+1);
+        for (int j = 0; j < neighborsVector.getSize(); j++) {
+            int neighborId = neighborsVector.at(j).getId();
+            float neighborDistance = neighborsVector.at(j).getDistance();
+            fprintf(file,"point: %d", neighborId);
+            fprintf(file," distance: %f\n", neighborDistance);
+
+        }
+        fprintf(file, "\n}\n");
+    }
+    fclose(file);
 }
 
 
