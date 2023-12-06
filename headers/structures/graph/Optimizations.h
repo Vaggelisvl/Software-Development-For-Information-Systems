@@ -29,6 +29,7 @@ private:
     int checkDuplicate(Neighbors,Neighbors,Vector<Neighbors>, Vector<Neighbors>);
     int hashingDuplicateDistances(Point&, Point&);
     UnorderedMap<Point, DistanceContents > hashMap;
+    UnorderedMap< Point, Vector<Neighbors> > reverseNN;
     float d;
 public:
     void setd(float);
@@ -37,6 +38,10 @@ public:
     void initFlags();
     int incrementalSearch(bool,bool);
     void findKNearestNeighborsForPoint(const Point& queryPoint) override;
+    void initReverseNN();
+    void removeReverseNeighbor(const Neighbors&,const Point&);
+    void putReverseNeighbor(const Neighbors&,const Point&);
+    void printReverseNN(char*);
 };
 
 

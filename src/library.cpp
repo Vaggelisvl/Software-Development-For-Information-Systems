@@ -94,6 +94,7 @@ int main(int argc, char *argv[]) {
     op.setd(0.1);
     op.setKRandomNeighbors();
     op.initFlags();
+    op.initReverseNN();
     op.sortKNeighbors();
 
     //if query out of the graph
@@ -119,6 +120,7 @@ int main(int argc, char *argv[]) {
     statistics2->calculateAllDistances(metrics);
 
     op.printGraph("optimizedGraph.txt");
+    op.printReverseNN("reverseNN.txt");
 
 
     statistics2->calculateStatistics(K,&op);
