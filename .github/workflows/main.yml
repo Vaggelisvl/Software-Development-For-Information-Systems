@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - master
+      - input_v1_tests
 
 jobs:
   Test:
