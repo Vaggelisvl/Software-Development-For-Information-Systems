@@ -3,7 +3,8 @@
 void Optimizations::sampling()
 {
     srand(static_cast<unsigned>(time(NULL)));
-    float p = static_cast<float>(rand()) / RAND_MAX;
+    float p = 0.1f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX/(1.0f - 0.1f)));
+    // rest of your code
     int percentageToUse = p * this->K;
     int availableNeighbors = 0;
 
