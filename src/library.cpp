@@ -78,6 +78,7 @@ int main(int argc, char *argv[]) {
     else{
         g.sortKNeighbors();
         while(!g.KNNAlgorithm());
+        g.calculateAllDistances();
         g.printNeighbors(queryId);
         g.printGraph("graph.txt");
     }
@@ -144,5 +145,6 @@ int main(int argc, char *argv[]) {
     statistics2->printTotalPercentage(K);
 
     printLogoFromFile("logo.txt");
+
 
 }
