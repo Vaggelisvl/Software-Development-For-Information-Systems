@@ -11,9 +11,9 @@
 #include <time.h>
 void printLogoFromFile(const char* filename) {
     FILE* file = fopen(filename, "r");
-    if (file != nullptr) {
+    if (file != NULL) {
         char line[100];  // Adjust the size as needed
-        while (fgets(line, sizeof(line), file) != nullptr) {
+        while (fgets(line, sizeof(line), file) != NULL) {
             printf("%s", line);
         }
         fclose(file);
