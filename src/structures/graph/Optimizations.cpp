@@ -6,41 +6,25 @@ void Optimizations::sampling()
     float p = static_cast<float>(rand()) / RAND_MAX;
     int percentageToUse = p * this->K;
     int availableNeighbors = 0;
-    char buffer[100];
-    sprintf(buffer, "Percentage to use: %d", percentageToUse);
-    LOG_INFO(buffer);
     // initSampling();
     for (int i = 0; i < this->numOfPoints; i++)
     {
         Vector<Neighbors> reversedNeighbors;
         Vector<Neighbors> neighborses;
         this->graph.find(this->points.at(i), neighborses);
-        this->graph.find(this->points.at(i), reversedNeighbors);
+        this->reverseNN.find(this->points.at(i), reversedNeighbors);
         if (percentageToUse > neighborses.getSize())
         {
-            LOG_WARN("Percentage to use is bigger than the neighbors size.");
             percentageToUse = neighborses.getSize();
         }
         //find the available neighbors to be sampled
-        for (int j = 0; j < percentageToUse; j++){
+        for (int j = 0; j < neighborses.getSize(); j++){
             if (neighborses.at(j).getHasBeenChoosen() == 0){
+                neighborses.at(j).setHasBeenChoosen(1);
                 availableNeighbors++;
-                if(availableNeighbors>percentageToUse)
-                   break; //break if we have enough neighbors
+                if(availableNeighbors==percentageToUse)
+                    break;
             }
-        }
-        if(availableNeighbors<percentageToUse){
-            LOG_WARN("Not enough neighbors to sample.");
-            percentageToUse = availableNeighbors;
-        }
-        for (int v = 0; v < percentageToUse; v++){
-            // this->points.at(reversedNeighbors.at(v).getId()-1).setHasBeenChoosen(1);
-            if(neighborses.at(v).getHasBeenChoosen() == 0)
-            {
-                neighborses.at(v).setHasBeenChoosen(1);
-                reversedNeighbors.at(v).setHasBeenChoosen(1);
-            }
-
         }
     }
 }
@@ -89,20 +73,15 @@ int Optimizations::checkDuplicate(Neighbors point1, Neighbors point2, Vector<Nei
     return 0;
 }
 
+
 int Optimizations::incrementalSearch(Neighbors & n1 ,Neighbors& n2)
 {
     if ((n1.getFlag() || n2.getFlag() )&& (n1.getHasBeenChoosen() == 1 && n2.getHasBeenChoosen() == 1))
     {
-        LOG_INFO("The neighbors have been choosen.");
         return 1;
     }
-
-
-
-
     return 0;
 }
-
 int Optimizations::hashingDuplicateDistances(Point& point1, Point& point2)
 {
     DistanceContents hashNum;
@@ -263,17 +242,15 @@ UnorderedMap<Point, Vector<Neighbors>> Optimizations::localJoin(int i, int& coun
 int Optimizations::KNN()
 {
     int repeatFlag = 0;
-    // //call sampling
-    // if(hasBeenInitialized==false)
-    //     initSampling();
-    // sampling();
 
     //for every point in the graph
     for (int i = 0; i < this->numOfPoints; i++)
     {
+        sampling();
         int count = 0;
         //save the points that will be inserted in the graph
         Vector<Point> tempPointVector;
+
         UnorderedMap<Point, Vector<Neighbors>> tempGraph = localJoin(i, count, tempPointVector);
 
 
@@ -295,6 +272,7 @@ int Optimizations::KNN()
     }
     return repeatFlag;
 }
+
 
 void Optimizations::findKNearestNeighborsForPoint(const Point& queryPoint)
 {
