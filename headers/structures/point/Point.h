@@ -12,10 +12,13 @@ class Point {
 protected:
     Vector<float > coordinates;
     int id;
+    int hasBeenChoosen;
 
 public:
     Point(int id, Vector<float> coordinates);
     Point();
+    void setHasBeenChoosen(int hasBeenChoosen);
+    int getHasBeenChoosen() const;
     bool operator==(const Point& other) const;
     bool operator<(const Point& other) const;
     bool operator>(const Point& other) const;

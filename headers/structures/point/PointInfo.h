@@ -12,7 +12,6 @@ public:
     PointInfo(int i,int points);
     void insert(int i ,float dis);
     void sortDistances(); // Function to sort distances
-    void saveToFile(PointInfo*pointInfo,int num);
     int getPointsInserted();
     float getDistance(int i);
     int getId();

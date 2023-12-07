@@ -42,6 +42,14 @@ bool Neighbors::operator==(const Neighbors &other) const {
     return distance == other.distance;
 }
 
+void Neighbors::setFlag(bool flag) {
+    this->flag = flag;
+}
+
+bool Neighbors::getFlag() const {
+    return this->flag;
+}
+
 //bool Neighbors::operator>(const Neighbors &other) const {
 //    if (!Point::operator>(other)) {
 //        return false;

@@ -7,7 +7,7 @@
 
 TEST(UnorderedMapTest, UnorderedMapInsertFind) {
 
-// given
+    // given
     UnorderedMap<Point, Vector<Neighbors>> map;
     Vector<float> vecCords;
     vecCords.push_back(1.1f);
@@ -19,10 +19,10 @@ TEST(UnorderedMapTest, UnorderedMapInsertFind) {
     vecNeighbors.push_back(Neighbors(2, 2.1f, vecCords));
     Vector<Neighbors> testVec;
 
-// when
+    // when
     map.insert(point, vecNeighbors);
 
-// then
+    // then
     map.find(point, testVec);
     ASSERT_EQ(testVec.at(0), vecNeighbors.at(0));
 
@@ -60,7 +60,7 @@ TEST(UnorderedMapTest, UnorderedMapRemove) {
 
 TEST(UnorderedMapTest, UnorderedMapGet) {
 
-// given
+   // given
     UnorderedMap<Point, Vector<Neighbors>> map;
     Vector<float> vecCords;
     vecCords.push_back(1.1f);
@@ -73,12 +73,10 @@ TEST(UnorderedMapTest, UnorderedMapGet) {
     vecNeighbors.push_back(Neighbors(2, 2.1f, vecCords));
     map.insert(point, vecNeighbors);
     map.insert(point2, vecNeighbors);
-
-// when
+   // when
     Vector<Neighbors> test = map.get(point);
 
-// then
-
+   // then
     ASSERT_EQ(vecNeighbors.at(0), test.at(0));
 
 }

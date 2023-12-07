@@ -10,7 +10,7 @@ TEST(GraphInitializationTest, GraphInitializationInitializeK) {
     GraphInitialization graph;
 
 // when
-    graph.initializeK();// when creating a graph at first the numPoints is set to 0
+    graph.setK(5);// when creating a graph at first the numPoints is set to 0
 // so k should be set to 5
 
 
