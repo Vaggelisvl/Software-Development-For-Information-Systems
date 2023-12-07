@@ -38,6 +38,15 @@ TEST(GraphInitializationTest, GraphInitializationPutPoints) {
     ASSERT_EQ(graph.getNumOfPoints(), 3);
 
 }
+
+
+TEST(GraphInitializationTest, KNNAlgorithmReturnsCorrectFlag)
+{
+    GraphInitialization graph;
+    int flag = graph.KNNAlgorithm();
+    ASSERT_EQ(flag, 1);
+}
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
