@@ -4,19 +4,20 @@ LIBS = -lgtest -lgtest_main -pthread
 INCLUDES = -Iheaders
 SRCDIR = src
 TESTDIR = tests/unit_tests
+TESTDIRINT = tests/integration_tests
 TESTFOLDERPOINT = structures/point
 TESTFOLDERGRAPH = structures/graph
 TESTFOLDERMAP= structures/unorderedMap
 TESTFOLDERVECTOR= structures/vector
 TESTFOLDERDATASET = structures/dataset
+TESTFOLDERDATASETINT= structures/dataset
+TESTFOLDEROPTIMAZATION= structures/graph/optimization
 OUTDIR = bin
 MKDIR_P = mkdir -p
 SCRIPTS_DIR = scripts
 INSTALL_GPP_SCRIPT = $(SCRIPTS_DIR)/gplusplus_install.sh
 INSTALL_GTEST_SCRIPT = $(SCRIPTS_DIR)/install_gtest.sh
-INSTALL_GTEST_SCRIPT_LOCATION = usr/src/gtest
-INSTALL_CMAKE_COMMAND = sudo apt-get update && sudo apt-get install cmake
-
+INSTALL_CMAKE_COMMAND = sudo apt-get update && sudo apt-get install -y cmake
 
 # Source files for the library
 LIB_SRCS = $(SRCDIR)/structures/point/Point.cpp \
@@ -38,9 +39,11 @@ LIB_STATIC = $(OUTDIR)/lib$(LIB_NAME).a
 # Source files for unit tests
 TEST_SRCS = $(TESTDIR)/structures/point/PointTest.cpp \
             $(TESTDIR)/structures/graph/GraphInitializationTest.cpp \
+            $(TESTDIR)/structures/graph/OptimizationsTest.cpp \
             $(TESTDIR)/structures/dataset/DatasetTest.cpp \
             $(TESTDIR)/structures/vector/VectorTestFloat.cpp \
             $(TESTDIR)/structures/vector/VectorTestNeighbor.cpp \
+            $(TESTDIR)/structures/point/NeighborTest.cpp \
             $(TESTDIR)/structures/vector/VectorTestPoint.cpp \
             $(TESTDIR)/structures/unorderedMap/UnorderedMapTest.cpp
 
@@ -54,11 +57,11 @@ all: install_dependencies  shared_library static_library export_library_path mai
 install_dependencies:
 	$(MKDIR_P) $(OUTDIR)
 	@$(INSTALL_CMAKE_COMMAND)
+	@$(INSTALL_CMAKE_COMMAND)
 	@chmod +x $(INSTALL_GPP_SCRIPT)
 	@$(SHELL) $(INSTALL_GPP_SCRIPT)
 	@chmod +x $(INSTALL_GTEST_SCRIPT)
 	@$(SHELL) $(INSTALL_GTEST_SCRIPT)
-
 
 shared_library: $(LIB_SHARED)
 
@@ -83,6 +86,7 @@ $(OUTDIR)/%: $(TESTDIR)/%.cpp
 	$(MKDIR_P) $(OUTDIR)/$(TESTFOLDERGRAPH)
 	$(MKDIR_P) $(OUTDIR)/$(TESTFOLDERMAP)
 	$(MKDIR_P) $(OUTDIR)/$(TESTFOLDERVECTOR)
+	$(MKDIR_P) $(OUTDIR)/$(TESTFOLDEROPTIMAZATION)
 	$(MKDIR_P) $(OUTDIR)/$(TESTFOLDERDATASET)
 	$(CXX) $(CXXFLAGS) -o $@ $< $(LIB_SRCS) $(INCLUDES) $(LIBS)
 

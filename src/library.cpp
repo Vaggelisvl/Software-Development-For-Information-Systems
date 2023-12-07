@@ -9,6 +9,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+void printLogoFromFile(const char* filename) {
+    FILE* file = fopen(filename, "r");
+    if (file != nullptr) {
+        char line[100];  // Adjust the size as needed
+        while (fgets(line, sizeof(line), file) != nullptr) {
+            printf("%s", line);
+        }
+        fclose(file);
+    } else {
+        fprintf(stderr, "Unable to open file: %s\n", filename);
+    }
+}
 
 using namespace std;
 int main(int argc, char *argv[]) {
@@ -130,5 +142,7 @@ int main(int argc, char *argv[]) {
         statistics2->printInMatrixForm(K);
 
     statistics2->printTotalPercentage(K);
+
+    printLogoFromFile("logo.txt");
 
 }

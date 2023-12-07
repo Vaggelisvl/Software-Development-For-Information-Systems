@@ -29,6 +29,9 @@ public:
     void sampling();
     void initSampling();
     void setd(float);
+    //for testing purposes
+    float getd();
+    //end of testing purposes
     UnorderedMap<Point, Vector<Neighbors> > localJoin(int,int&,Vector<Point>&);
     int KNN();
     void initFlags();
