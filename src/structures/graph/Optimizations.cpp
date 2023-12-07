@@ -6,7 +6,7 @@ void Optimizations::sampling()
     float p = static_cast<float>(rand()) / RAND_MAX;
     int percentageToUse = p * this->K;
     int availableNeighbors = 0;
-    // initSampling();
+
     for (int i = 0; i < this->numOfPoints; i++)
     {
         Vector<Neighbors> reversedNeighbors;
@@ -73,7 +73,6 @@ int Optimizations::checkDuplicate(Neighbors point1, Neighbors point2, Vector<Nei
     return 0;
 }
 
-
 int Optimizations::incrementalSearch(Neighbors & n1 ,Neighbors& n2)
 {
     if ((n1.getFlag() || n2.getFlag() )&& (n1.getHasBeenChoosen() == 1 && n2.getHasBeenChoosen() == 1))
@@ -134,7 +133,6 @@ UnorderedMap<Point, Vector<Neighbors>> Optimizations::localJoin(int i, int& coun
     //for every neighbor of the current point
     for (int j = 0; j < this->K; j++)
     {
-        sampling();
         //find neighbor point with the neighbor vector of it
         Point neighborPoint1 = this->points.at(currentNeighborsList.at(j).getId() - 1);
         Vector<Neighbors> neighborsList1;
@@ -272,7 +270,6 @@ int Optimizations::KNN()
     }
     return repeatFlag;
 }
-
 
 void Optimizations::findKNearestNeighborsForPoint(const Point& queryPoint)
 {

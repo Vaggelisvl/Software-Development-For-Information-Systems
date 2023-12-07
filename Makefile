@@ -14,6 +14,8 @@ MKDIR_P = mkdir -p
 SCRIPTS_DIR = scripts
 INSTALL_GPP_SCRIPT = $(SCRIPTS_DIR)/gplusplus_install.sh
 INSTALL_GTEST_SCRIPT = $(SCRIPTS_DIR)/install_gtest.sh
+INSTALL_GTEST_SCRIPT_LOCATION = usr/src/gtest
+INSTALL_CMAKE_COMMAND = sudo apt-get update && sudo apt-get install cmake
 
 
 # Source files for the library
@@ -50,10 +52,13 @@ TESTS = $(patsubst $(TESTDIR)/%.cpp,$(OUTDIR)/%,$(TEST_SRCS))
 
 all: install_dependencies  shared_library static_library export_library_path main_executable
 install_dependencies:
+	$(MKDIR_P) $(OUTDIR)
+	@$(INSTALL_CMAKE_COMMAND)
 	@chmod +x $(INSTALL_GPP_SCRIPT)
 	@$(SHELL) $(INSTALL_GPP_SCRIPT)
 	@chmod +x $(INSTALL_GTEST_SCRIPT)
 	@$(SHELL) $(INSTALL_GTEST_SCRIPT)
+
 
 shared_library: $(LIB_SHARED)
 
@@ -64,8 +69,10 @@ $(LIB_SHARED): $(LIB_SRCS)
 
 $(LIB_STATIC): $(LIB_SRCS)
 	ar rcs $@ $^
+export_library_path:
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(OUTDIR):/usr/src/gtest
 
-test: create_outdir $(TESTS)
+test: export_library_path create_outdir $(TESTS)
 	@for test in $(TESTS); do \
 		./$$test; \
 	done

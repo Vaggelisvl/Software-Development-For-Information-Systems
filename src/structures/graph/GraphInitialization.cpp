@@ -180,7 +180,6 @@ void GraphInitialization::sortKNeighbors() {
 
 int GraphInitialization::KNNAlgorithm() {
     int flag = 0;
-    printf("again\n");
     //for every point in the graph
     for (int i = 0; i < this->numOfPoints; i++) {
 

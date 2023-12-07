@@ -55,13 +55,12 @@ int main(int argc, char *argv[]) {
         Vector<float> queryVector;
         //generate random coordinates
         for (int i = 0; i < dataset.getDimensions(); i++) {
-//          in space [-1.0-1.0]
+            //in space [-1.0-1.0]
             float randomFloat = -1.0 + 2.0 * ((float)rand() / (float)RAND_MAX);
             queryVector.push_back(randomFloat);
         }
         Point queryPoint(queryId,queryVector);
         g.findKNearestNeighborsForPoint(queryPoint);
-//        g.calculateAllDistances();
 
     }
     else{
@@ -73,9 +72,9 @@ int main(int argc, char *argv[]) {
 
 
     statistics->calculateStatistics(K,&g);
-    if(numOfPoints>20)
-        statistics->printStatistics(K);
-    else
+//    if(numOfPoints>20)
+//        statistics->printStatistics(K);
+//    else
         statistics->printInMatrixForm(K);
 
     statistics->printTotalPercentage(K);
@@ -91,7 +90,7 @@ int main(int argc, char *argv[]) {
     op.setK(K);
     op.setMetrics(metrics);
     op.setDimensions(dataset.getDimensions());
-    op.setd(0.1);
+    op.setd(0.01);
     op.setKRandomNeighbors();
     op.initFlags();
     op.initReverseNN();
@@ -125,9 +124,9 @@ int main(int argc, char *argv[]) {
 
 
     statistics2->calculateStatistics(K,&op);
-    if(numOfPoints>20)
-        statistics2->printStatistics(K);
-    else
+//    if(numOfPoints>20)
+//        statistics2->printStatistics(K);
+//    else
         statistics2->printInMatrixForm(K);
 
     statistics2->printTotalPercentage(K);

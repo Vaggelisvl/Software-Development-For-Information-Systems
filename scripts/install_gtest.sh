@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 
 # Check if gtest is installed
 if ! dpkg -l | grep -q libgtest-dev; then
