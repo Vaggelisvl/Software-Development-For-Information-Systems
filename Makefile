@@ -72,8 +72,7 @@ $(LIB_SHARED): $(LIB_SRCS)
 
 $(LIB_STATIC): $(LIB_SRCS)
 	ar rcs $@ $^
-export_library_path:
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(OUTDIR):/usr/src/gtest
+
 
 test: export_library_path create_outdir $(TESTS)
 	@for test in $(TESTS); do \
@@ -95,10 +94,12 @@ export_library_path:
 
 main_executable: create_outdir
 	$(CXX) -o main $(SRCDIR)/library.cpp -L$(OUTDIR) -Wl,-rpath,'$$ORIGIN/$(OUTDIR)' -ldataforge
+ARGS ?= src/input1.bin 100 20 5 1 euclidean
 
-
-
-
+run:
+	./main $(or $(filter-out $@,$(MAKECMDGOALS)),$(ARGS))
+%:
+	@:
 clean:
 	rm -f $(LIB_SHARED) $(LIB_STATIC) $(TESTS) main
 
