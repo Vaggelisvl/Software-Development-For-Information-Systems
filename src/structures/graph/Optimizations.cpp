@@ -50,6 +50,11 @@ void Optimizations::setd(float d)
     this->d = d;
 }
 
+float Optimizations::getd()
+{
+    return this->d;
+}
+
 int Optimizations::checkDuplicate(Neighbors point1, Neighbors point2, Vector<Neighbors> neighborsList1,
                                   Vector<Neighbors> neighborsList2)
 {
