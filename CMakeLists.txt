@@ -31,4 +31,13 @@ add_library(_project
         headers/utils/Statistics.h
         src/utils/Statistics.cpp
         headers/utils/StatisticInfo.h
-        src/utils/StatisticInfo.cpp headers/structures/graph/Optimizations.h src/structures/graph/Optimizations.cpp)
+        src/utils/StatisticInfo.cpp headers/structures/graph/Optimizations.h src/structures/graph/Optimizations.cpp
+        tests/unit_tests/structures/graph/OptimizationsTest.cpp
+
+        src/structures/scheduler/Job.h
+        src/structures/scheduler/Job.h
+        src/structures/scheduler/JobScheduler.cpp
+        src/structures/scheduler/JobScheduler.h
+        src/structures/scheduler/JobNode.h
+        src/structures/scheduler/JobQueue.cpp
+        src/structures/scheduler/JobQueue.h)

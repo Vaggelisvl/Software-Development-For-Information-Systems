@@ -343,6 +343,7 @@ void GraphInitialization::setK(int k) {
 
 }
 
+
 void GraphInitialization::calculateAllDistances() {
     printf("calculate all distances\n");
     PointInfo **pointInfo;
