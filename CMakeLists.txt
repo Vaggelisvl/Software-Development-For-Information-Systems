@@ -31,4 +31,4 @@ add_library(_project
         headers/utils/Statistics.h
         src/utils/Statistics.cpp
         headers/utils/StatisticInfo.h
-        src/utils/StatisticInfo.cpp headers/structures/graph/Optimizations.h src/structures/graph/Optimizations.cpp)
+        src/utils/StatisticInfo.cpp headers/structures/graph/Optimizations.h src/structures/graph/Optimizations.cpp headers/structures/randomProjectionTrees/RandomProjectionTrees.h src/structures/randomProjectionTrees/RandomProjectionTrees.cpp)
