@@ -1,9 +1,6 @@
-//
-// Created by snz on 11/26/2023.
-//
 
-#ifndef _PROJECT_STATISTICINFO_H
-#define _PROJECT_STATISTICINFO_H
+#ifndef STATISTICINFO_H
+#define STATISTICINFO_H
 
 
 class StatisticInfo {
@@ -31,4 +28,4 @@ public:
 };
 
 
-#endif //_PROJECT_STATISTICINFO_H
+#endif

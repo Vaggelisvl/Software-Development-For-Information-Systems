@@ -1,9 +1,6 @@
-//
-// Created by snz on 11/26/2023.
-//
 
-#ifndef _PROJECT_STATISTICS_H
-#define _PROJECT_STATISTICS_H
+#ifndef STATISTICS_H
+#define STATISTICS_H
 
 
 #include "../structures/point/PointInfo.h"
@@ -32,4 +29,4 @@ public:
 };
 
 
-#endif //_PROJECT_STATISTICS_H
+#endif

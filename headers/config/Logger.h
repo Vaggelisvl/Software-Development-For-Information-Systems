@@ -1,9 +1,6 @@
-//
-// Created by e.vrailas on 24/10/2023.
-//
 
-#ifndef PROJECT_2023_1_LOGGERCONFIG_H
-#define PROJECT_2023_1_LOGGERCONFIG_H
+#ifndef LOGGERCONFIG_H
+#define LOGGERCONFIG_H
 
 class Logger {
     //TODO implement also the debug
@@ -33,4 +30,4 @@ private:
 #define LOG_LEVEL(message) Logger::SetSpecificLoggingEnabled(message)
 
 
-#endif //PROJECT_2023_1_LOGGERCONFIG_H
+#endif

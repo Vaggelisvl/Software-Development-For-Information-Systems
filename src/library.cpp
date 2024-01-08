@@ -6,6 +6,10 @@
 #include "../headers/structures/graph/Optimizations.h"
 #include "../headers/structures/Dataset.h"
 #include "../headers/utils/Statistics.h"
+#include "../headers/structures/scheduler/JobScheduler.h"
+#include "../headers/structures/scheduler/job/KNNJob.h"
+#include "../headers/structures/scheduler/job/FindKNearestNeighborsForPointJob.h"
+#include "../headers/structures/scheduler/job/NormCalculationJob.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -143,8 +147,24 @@ int main(int argc, char *argv[]) {
         statistics2->printInMatrixForm(K);
 
     statistics2->printTotalPercentage(K);
+    //for project 3
 
-    printLogoFromFile("logo.txt");
+    JobScheduler scheduler;
+    scheduler.start_execute(); // Start the worker threads before submitting any jobs
 
+    scheduler.submit(new NormCalculationJob(g.getPoints()));
+    scheduler.submit(new NormCalculationJob(g.getPoints()));
+    scheduler.submit(new NormCalculationJob(g.getPoints()));
+    scheduler.submit(new NormCalculationJob(g.getPoints()));
+    scheduler.submit(new NormCalculationJob(g.getPoints()));
+    scheduler.submit(new NormCalculationJob(g.getPoints()));
+    scheduler.submit(new NormCalculationJob(g.getPoints()));
+    scheduler.wait_to_finish(); // Wait for all jobs to finish after they have been submitted
+// To run the findKNearestNeighborsForPoint function in a separate thread:
+//    scheduler.submit(new FindKNearestNeighborsForPointJob(&op, queryPoint));
+//    scheduler.wait_to_finish();
+//    printLogoFromFile("logo.txt");
+    scheduler.printStats();
+    return 0;
 
 }

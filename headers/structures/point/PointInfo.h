@@ -1,9 +1,7 @@
-//
-// Created by snz on 11/4/2023.
-//
 
-#ifndef _PROJECT_POININFO_H
-#define _PROJECT_POININFO_H
+
+#ifndef POININFO_H
+#define POININFO_H
 
 #include "../vector/Vector.h"
 
@@ -35,4 +33,4 @@ private:
 };
 
 
-#endif //_PROJECT_POININFO_H
+#endif

@@ -81,3 +81,7 @@ bool Point::operator>(const Point& other) const
 {
     return this->id > other.id;
 }
+
+void Point::setSquareNorm(float squareNorm) {
+    Point::squareNorm = squareNorm;
+}

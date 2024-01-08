@@ -2,7 +2,8 @@
 // Created by vaggelis on 3/1/2024.
 //
 
-#include "JobQueue.h"
+
+#include "../../../headers/structures/scheduler/JobQueue.h"
 
 void JobQueue::push(Job *job) {
     JobNode* node = new JobNode(job);

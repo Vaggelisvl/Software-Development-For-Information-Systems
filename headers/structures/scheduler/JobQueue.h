@@ -1,6 +1,3 @@
-//
-// Created by vaggelis on 3/1/2024.
-//
 
 #ifndef JOBQUEUE_H
 #define JOBQUEUE_H
