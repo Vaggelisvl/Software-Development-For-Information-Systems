@@ -152,7 +152,7 @@ int main(int argc, char *argv[]) {
 
     //project 3
     printf("RANDOM PROJECTION TREES\n");
-    RandomProjectionTrees r(dataset.getDimensions(),dataset.getNumOfPoints());
+    RandomProjectionTrees r(7,dataset.getDimensions());
     for(int i=0;i<dataset.getNumOfPoints();i++){
         r.putPoints(elements.at(i).getCoordinates());
     }
