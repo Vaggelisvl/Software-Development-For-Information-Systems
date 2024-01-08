@@ -32,6 +32,7 @@ LIB_SRCS = $(SRCDIR)/structures/point/Point.cpp \
            $(SRCDIR)/structures/Dataset.cpp \
            $(SRCDIR)/structures/graph/GraphInitialization.cpp \
            $(SRCDIR)/structures/graph/Optimizations.cpp \
+           $(SRCDIR)/structures/randomProjectionTrees/RandomProjectionTrees.cpp \
            $(SRCDIR)/utils/Metrics.cpp \
            $(SRCDIR)/utils/Statistics.cpp \
            $(SRCDIR)/utils/StatisticInfo.cpp \
