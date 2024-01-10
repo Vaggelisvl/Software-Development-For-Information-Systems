@@ -111,7 +111,7 @@ int RandomProjectionTrees::split(Vector<int> branchPoints){
 
 }
 
-RandomProjectionTrees::RandomProjectionTrees(int d, int dim):D(d),dimensions(dim),numOfPoints(0){}
+RandomProjectionTrees::RandomProjectionTrees(int d):D(d){}
 
 void RandomProjectionTrees::putPoints(Vector<float> coordinates){
     Point point(numOfPoints+1,coordinates);
@@ -125,4 +125,94 @@ void RandomProjectionTrees::initGraph(){
         branchPoints.push_back(i+1);
     }
     split(branchPoints);
+    UnorderedMap<Point, Vector<Neighbors>> tempGraph = localGraphInitialization();
+    graph = tempGraph;
+
+
+}
+
+void RandomProjectionTrees::setMetrics(char* nameOfMetrics) {
+    this->metrics = nameOfMetrics;
+}
+
+UnorderedMap<Point, Vector<Neighbors>> RandomProjectionTrees::localGraphInitialization(){
+    UnorderedMap<Point, Vector<Neighbors>> tempGraph = graph;
+    //for each leaf
+    for(int i=0;i<tree.getSize();i++){
+        //for each point in leaf
+        for(int j=0;j<tree.at(i).getSize();j++){
+            Point firstPoint = points.at(tree.at(i).at(j)-1);
+            //for each other point in leaf
+            for(int k=0;k<tree.at(i).getSize();k++){
+                Point secondPoint = points.at(tree.at(i).at(k)-1);
+                if(j != k) {
+                    if (hashingDuplicateDistances(firstPoint, secondPoint) == 1) {
+                        continue;
+                    }
+                    //calculate distance
+                    float distance;
+                    if (strcmp(this->metrics, "manhattan") == 0) {
+                        distance = Metrics::manhattanDistance(firstPoint.getCoordinates(),
+                                                              secondPoint.getCoordinates(), this->dimensions);
+
+                    } else {
+                        distance = Metrics::euclideanDistance(firstPoint.getCoordinates(),
+                                                              secondPoint.getCoordinates(), this->dimensions);
+                    }
+                    //put dist in to the hashMap
+                    DistanceContents newHashNum;
+                    newHashNum.id = secondPoint.getId();
+                    newHashNum.dist = distance;
+                    this->hashMap.insert(firstPoint, newHashNum);
+
+                    Vector<Neighbors> neighborsList1;
+                    Vector<Neighbors> neighborsList2;
+                    tempGraph.find(firstPoint, neighborsList1);
+                    tempGraph.find(secondPoint, neighborsList2);
+
+                    int check = checkDuplicate(firstPoint, secondPoint, neighborsList1, neighborsList2);
+                    if (check) {
+                        continue;
+                    }
+                    if (neighborsList1.getSize() == K) {
+                        //sort neighborsList1
+                        neighborsList1.sort();
+                        //find max distance
+                        float maxDist = neighborsList1.at(K - 1).getDistance();
+                        //check if second point is closer than max distance
+                        if (distance < maxDist) {
+                            //if yes, replace max distance with second point
+                            Neighbors newNeighbor(secondPoint.getId(), distance, secondPoint.getCoordinates());
+                            neighborsList1.at(K - 1) = newNeighbor;
+                            tempGraph.insert(firstPoint, neighborsList1);
+                        }
+                    } else {
+                        Neighbors newNeighbor(secondPoint.getId(), distance, secondPoint.getCoordinates());
+                        neighborsList1.push_back(newNeighbor);
+                        tempGraph.insert(firstPoint, neighborsList1);
+                    }
+
+                    if (neighborsList2.getSize() == K) {
+                        //sort neighborsList2
+                        neighborsList2.sort();
+                        //find max distance
+                        float maxDist = neighborsList2.at(K - 1).getDistance();
+                        //check if second point is closer than max distance
+                        if (distance < maxDist) {
+                            //if yes, replace max distance with second point
+                            Neighbors newNeighbor(firstPoint.getId(), distance, firstPoint.getCoordinates());
+                            neighborsList2.at(K - 1) = newNeighbor;
+                            tempGraph.insert(secondPoint, neighborsList2);
+                        }
+                    } else {
+                        Neighbors newNeighbor(firstPoint.getId(), distance, firstPoint.getCoordinates());
+                        neighborsList2.push_back(newNeighbor);
+                        tempGraph.insert(secondPoint, neighborsList2);
+                    }
+
+                }
+            }
+        }
+    }
+    return tempGraph;
 }

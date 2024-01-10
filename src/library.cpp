@@ -152,12 +152,18 @@ int main(int argc, char *argv[]) {
 
     //project 3
     printf("RANDOM PROJECTION TREES\n");
-    RandomProjectionTrees r(7,dataset.getDimensions());
+    RandomProjectionTrees r(7);
+    r.setMetrics(metrics);
+    r.setK(K);
+    r.setDimensions(dataset.getDimensions());
     for(int i=0;i<dataset.getNumOfPoints();i++){
         r.putPoints(elements.at(i).getCoordinates());
     }
+
     r.initGraph();
     r.printTree();
+//    printf("ok\n");
+    r.printGraph("project3.txt");
 
 
 }

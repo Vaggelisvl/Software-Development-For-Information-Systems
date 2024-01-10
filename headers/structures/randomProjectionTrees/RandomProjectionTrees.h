@@ -12,25 +12,32 @@
 #include "../point/Neighbors.h"
 #include "../../../headers/utils/Metrics.h"
 #include "../../../headers/structures/point/PointInfo.h"
+#include "../../../headers/structures/graph/Optimizations.h"
 
 const float EPS = 1e-8;
 
-class RandomProjectionTrees {
+class RandomProjectionTrees : public Optimizations{
 private:
+//    int K;
     int D;
-    Vector<Point> points;
-    int numOfPoints;
-    int dimensions;
+//    Vector<Point> points;
+//    int numOfPoints;
+//    int dimensions;
     Vector<Vector<int> > tree;
     float calculateInnerProduct(Vector<float>, Vector<float>);
+    UnorderedMap<Point, Vector<Neighbors> > localGraphInitialization();
+//    char* metrics;
+//    UnorderedMap< Point, Vector<Neighbors> > graph;
+
 
 public:
-    RandomProjectionTrees(int, int);
+    RandomProjectionTrees(int);
     int split(Vector<int>);
     Vector<Vector<int> > hyperplane(Vector<int>);
     void printTree();
     void putPoints(Vector<float>);
     void initGraph();
+    void setMetrics(char*);
 
 };
 

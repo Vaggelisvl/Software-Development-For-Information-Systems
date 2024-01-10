@@ -56,7 +56,7 @@ float Optimizations::getd()
     return this->d;
 }
 
-int Optimizations::checkDuplicate(Neighbors point1, Neighbors point2, Vector<Neighbors> neighborsList1,
+int Optimizations::checkDuplicate(Point point1, Point point2, Vector<Neighbors> neighborsList1,
                                   Vector<Neighbors> neighborsList2)
 {
     if (point1.getId() == point2.getId())
@@ -65,15 +65,14 @@ int Optimizations::checkDuplicate(Neighbors point1, Neighbors point2, Vector<Nei
     }
 
     //if extended neighbor exist in the neighbor list
-    for (int l = 0; l < this->K; l++)
-    {
-        if (neighborsList1.at(l).getId() == point2.getId())
-        {
-            return 1;
+    for (int l = 0; l < neighborsList1.getSize(); l++) {
+        if (neighborsList1.at(l).getId() == point2.getId()) {
+            return 2;
         }
-        if (neighborsList2.at(l).getId() == point1.getId())
-        {
-            return 1;
+    }
+    for (int l = 0; l < neighborsList2.getSize(); l++){
+        if (neighborsList2.at(l).getId() == point1.getId()){
+            return 3;
         }
     }
     return 0;
@@ -159,7 +158,7 @@ UnorderedMap<Point, Vector<Neighbors>> Optimizations::localJoin(int i, int& coun
             neighborsList2.sort();
             float maxDistance2 = neighborsList2.at(this->K - 1).getDistance();
 
-            if (checkDuplicate(currentNeighborsList.at(j), currentNeighborsList.at(k), neighborsList1, neighborsList2))
+            if (checkDuplicate(neighborPoint1, neighborPoint2, neighborsList1, neighborsList2))
             {
                 continue;
             }

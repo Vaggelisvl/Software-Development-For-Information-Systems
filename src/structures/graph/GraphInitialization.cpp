@@ -57,8 +57,8 @@ void GraphInitialization::printGraph(char* outputFile) {
         Vector<Neighbors> neighborsVector;
         //print graph
         fprintf(file, "point: %d{\n", i+1);
-        for (int j = 0; j < this->K; j++) {
-            this->graph.find(this->points.at(i), neighborsVector);
+        this->graph.find(this->points.at(i), neighborsVector);
+        for (int j = 0; j < neighborsVector.getSize(); j++) {
             char buffer[100]; // Adjust the buffer size as needed
             int neighborId = neighborsVector.at(j).getId();
             float neighborDistance = neighborsVector.at(j).getDistance();
