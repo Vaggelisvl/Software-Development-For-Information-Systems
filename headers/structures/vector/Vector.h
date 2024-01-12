@@ -7,8 +7,7 @@ template <typename T>
 class Vector {
 public:
     Vector<T>();
-
-
+    ~Vector();
     void push_back(const T& value);
 
     const T* begin() const {
@@ -251,6 +250,12 @@ void Vector<T>::replace(const T& oldValue, const T& newValue) {
             // If you want to replace only the first occurrence, you can add a break statement here.
         }
     }
+}
+
+template<typename T>
+Vector<T>::~Vector() {
+//    delete[] array;
+
 }
 template <typename T>
 void Vector<T>::remove(const T& value) {

@@ -108,7 +108,7 @@ int RandomProjectionTrees::split(Vector<int> branchPoints){
     split(leftTree);
     Vector<int> rightTree = hyperplaneVector.at(1);
     split(rightTree);
-
+    return 1;
 }
 
 RandomProjectionTrees::RandomProjectionTrees(int d, int dim):D(d),dimensions(dim),numOfPoints(0){}

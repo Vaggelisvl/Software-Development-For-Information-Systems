@@ -31,8 +31,7 @@ public:
     Value get(const Key& key);
 
 
-
-//    ~UnorderedMap();
+    ~UnorderedMap();
 
 private:
     struct KeyValue {
@@ -145,19 +144,20 @@ void UnorderedMap<Key,Value>::remove(const Key& key) {
         current = current->next;
     }
 }
-//template<typename Key,typename Value>
-//UnorderedMap<Key,Value>::~UnorderedMap() {
+template<typename Key,typename Value>
+UnorderedMap<Key,Value>::~UnorderedMap() {
 //    for (size_t i = 0; i < capacity; i++) {
 //        KeyValue* current = data[i];
 //        while (current) {
 //            KeyValue* temp = current;
 //            current = current->next;
 //            delete temp;
+//
 //        }
 //        data[i] = nullptr; // Set the bucket to nullptr after deleting
 //    }
 //    delete[] data;
-//}
+}
 
 //TODO change the function to be more efficient
 template <typename Key, typename Value>

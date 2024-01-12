@@ -1,5 +1,5 @@
 #ifndef OPTIMIZATIONS_H
-#defineOPTIMIZATIONS_H
+#define OPTIMIZATIONS_H
 /**
 * @file Optimizations.h
 * @brief This file contains the declaration of the Optimizations class.

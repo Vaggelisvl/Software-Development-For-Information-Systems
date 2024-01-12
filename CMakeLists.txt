@@ -18,7 +18,6 @@ add_library(_project
         headers/utils/Metrics.h
         src/utils/Metrics.cpp
         src/structures/Dataset.cpp
-        headers/library.h
         tests/unit_tests/structures/vector/VectorTestFloat.cpp
         tests/unit_tests/structures/vector/VectorTestPoint.cpp
         tests/unit_tests/structures/vector/VectorTestNeighbor.cpp
@@ -31,7 +30,10 @@ add_library(_project
         headers/utils/Statistics.h
         src/utils/Statistics.cpp
         headers/utils/StatisticInfo.h
-        src/utils/StatisticInfo.cpp headers/structures/graph/Optimizations.h src/structures/graph/Optimizations.cpp headers/structures/randomProjectionTrees/RandomProjectionTrees.h src/structures/randomProjectionTrees/RandomProjectionTrees.cpp)
+        src/utils/StatisticInfo.cpp headers/structures/graph/Optimizations.h src/structures/graph/Optimizations.cpp headers/structures/randomProjectionTrees/RandomProjectionTrees.h src/structures/randomProjectionTrees/RandomProjectionTrees.cpp
+        src/structures/scheduler/job/RandomProjectionTreeJob.cpp
+        headers/structures/scheduler/job/RandomProjectionTreeJob.h
+        headers/structures/scheduler/job/RandomProjectionTreeJob.h
         src/utils/StatisticInfo.cpp headers/structures/graph/Optimizations.h src/structures/graph/Optimizations.cpp
         tests/unit_tests/structures/graph/OptimizationsTest.cpp
 
