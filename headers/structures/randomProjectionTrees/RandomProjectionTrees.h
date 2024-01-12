@@ -14,30 +14,30 @@
 #include "../../../headers/structures/point/PointInfo.h"
 #include "../../../headers/structures/graph/Optimizations.h"
 
+typedef struct TreeContents{
+    int id;
+    Vector<Vector<int> > tree;
+}TreeContents;
+
 const float EPS = 1e-8;
 
 class RandomProjectionTrees : public Optimizations{
 private:
-//    int K;
     int D;
-//    Vector<Point> points;
-//    int numOfPoints;
-//    int dimensions;
-    Vector<Vector<int> > tree;
     float calculateInnerProduct(Vector<float>, Vector<float>);
-    UnorderedMap<Point, Vector<Neighbors> > localGraphInitialization();
-//    char* metrics;
-//    UnorderedMap< Point, Vector<Neighbors> > graph;
+    void graphInitialization(Vector<Vector<int> >);
+    Vector<TreeContents> trees;
+    void fillGraph();
 
 
 public:
     RandomProjectionTrees(int);
-    int split(Vector<int>);
+    int split(Vector<int>, Vector<Vector<int> > &);
     Vector<Vector<int> > hyperplane(Vector<int>);
     void printTree();
     void putPoints(Vector<float>);
     void initGraph();
-    void setMetrics(char*);
+//    void setMetrics(char*);
 
 };
 

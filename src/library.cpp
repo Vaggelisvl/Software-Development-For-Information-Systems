@@ -152,7 +152,7 @@ int main(int argc, char *argv[]) {
 
     //project 3
     printf("RANDOM PROJECTION TREES\n");
-    RandomProjectionTrees r(7);
+    RandomProjectionTrees r(3);
     r.setMetrics(metrics);
     r.setK(K);
     r.setDimensions(dataset.getDimensions());

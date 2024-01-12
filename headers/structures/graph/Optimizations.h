@@ -35,6 +35,7 @@ protected:
     */
     UnorderedMap<Point, DistanceContents > hashMap;
     int hashingDuplicateDistances(Point&, Point&);
+    float calculateDistance(Point, Point);
 
 public:
 

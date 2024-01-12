@@ -1,11 +1,14 @@
 #include "../../../headers/structures/randomProjectionTrees/RandomProjectionTrees.h"
 
 void RandomProjectionTrees::printTree(){
-    for(int i=0;i<tree.getSize();i++){
-        for(int j=0;j<tree.at(i).getSize();j++){
-            printf("%d ",tree.at(i).at(j));
+    for(int k=0;k<trees.getSize();k++){
+        printf("Tree %d\n", trees.at(k).id);
+        for(int i=0;i<trees.at(k).tree.getSize();i++){
+            for(int j=0;j<trees.at(k).tree.at(i).getSize();j++){
+                printf("%d ",trees.at(k).tree.at(i).at(j));
+            }
+            printf("\n");
         }
-        printf("\n");
     }
 }
 
@@ -95,19 +98,21 @@ Vector<Vector<int> > RandomProjectionTrees::hyperplane(Vector<int> branchPoints)
     return returnVector;
 }
 
-int RandomProjectionTrees::split(Vector<int> branchPoints){
+int RandomProjectionTrees::split(Vector<int> branchPoints, Vector<Vector<int> > &currentTree){
+    srand(static_cast<unsigned>(time(nullptr)));
+
     //check if branchPoints size is less than D
     if(branchPoints.getSize() <= D){
         //create leaf node
-        tree.push_back(branchPoints);
+        currentTree.push_back(branchPoints);
         return 0;
     }
 
     Vector<Vector<int> > hyperplaneVector = hyperplane(branchPoints);
     Vector<int> leftTree = hyperplaneVector.at(0);
-    split(leftTree);
+    split(leftTree,currentTree);
     Vector<int> rightTree = hyperplaneVector.at(1);
-    split(rightTree);
+    split(rightTree, currentTree);
 
 }
 
@@ -120,55 +125,44 @@ void RandomProjectionTrees::putPoints(Vector<float> coordinates){
 }
 
 void RandomProjectionTrees::initGraph(){
+//    srand(time(NULL));
+
     Vector<int> branchPoints;
     for(int i=0;i<numOfPoints;i++){
         branchPoints.push_back(i+1);
     }
-    split(branchPoints);
-    UnorderedMap<Point, Vector<Neighbors>> tempGraph = localGraphInitialization();
-    graph = tempGraph;
+    int treeCount = 0;
+    Vector<Vector<int> > tempTree;
+    split(branchPoints, tempTree);
+    treeCount++;
+    trees.push_back(TreeContents{treeCount,tempTree});
 
+    for(int i=0;i<trees.getSize();i++) {
+        graphInitialization(trees.at(i).tree);
+    }
 
 }
 
-void RandomProjectionTrees::setMetrics(char* nameOfMetrics) {
-    this->metrics = nameOfMetrics;
-}
 
-UnorderedMap<Point, Vector<Neighbors>> RandomProjectionTrees::localGraphInitialization(){
-    UnorderedMap<Point, Vector<Neighbors>> tempGraph = graph;
+void RandomProjectionTrees::graphInitialization(Vector<Vector<int> > tempTree){
     //for each leaf
-    for(int i=0;i<tree.getSize();i++){
+    for(int i=0;i<tempTree.getSize();i++){
         //for each point in leaf
-        for(int j=0;j<tree.at(i).getSize();j++){
-            Point firstPoint = points.at(tree.at(i).at(j)-1);
+        for(int j=0;j<tempTree.at(i).getSize();j++){
+            Point firstPoint = points.at(tempTree.at(i).at(j)-1);
             //for each other point in leaf
-            for(int k=0;k<tree.at(i).getSize();k++){
-                Point secondPoint = points.at(tree.at(i).at(k)-1);
+            for(int k=0;k<tempTree.at(i).getSize();k++){
+                Point secondPoint = points.at(tempTree.at(i).at(k)-1);
                 if(j != k) {
-                    if (hashingDuplicateDistances(firstPoint, secondPoint) == 1) {
-                        continue;
-                    }
-                    //calculate distance
-                    float distance;
-                    if (strcmp(this->metrics, "manhattan") == 0) {
-                        distance = Metrics::manhattanDistance(firstPoint.getCoordinates(),
-                                                              secondPoint.getCoordinates(), this->dimensions);
 
-                    } else {
-                        distance = Metrics::euclideanDistance(firstPoint.getCoordinates(),
-                                                              secondPoint.getCoordinates(), this->dimensions);
-                    }
-                    //put dist in to the hashMap
-                    DistanceContents newHashNum;
-                    newHashNum.id = secondPoint.getId();
-                    newHashNum.dist = distance;
-                    this->hashMap.insert(firstPoint, newHashNum);
+                    //calculate distance
+                    float distance = calculateDistance(firstPoint, secondPoint);
+
 
                     Vector<Neighbors> neighborsList1;
                     Vector<Neighbors> neighborsList2;
-                    tempGraph.find(firstPoint, neighborsList1);
-                    tempGraph.find(secondPoint, neighborsList2);
+                    graph.find(firstPoint, neighborsList1);
+                    graph.find(secondPoint, neighborsList2);
 
                     int check = checkDuplicate(firstPoint, secondPoint, neighborsList1, neighborsList2);
                     if (check) {
@@ -184,12 +178,12 @@ UnorderedMap<Point, Vector<Neighbors>> RandomProjectionTrees::localGraphInitiali
                             //if yes, replace max distance with second point
                             Neighbors newNeighbor(secondPoint.getId(), distance, secondPoint.getCoordinates());
                             neighborsList1.at(K - 1) = newNeighbor;
-                            tempGraph.insert(firstPoint, neighborsList1);
+                            graph.insert(firstPoint, neighborsList1);
                         }
                     } else {
                         Neighbors newNeighbor(secondPoint.getId(), distance, secondPoint.getCoordinates());
                         neighborsList1.push_back(newNeighbor);
-                        tempGraph.insert(firstPoint, neighborsList1);
+                        graph.insert(firstPoint, neighborsList1);
                     }
 
                     if (neighborsList2.getSize() == K) {
@@ -202,17 +196,47 @@ UnorderedMap<Point, Vector<Neighbors>> RandomProjectionTrees::localGraphInitiali
                             //if yes, replace max distance with second point
                             Neighbors newNeighbor(firstPoint.getId(), distance, firstPoint.getCoordinates());
                             neighborsList2.at(K - 1) = newNeighbor;
-                            tempGraph.insert(secondPoint, neighborsList2);
+                            graph.insert(secondPoint, neighborsList2);
                         }
                     } else {
                         Neighbors newNeighbor(firstPoint.getId(), distance, firstPoint.getCoordinates());
                         neighborsList2.push_back(newNeighbor);
-                        tempGraph.insert(secondPoint, neighborsList2);
+                        graph.insert(secondPoint, neighborsList2);
                     }
 
                 }
             }
         }
     }
-    return tempGraph;
+    fillGraph();
+}
+
+void RandomProjectionTrees::fillGraph() {
+    for(int k=0;k<numOfPoints;k++) {
+        Vector<Neighbors> neighborsVector;
+        Point currentPoint = points.at(k);
+        graph.find(currentPoint, neighborsVector);
+        for (int i = neighborsVector.getSize(); i <= K; i++) {
+            int randomNum;
+            int loopFlag = 1;
+            while (loopFlag) {
+                loopFlag = 0;
+                //generate random num
+                randomNum = (rand() % (this->numOfPoints)) + 1;
+
+                //if num is already in tree, generate another
+                int check = checkDuplicate(currentPoint, points.at(randomNum - 1), neighborsVector, neighborsVector);
+                if (check) {
+                    loopFlag = 1;
+                }
+            }
+            Point secondPoint = points.at(randomNum - 1);
+
+            float dist = calculateDistance(currentPoint, secondPoint);
+
+            Neighbors newNeighbor(secondPoint.getId(), dist, secondPoint.getCoordinates());
+            neighborsVector.push_back(newNeighbor);
+            graph.insert(currentPoint, neighborsVector);
+        }
+    }
 }
