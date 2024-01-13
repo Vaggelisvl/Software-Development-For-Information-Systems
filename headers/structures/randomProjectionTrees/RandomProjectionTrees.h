@@ -25,19 +25,18 @@ class RandomProjectionTrees : public Optimizations{
 private:
     int D;
     float calculateInnerProduct(Vector<float>, Vector<float>);
-    void graphInitialization(Vector<Vector<int> >);
     Vector<TreeContents> trees;
     void fillGraph();
-
-
 public:
+
+
     RandomProjectionTrees(int);
     int split(Vector<int>, Vector<Vector<int> > &);
     Vector<Vector<int> > hyperplane(Vector<int>);
     void printTree();
     void putPoints(Vector<float>);
-    void initGraph();
-//    void setMetrics(char*);
+    void creatTrees();
+    void graphInitialization();
 
 };
 

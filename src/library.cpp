@@ -160,7 +160,8 @@ int main(int argc, char *argv[]) {
         r.putPoints(elements.at(i).getCoordinates());
     }
 
-    r.initGraph();
+    r.creatTrees();
+    r.graphInitialization();
     r.printTree();
 //    printf("ok\n");
     r.printGraph("project3.txt");

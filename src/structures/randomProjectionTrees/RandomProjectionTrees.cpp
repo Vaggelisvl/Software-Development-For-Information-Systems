@@ -124,8 +124,8 @@ void RandomProjectionTrees::putPoints(Vector<float> coordinates){
     numOfPoints++;
 }
 
-void RandomProjectionTrees::initGraph(){
-//    srand(time(NULL));
+void RandomProjectionTrees::creatTrees(){
+    srand(time(NULL));
 
     Vector<int> branchPoints;
     for(int i=0;i<numOfPoints;i++){
@@ -136,79 +136,76 @@ void RandomProjectionTrees::initGraph(){
     split(branchPoints, tempTree);
     treeCount++;
     trees.push_back(TreeContents{treeCount,tempTree});
-
-    for(int i=0;i<trees.getSize();i++) {
-        graphInitialization(trees.at(i).tree);
-    }
-
 }
 
+void RandomProjectionTrees::graphInitialization(){
+    for(int p=0;p<trees.getSize();p++) {
+        Vector<Vector<int> > tempTree = trees.at(p).tree;
+        //for each leaf
+        for (int i = 0; i < tempTree.getSize(); i++) {
+            //for each point in leaf
+            for (int j = 0; j < tempTree.at(i).getSize(); j++) {
+                Point firstPoint = points.at(tempTree.at(i).at(j) - 1);
+                //for each other point in leaf
+                for (int k = 0; k < tempTree.at(i).getSize(); k++) {
+                    Point secondPoint = points.at(tempTree.at(i).at(k) - 1);
+                    if (j != k) {
 
-void RandomProjectionTrees::graphInitialization(Vector<Vector<int> > tempTree){
-    //for each leaf
-    for(int i=0;i<tempTree.getSize();i++){
-        //for each point in leaf
-        for(int j=0;j<tempTree.at(i).getSize();j++){
-            Point firstPoint = points.at(tempTree.at(i).at(j)-1);
-            //for each other point in leaf
-            for(int k=0;k<tempTree.at(i).getSize();k++){
-                Point secondPoint = points.at(tempTree.at(i).at(k)-1);
-                if(j != k) {
-
-                    //calculate distance
-                    float distance = calculateDistance(firstPoint, secondPoint);
+                        //calculate distance
+                        float distance = calculateDistance(firstPoint, secondPoint);
 
 
-                    Vector<Neighbors> neighborsList1;
-                    Vector<Neighbors> neighborsList2;
-                    graph.find(firstPoint, neighborsList1);
-                    graph.find(secondPoint, neighborsList2);
+                        Vector<Neighbors> neighborsList1;
+                        Vector<Neighbors> neighborsList2;
+                        graph.find(firstPoint, neighborsList1);
+                        graph.find(secondPoint, neighborsList2);
 
-                    int check = checkDuplicate(firstPoint, secondPoint, neighborsList1, neighborsList2);
-                    if (check) {
-                        continue;
-                    }
-                    if (neighborsList1.getSize() == K) {
-                        //sort neighborsList1
-                        neighborsList1.sort();
-                        //find max distance
-                        float maxDist = neighborsList1.at(K - 1).getDistance();
-                        //check if second point is closer than max distance
-                        if (distance < maxDist) {
-                            //if yes, replace max distance with second point
+                        int check = checkDuplicate(firstPoint, secondPoint, neighborsList1, neighborsList2);
+                        if (check) {
+                            continue;
+                        }
+                        if (neighborsList1.getSize() == K) {
+                            //sort neighborsList1
+                            neighborsList1.sort();
+                            //find max distance
+                            float maxDist = neighborsList1.at(K - 1).getDistance();
+                            //check if second point is closer than max distance
+                            if (distance < maxDist) {
+                                //if yes, replace max distance with second point
+                                Neighbors newNeighbor(secondPoint.getId(), distance, secondPoint.getCoordinates());
+                                neighborsList1.at(K - 1) = newNeighbor;
+                                graph.insert(firstPoint, neighborsList1);
+                            }
+                        } else {
                             Neighbors newNeighbor(secondPoint.getId(), distance, secondPoint.getCoordinates());
-                            neighborsList1.at(K - 1) = newNeighbor;
+                            neighborsList1.push_back(newNeighbor);
                             graph.insert(firstPoint, neighborsList1);
                         }
-                    } else {
-                        Neighbors newNeighbor(secondPoint.getId(), distance, secondPoint.getCoordinates());
-                        neighborsList1.push_back(newNeighbor);
-                        graph.insert(firstPoint, neighborsList1);
-                    }
 
-                    if (neighborsList2.getSize() == K) {
-                        //sort neighborsList2
-                        neighborsList2.sort();
-                        //find max distance
-                        float maxDist = neighborsList2.at(K - 1).getDistance();
-                        //check if second point is closer than max distance
-                        if (distance < maxDist) {
-                            //if yes, replace max distance with second point
+                        if (neighborsList2.getSize() == K) {
+                            //sort neighborsList2
+                            neighborsList2.sort();
+                            //find max distance
+                            float maxDist = neighborsList2.at(K - 1).getDistance();
+                            //check if second point is closer than max distance
+                            if (distance < maxDist) {
+                                //if yes, replace max distance with second point
+                                Neighbors newNeighbor(firstPoint.getId(), distance, firstPoint.getCoordinates());
+                                neighborsList2.at(K - 1) = newNeighbor;
+                                graph.insert(secondPoint, neighborsList2);
+                            }
+                        } else {
                             Neighbors newNeighbor(firstPoint.getId(), distance, firstPoint.getCoordinates());
-                            neighborsList2.at(K - 1) = newNeighbor;
+                            neighborsList2.push_back(newNeighbor);
                             graph.insert(secondPoint, neighborsList2);
                         }
-                    } else {
-                        Neighbors newNeighbor(firstPoint.getId(), distance, firstPoint.getCoordinates());
-                        neighborsList2.push_back(newNeighbor);
-                        graph.insert(secondPoint, neighborsList2);
-                    }
 
+                    }
                 }
             }
         }
+        fillGraph();
     }
-    fillGraph();
 }
 
 void RandomProjectionTrees::fillGraph() {
