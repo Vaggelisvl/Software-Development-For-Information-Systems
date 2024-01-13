@@ -27,6 +27,7 @@ LIB_SRCS = $(SRCDIR)/structures/point/Point.cpp \
            $(SRCDIR)/structures/scheduler/job/Job.cpp \
            $(SRCDIR)/structures/scheduler/job/NormCalculationJob.cpp \
            $(SRCDIR)/structures/scheduler/job/RandomProjectionTreeJob.cpp \
+           $(SRCDIR)/structures/scheduler/job/CalculateDistanceJob.cpp \
            $(SRCDIR)/structures/scheduler/job/FindKNearestNeighborsForPointJob.cpp \
            $(SRCDIR)/structures/scheduler/JobQueue.cpp \
            $(SRCDIR)/structures/scheduler/JobScheduler.cpp	\

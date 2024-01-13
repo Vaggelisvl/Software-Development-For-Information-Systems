@@ -35,7 +35,6 @@ protected:
     */
     UnorderedMap<Point, DistanceContents > hashMap;
     int hashingDuplicateDistances(Point&, Point&);
-    float calculateDistance(Point, Point);
 
 public:
 
@@ -124,6 +123,7 @@ public:
     void printReverseNN(char*);
 
 
+    float calculateDistance(Point, Point);
 };
 
 

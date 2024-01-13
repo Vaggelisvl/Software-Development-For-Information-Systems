@@ -5,7 +5,7 @@
 #include "../../../../headers/structures/scheduler/job/RandomProjectionTreeJob.h"
 
 void RandomProjectionTreeJob::execute() {
-    tree->initGraph();
+    tree->creatTrees();
 }
 
 RandomProjectionTreeJob::RandomProjectionTreeJob(RandomProjectionTrees *tree) : tree(tree) {}

@@ -45,4 +45,6 @@ add_library(_project
         src/structures/scheduler/job/NormCalculationJob.cpp
         headers/structures/scheduler/job/NormCalculationJob.h
         src/structures/scheduler/job/Job.cpp
+        src/structures/scheduler/job/CalculateDistanceJob.cpp
+        headers/structures/scheduler/job/CalculateDistanceJob.h
 )

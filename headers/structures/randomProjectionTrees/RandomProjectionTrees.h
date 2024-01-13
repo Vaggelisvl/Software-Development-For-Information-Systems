@@ -13,6 +13,7 @@
 #include "../../../headers/utils/Metrics.h"
 #include "../../../headers/structures/point/PointInfo.h"
 #include "../../../headers/structures/graph/Optimizations.h"
+#include "../scheduler/JobScheduler.h"
 
 typedef struct TreeContents{
     int id;
@@ -23,10 +24,11 @@ const float EPS = 1e-8;
 
 class RandomProjectionTrees : public Optimizations{
 private:
+    int numberOfTrees;
     int D;
     float calculateInnerProduct(Vector<float>, Vector<float>);
     Vector<TreeContents> trees;
-    void fillGraph();
+    void fillGraph(JobScheduler* scheduler);
 public:
 
 
@@ -36,7 +38,7 @@ public:
     void printTree();
     void putPoints(Vector<float>);
     void creatTrees();
-    void graphInitialization();
+    void graphInitialization(JobScheduler* scheduler);//jobScheduler
 
 };
 

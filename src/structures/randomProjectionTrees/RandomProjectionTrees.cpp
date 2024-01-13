@@ -1,4 +1,5 @@
 #include "../../../headers/structures/randomProjectionTrees/RandomProjectionTrees.h"
+#include "../../../headers/structures/scheduler/job/CalculateDistanceJob.h"
 
 void RandomProjectionTrees::printTree(){
     for(int k=0;k<trees.getSize();k++){
@@ -9,6 +10,7 @@ void RandomProjectionTrees::printTree(){
             }
             printf("\n");
         }
+        printf("\n");
     }
 }
 
@@ -99,8 +101,6 @@ Vector<Vector<int> > RandomProjectionTrees::hyperplane(Vector<int> branchPoints)
 }
 
 int RandomProjectionTrees::split(Vector<int> branchPoints, Vector<Vector<int> > &currentTree){
-    srand(static_cast<unsigned>(time(nullptr)));
-
     //check if branchPoints size is less than D
     if(branchPoints.getSize() <= D){
         //create leaf node
@@ -116,7 +116,7 @@ int RandomProjectionTrees::split(Vector<int> branchPoints, Vector<Vector<int> > 
 
 }
 
-RandomProjectionTrees::RandomProjectionTrees(int d):D(d){}
+RandomProjectionTrees::RandomProjectionTrees(int d):D(d),numberOfTrees(0){}
 
 void RandomProjectionTrees::putPoints(Vector<float> coordinates){
     Point point(numOfPoints+1,coordinates);
@@ -125,20 +125,20 @@ void RandomProjectionTrees::putPoints(Vector<float> coordinates){
 }
 
 void RandomProjectionTrees::creatTrees(){
-    srand(time(NULL));
+
 
     Vector<int> branchPoints;
     for(int i=0;i<numOfPoints;i++){
         branchPoints.push_back(i+1);
     }
-    int treeCount = 0;
+
     Vector<Vector<int> > tempTree;
     split(branchPoints, tempTree);
-    treeCount++;
-    trees.push_back(TreeContents{treeCount,tempTree});
+
+    trees.push_back(TreeContents{++numberOfTrees,tempTree});
 }
 
-void RandomProjectionTrees::graphInitialization(){
+void RandomProjectionTrees::graphInitialization(JobScheduler* scheduler){
     for(int p=0;p<trees.getSize();p++) {
         Vector<Vector<int> > tempTree = trees.at(p).tree;
         //for each leaf
@@ -152,7 +152,8 @@ void RandomProjectionTrees::graphInitialization(){
                     if (j != k) {
 
                         //calculate distance
-                        float distance = calculateDistance(firstPoint, secondPoint);
+                        scheduler->submit(new CalculateDistanceJob(this,firstPoint.getId(), secondPoint.getId()));
+                        float distance = this->hashMap.get(firstPoint).dist;
 
 
                         Vector<Neighbors> neighborsList1;
@@ -204,11 +205,11 @@ void RandomProjectionTrees::graphInitialization(){
                 }
             }
         }
-        fillGraph();
+        fillGraph(scheduler);
     }
 }
 
-void RandomProjectionTrees::fillGraph() {
+void RandomProjectionTrees::fillGraph(JobScheduler* scheduler) {
     for(int k=0;k<numOfPoints;k++) {
         Vector<Neighbors> neighborsVector;
         Point currentPoint = points.at(k);
@@ -228,8 +229,9 @@ void RandomProjectionTrees::fillGraph() {
                 }
             }
             Point secondPoint = points.at(randomNum - 1);
+            scheduler->submit(new CalculateDistanceJob(this,currentPoint.getId(), secondPoint.getId()));
+            float dist = this->hashMap.get(currentPoint).dist;
 
-            float dist = calculateDistance(currentPoint, secondPoint);
 
             Neighbors newNeighbor(secondPoint.getId(), dist, secondPoint.getCoordinates());
             neighborsVector.push_back(newNeighbor);

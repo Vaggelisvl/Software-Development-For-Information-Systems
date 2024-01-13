@@ -7,6 +7,9 @@
 #include "../headers/structures/randomProjectionTrees/RandomProjectionTrees.h"
 #include "../headers/structures/Dataset.h"
 #include "../headers/utils/Statistics.h"
+#include "../headers/structures/scheduler/JobScheduler.h"
+#include "../headers/structures/scheduler/job/RandomProjectionTreeJob.h"
+#include "../headers/structures/scheduler/job/NormCalculationJob.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -26,6 +29,7 @@ void printLogoFromFile(const char* filename) {
 using namespace std;
 int main(int argc, char *argv[]) {
 
+    clock_t start = clock();
     if(argc != 7){
         printf("wrong input\n");
         return 0;
@@ -41,6 +45,10 @@ int main(int argc, char *argv[]) {
     char buffer[50];
     LOG_INFO(buffer);
     sprintf(buffer, "argc: %d\n", argc);
+    // Seed the random number generator at the start of the program
+    //to ensure that the sequence of random numbers generated during the program's execution is different each time we run the program,
+    // but remains consistent during a single run of the program.
+    srand(static_cast<unsigned>(time(NULL)));
 
 
     Dataset dataset(inputFile, numOfPoints, dimensions);
@@ -160,11 +168,27 @@ int main(int argc, char *argv[]) {
         r.putPoints(elements.at(i).getCoordinates());
     }
 
-    r.creatTrees();
-    r.graphInitialization();
+    JobScheduler *scheduler;
+    scheduler=new JobScheduler(5);
+    scheduler->start_execute(); // Start the worker threads before submitting any jobs
+    for(int i=0;i<10;i++)
+        scheduler->submit(new RandomProjectionTreeJob(&r));
+//    scheduler.submit(new RandomProjectionTreeJob(&r));
+    scheduler->submit(new NormCalculationJob(r.getPoints()));
+//    r.initGraph();
+    r.graphInitialization(scheduler);
+
+
+    // Calculate the time taken by the function in microseconds
+
+    scheduler->wait_to_finish(); // Wait for all jobs to finish after they have been submitted
+    clock_t end = clock();
+    scheduler->printStats();
     r.printTree();
 //    printf("ok\n");
     r.printGraph("project3.txt");
-
+    char buffer2[50];
+    sprintf(buffer2, "Execution time: %f\n", (double)(end - start) / CLOCKS_PER_SEC);
+    LOG_INFO(buffer2);
 
 }
