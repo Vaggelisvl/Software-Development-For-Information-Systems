@@ -47,4 +47,5 @@ add_library(_project
         src/structures/scheduler/job/Job.cpp
         src/structures/scheduler/job/CalculateDistanceJob.cpp
         headers/structures/scheduler/job/CalculateDistanceJob.h
+        headers/structures/priorityQueue/PriorityQueue.h
 )
