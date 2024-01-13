@@ -1,5 +1,37 @@
 #include "../../../headers/structures/graph/Optimizations.h"
 
+float Optimizations::calculateDistance(Point point1, Point point2) {
+    float dist;
+    int hashNum = hashingDuplicateDistances(point1, point2);
+    if (hashNum == 0){
+        if (strcmp(this->metrics, "manhattan") == 0)
+        {
+            dist = Metrics::manhattanDistance(point1.getCoordinates(),
+                                              point2.getCoordinates(),
+                                              this->dimensions);
+        }
+        else
+        {
+            dist = Metrics::euclideanDistance(point1.getCoordinates(),
+                                              point2.getCoordinates(),
+                                              this->dimensions);
+        }
+        //put dist in to the hashMap
+        DistanceContents newHashNum;
+        newHashNum.id = point2.getId();
+        newHashNum.dist = dist;
+        this->hashMap.insert(point1, newHashNum);
+    }
+    else
+    {
+        DistanceContents content;
+        Point hashPoint = this->points.at(hashNum - 1);
+        this->hashMap.find(hashPoint, content);
+        dist = content.dist;
+    }
+    return dist;
+}
+
 void Optimizations::sampling()
 {
     srand(static_cast<unsigned>(time(NULL)));
@@ -56,7 +88,7 @@ float Optimizations::getd()
     return this->d;
 }
 
-int Optimizations::checkDuplicate(Neighbors point1, Neighbors point2, Vector<Neighbors> neighborsList1,
+int Optimizations::checkDuplicate(Point point1, Point point2, Vector<Neighbors> neighborsList1,
                                   Vector<Neighbors> neighborsList2)
 {
     if (point1.getId() == point2.getId())
@@ -65,15 +97,14 @@ int Optimizations::checkDuplicate(Neighbors point1, Neighbors point2, Vector<Nei
     }
 
     //if extended neighbor exist in the neighbor list
-    for (int l = 0; l < this->K; l++)
-    {
-        if (neighborsList1.at(l).getId() == point2.getId())
-        {
-            return 1;
+    for (int l = 0; l < neighborsList1.getSize(); l++) {
+        if (neighborsList1.at(l).getId() == point2.getId()) {
+            return 2;
         }
-        if (neighborsList2.at(l).getId() == point1.getId())
-        {
-            return 1;
+    }
+    for (int l = 0; l < neighborsList2.getSize(); l++){
+        if (neighborsList2.at(l).getId() == point1.getId()){
+            return 3;
         }
     }
     return 0;
@@ -159,47 +190,18 @@ UnorderedMap<Point, Vector<Neighbors>> Optimizations::localJoin(int i, int& coun
             neighborsList2.sort();
             float maxDistance2 = neighborsList2.at(this->K - 1).getDistance();
 
-            if (checkDuplicate(currentNeighborsList.at(j), currentNeighborsList.at(k), neighborsList1, neighborsList2))
+            if (checkDuplicate(neighborPoint1, neighborPoint2, neighborsList1, neighborsList2))
             {
                 continue;
             }
 
             //if neighbor1 or neighbor2 is new in the local join
-            if (incrementalSearch(currentNeighborsList.at(j), currentNeighborsList.at(k)))
-            {
+            if (incrementalSearch(currentNeighborsList.at(j), currentNeighborsList.at(k))){
                 // //change the flag of neighbor1 and neighbor2 to 2 as will be calculated in local join
                 // currentNeighborsList.at(j).setHasBeenChoosen(2);
                 // currentNeighborsList.at(k).setHasBeenChoosen(2);
                 //calculate distance between neighbor1 and neighbor2
-                float dist;
-                int hashNum = hashingDuplicateDistances(neighborPoint1, neighborPoint2);
-                if (hashNum == 0)
-                {
-                    if (strcmp(this->metrics, "manhattan") == 0)
-                    {
-                        dist = Metrics::manhattanDistance(neighborPoint1.getCoordinates(),
-                                                          neighborPoint2.getCoordinates(),
-                                                          this->dimensions);
-                    }
-                    else
-                    {
-                        dist = Metrics::euclideanDistance(neighborPoint1.getCoordinates(),
-                                                          neighborPoint2.getCoordinates(),
-                                                          this->dimensions);
-                    }
-                    //put dist in to the hashMap
-                    DistanceContents newHashNum;
-                    newHashNum.id = neighborPoint2.getId();
-                    newHashNum.dist = dist;
-                    this->hashMap.insert(neighborPoint1, newHashNum);
-                }
-                else
-                {
-                    DistanceContents content;
-                    Point hashPoint = this->points.at(hashNum - 1);
-                    this->hashMap.find(hashPoint, content);
-                    dist = content.dist;
-                }
+                float dist = calculateDistance(neighborPoint1, neighborPoint2);
 
                 //put neighbor point 2 to point 1
                 if (dist < maxDistance1)
