@@ -16,8 +16,10 @@ public:
     void push(Job* job) ;
 
     Job* pop() ;
+    Job* peek() ;// Add this line
 
-   inline bool empty() { return front == nullptr;}
+
+    inline bool empty() { return front == nullptr;}
 };
 
 #endif

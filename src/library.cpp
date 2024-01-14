@@ -171,15 +171,16 @@ int main(int argc, char *argv[]) {
     JobScheduler *scheduler;
     scheduler=new JobScheduler(5);
     scheduler->start_execute(); // Start the worker threads before submitting any jobs
-    NormCalculationJob normCalculationJob(r.getPoints());
+    auto *normCalculationJob=new NormCalculationJob(r.getPoints());
 
     scheduler->submit(new NormCalculationJob(r.getPoints()));
     for(int i=0;i<10;i++) {
-        scheduler->submit(new RandomProjectionTreeJob(&r));
+        scheduler->submit(new RandomProjectionTreeJob(&r,normCalculationJob));
     }
 //    scheduler.submit(new RandomProjectionTreeJob(&r));
 
 //    r.initGraph();
+//
     r.graphInitialization(scheduler);
 
 

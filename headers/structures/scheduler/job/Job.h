@@ -19,6 +19,8 @@ public:
     void addDependency(Job* job) ;
     bool isCompleted() ;
     virtual void execute() = 0; // Pure virtual function
-    void run() ;
+    bool run() ;
+    bool areDependenciesMet() ;
+
 };
 #endif //_PROJECT_JOB_H

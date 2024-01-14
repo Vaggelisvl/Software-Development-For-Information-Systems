@@ -24,3 +24,5 @@ Job *JobQueue::pop() {
     delete node;
     return job;
 }
+
+Job *JobQueue::peek() { return front ? front->job : nullptr; }

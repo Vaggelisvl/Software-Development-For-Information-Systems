@@ -88,7 +88,6 @@ void JobScheduler::printStats() {
     LOG_INFO( log);
 
 }
-
 void *JobScheduler::threadFunction(void *arg) {
     ThreadArg* threadArg = static_cast<ThreadArg*>(arg);
     JobScheduler* scheduler = threadArg->scheduler;
@@ -96,24 +95,37 @@ void *JobScheduler::threadFunction(void *arg) {
     while (true) {
         pthread_mutex_lock(&scheduler->mutex);
         while (!scheduler->stop && scheduler->queue.empty()) {
-            clock_t startWait = clock();  // Record the start time before waiting
+            clock_t startWait = clock();
             pthread_cond_wait(&scheduler->cond, &scheduler->mutex);
-            clock_t endWait = clock();  // Record the end time after waiting
-            scheduler->waitingTime[threadIndex] += static_cast<double>(endWait - startWait) / CLOCKS_PER_SEC;  // Add the waiting time to the total
+            clock_t endWait = clock();
+            scheduler->waitingTime[threadIndex] += static_cast<double>(endWait - startWait) / CLOCKS_PER_SEC;
         }
         if (scheduler->stop && scheduler->queue.empty()) {
             pthread_mutex_unlock(&scheduler->mutex);
             return nullptr;
         }
         Job* job = scheduler->queue.pop();
-        scheduler->jobCount[threadIndex]++;
-        pthread_mutex_unlock(&scheduler->mutex);
-        clock_t startExecution = clock();  // Record the start time before execution
-        job->run();
-        clock_t endExecution = clock();  // Record the end time after execution
-        scheduler->executionTime[threadIndex] += static_cast<double>(endExecution - startExecution) / CLOCKS_PER_SEC;  // Add the execution time to the total
-
-        delete job;
+        if (job->areDependenciesMet()) {
+            scheduler->jobCount[threadIndex]++;
+            pthread_mutex_unlock(&scheduler->mutex);
+            clock_t startExecution = clock();
+            bool executed = job->run();
+            clock_t endExecution = clock();
+            scheduler->executionTime[threadIndex] += static_cast<double>(endExecution - startExecution) / CLOCKS_PER_SEC;
+            if (!executed) {
+                pthread_mutex_lock(&scheduler->mutex);
+                scheduler->queue.push(job);
+                pthread_mutex_unlock(&scheduler->mutex);
+                pthread_cond_signal(&scheduler->cond);
+            } else {
+                delete job;
+                pthread_cond_broadcast(&scheduler->cond); // Signal all threads that a job has completed
+            }
+        } else {
+            scheduler->queue.push(job);
+            pthread_mutex_unlock(&scheduler->mutex);
+            usleep(1000); // Sleep for a short period of time to give other jobs a chance to complete
+        }
     }
 }
 

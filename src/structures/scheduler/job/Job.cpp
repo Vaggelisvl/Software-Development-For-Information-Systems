@@ -13,11 +13,18 @@
 //
 //void Job::incrementJobId() { jobID++; }
 #include "../../../../headers/structures/scheduler/job/Job.h"
+#include "../../../../headers/config/Logger.h"
 
-void Job::run() {
+bool Job::run() {
     if(dependency.areDependenciesMet()) {
         execute();
         completed = true;
+        return true;
+    } else {
+        char log[35];
+        sprintf(log, "Job has not met its dependencies");
+        LOG_WARN(log);
+        return false;
     }
 }
 
@@ -30,3 +37,5 @@ void Job::addDependency(Job *job) {
 }
 
 Job::Job() : completed(false) {}
+
+bool Job::areDependenciesMet(){ return dependency.areDependenciesMet(); }

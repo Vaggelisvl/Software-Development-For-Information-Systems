@@ -3,7 +3,6 @@
 #include "../../../../headers/config/Logger.h"
 
 void NormCalculationJob::execute() {
-    LOG_INFO("Calculating square norm for point with id " );
 
     // Implement the logic for calculating the square norm of points here
     for (auto& point : points) {

@@ -8,4 +8,6 @@ void RandomProjectionTreeJob::execute() {
     tree->creatTrees();
 }
 
-RandomProjectionTreeJob::RandomProjectionTreeJob(RandomProjectionTrees *tree) : tree(tree) {}
+RandomProjectionTreeJob::RandomProjectionTreeJob(RandomProjectionTrees *tree,NormCalculationJob *normCalculationJob) : tree(tree) {
+    this->addDependency(normCalculationJob);
+}
