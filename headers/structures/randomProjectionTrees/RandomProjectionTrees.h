@@ -28,7 +28,8 @@ private:
     int D;
     float calculateInnerProduct(Vector<float>, Vector<float>);
     Vector<TreeContents> trees;
-    void fillGraph(JobScheduler* scheduler);
+    pthread_rwlock_t treeslock;
+
 public:
     RandomProjectionTrees(int);
     int split(Vector<int>, Vector<Vector<int> > &);
@@ -36,8 +37,9 @@ public:
     void printTree();
     void putPoints(Vector<float>);
     void creatTrees();
-    void graphInitialization(JobScheduler* scheduler);//jobScheduler
+    void graphInitialization(JobScheduler* scheduler,int);//jobScheduler
 
+    void fillGraph(JobScheduler* scheduler,int);
 };
 
 

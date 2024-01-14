@@ -4,21 +4,37 @@
 
 #include "../../../../headers/structures/scheduler/job/CalculateDistanceJob.h"
 
-CalculateDistanceJob::CalculateDistanceJob(Optimizations *optimizations,int p1,int p2) :pointId1(p1),pointId2(p2){
+CalculateDistanceJob::CalculateDistanceJob(Optimizations *optimizations,int p1,int p2,int id) :pointId1(p1),pointId2(p2){
+
+
     this->optimizations=optimizations;
+    this->setJobId(id);
     char log[100];
-    sprintf(log, "CalculateDistanceJob created with pointIds %d and %d", pointId1,pointId2);
-    LOG_INFO(log);
+//    sprintf(log, "CalculateDistanceJob created with pointIds %d and %d", pointId1,pointId2);
+//    LOG_INFO(log);
 
 }
 
 void CalculateDistanceJob::execute() {
-    char log1[100];
-    sprintf(log1, "Calculating distance between %d and %d", pointId1,pointId2);
-    LOG_INFO(log1);
+    LOG_DEBUG(([&](){char* buffer = new char[100];sprintf(buffer, "Calculating distance between %d and %d", pointId1,pointId2);return buffer;})());
+
     optimizations->calculateDistance(optimizations->getPoint(pointId1),optimizations->getPoint(pointId2));
-    char log[100];
-    sprintf(log, "Distance between %d and %d calculated", pointId1,pointId2);
+    pthread_mutex_lock(&mutex);
+    isFinished = true;
+    pthread_cond_signal(&cond);
+    pthread_mutex_unlock(&mutex);
+}
+
+bool CalculateDistanceJob::getIsFinished() const {
+    return isFinished;
+}
+
+void CalculateDistanceJob::waitUntilFinished() {
+    pthread_mutex_lock(&mutex);
+    while (!isFinished) {
+        pthread_cond_wait(&cond, &mutex);
+    }
+    pthread_mutex_unlock(&mutex);
 }
 //
 //void CalculateDistanceJob::setPointId1(int pointId1) {

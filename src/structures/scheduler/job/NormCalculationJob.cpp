@@ -14,12 +14,19 @@ void NormCalculationJob::execute() {
         // Store the square norm for later use
         // Assuming Point class has a method setSquareNorm for this purpose
         const_cast<Point&>(point).setSquareNorm(squareNorm);
-        char buffer[50];
-        sprintf(buffer, "Square norm for point with id %d is %f", point.getId(), squareNorm);
-        LOG_INFO(buffer);
 
+        LOG_INFO(([&](){char* buffer = new char[100];sprintf(buffer, "Square norm for point with id %d is %f", point.getId(), squareNorm);return buffer;})());
     }
+    char buffer[60];
+    sprintf(buffer, "-----------NormCalculationJob completed-----------------");
+    LOG_INFO(buffer);
+
+}
+
+NormCalculationJob::NormCalculationJob(Vector<Point> points, int id) {
+    this->points = points;
+    this->setJobId(id);
     char buffer[50];
-    sprintf(buffer, "NormCalculationJob completed");
+    sprintf(buffer, "NormCalculationJob created with id %d", id);
     LOG_INFO(buffer);
 }

@@ -4,9 +4,10 @@
 
 
 #include "../../../headers/structures/scheduler/JobQueue.h"
+#include "../../../headers/config/Logger.h"
 
 void JobQueue::push(Job *job) {
-    JobNode* node = new JobNode(job);
+    auto* node = new JobNode(job);
     if (back) {
         back->next = node;
     } else {
@@ -14,6 +15,9 @@ void JobQueue::push(Job *job) {
     }
     back = node;
     size++;
+//    char log[35];
+//    sprintf(log, "JobQueue::push");
+//    LOG_INFO( log);
 }
 
 Job *JobQueue::pop() {

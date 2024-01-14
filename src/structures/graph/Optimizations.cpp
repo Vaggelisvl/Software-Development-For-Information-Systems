@@ -17,16 +17,27 @@ float Optimizations::calculateDistance(Point point1, Point point2) {
         //put dist in to the hashMap
         DistanceContents newHashNum;
         newHashNum.id = point2.getId();
+       // Unlock the mutex
         newHashNum.dist = dist;
-        writeHashMap(point1, newHashNum);
-//        this->hashMap.insert(point1, newHashNum);
+        pthread_rwlock_wrlock(&hashMapRwlock); // Lock the mutex
+        this->hashMap.insert(point1, newHashNum);
+        pthread_rwlock_unlock(&hashMapRwlock); // Unlock the mutex
     } else {
-
+        pthread_rwlock_rdlock(&pointslock);
         Point hashPoint = this->points.at(hashNum - 1);
-        DistanceContents content= readHashMap(hashPoint);
+        pthread_rwlock_unlock(&pointslock);
+
+        DistanceContents content;
+
+        pthread_rwlock_rdlock(&hashMapRwlock); // Lock the mutex
+        this->hashMap.find(hashPoint, content);
+        pthread_rwlock_unlock(&hashMapRwlock); // Unlock the mutex
 
         dist = content.dist;
     }
+    char buffer[100];
+    sprintf(buffer, "Distance between %d and %d is %f", point1.getId(), point2.getId(), dist);
+    LOG_INFO(buffer);
     return dist;
 }
 
@@ -110,11 +121,15 @@ int Optimizations::incrementalSearch(Neighbors &n1, Neighbors &n2) {
 
 int Optimizations::hashingDuplicateDistances(Point &point1, Point &point2) {
     DistanceContents hashNum;
+    pthread_rwlock_rdlock(&hashMapRwlock); // Lock the mutex
     this->hashMap.find(point1, hashNum);
+    pthread_rwlock_unlock(&hashMapRwlock); // Unlock the mutex
     if (hashNum.id == point2.getId()) {
         return point1.getId();
     }
+    pthread_rwlock_rdlock(&hashMapRwlock); // Lock the mutex
     this->hashMap.find(point2, hashNum);
+    pthread_rwlock_unlock(&hashMapRwlock); // Unlock the mutex
     if (hashNum.id == point1.getId()) {
         return point2.getId();
     } else {
@@ -364,6 +379,9 @@ void Optimizations::printReverseNN(char *outputFile) {
 
 void Optimizations::writeHashMap(Point point, DistanceContents content) {
     pthread_rwlock_wrlock(&hashMapRwlock); // Lock the mutex
+    char buffer[100];
+    sprintf(buffer, "content: %f\n ",content.dist);
+    LOG_INFO(buffer);
     this->hashMap.insert(point, content); // Write to the hashMap
     pthread_rwlock_unlock(&hashMapRwlock); // Unlock the mutex
 }

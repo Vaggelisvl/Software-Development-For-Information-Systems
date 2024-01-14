@@ -10,7 +10,7 @@ class NormCalculationJob : public Job {
 private:
     Vector<Point> points;
 public:
-    NormCalculationJob(Vector<Point> points) : points(points) {}
+    NormCalculationJob(Vector<Point> points,int id) ;
     void execute() override ;
 };
 #endif

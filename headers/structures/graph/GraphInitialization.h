@@ -13,7 +13,7 @@
 #include "../../../headers/utils/Metrics.h"
 #include "../../../headers/structures/point/PointInfo.h"
 
-
+#include <pthread.h>
 class GraphInitialization{
 private:
     Vector<float> pointsMaxDistance;
@@ -22,8 +22,10 @@ protected:
     int numOfPoints;
     int K;
     Vector<Point> points;
+    pthread_rwlock_t pointslock;
     int dimensions;
     char* metrics;
+    pthread_rwlock_t graphlock;
     UnorderedMap< Point, Vector<Neighbors> > graph;
 public:
     GraphInitialization();

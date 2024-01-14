@@ -60,8 +60,11 @@ void GraphInitialization::printGraph(char* outputFile) {
         this->graph.find(this->points.at(i), neighborsVector);
         for (int j = 0; j < neighborsVector.getSize(); j++) {
             char buffer[100]; // Adjust the buffer size as needed
+
             int neighborId = neighborsVector.at(j).getId();
             float neighborDistance = neighborsVector.at(j).getDistance();
+//            sprintf(buffer, "distance: %f", neighborDistance);
+//            LOG_INFO(buffer);
             fprintf(file,"point: %d", neighborId);
             fprintf(file," distance: %f\n", neighborDistance);
 //            LOG_INFO(buffer);
@@ -323,7 +326,9 @@ UnorderedMap<Point, Vector<Neighbors>> GraphInitialization::getGraph() {
 }
 
 Point GraphInitialization::getPoint(int id) {
+    pthread_rwlock_rdlock(&pointslock);
     return this->points.at(id - 1);
+    pthread_rwlock_unlock(&pointslock);
 }
 
 int GraphInitialization::getK() {

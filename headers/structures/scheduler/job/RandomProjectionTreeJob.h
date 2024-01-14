@@ -15,7 +15,7 @@ private:
     RandomProjectionTrees* tree;
 //    NormCalculationJob*normCalculationJob;
 public:
-    explicit RandomProjectionTreeJob(RandomProjectionTrees* tree,NormCalculationJob*) ;
+    explicit RandomProjectionTreeJob(RandomProjectionTrees* tree,NormCalculationJob*, int) ;
     void execute() override ;
 };
 

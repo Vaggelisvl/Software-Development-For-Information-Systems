@@ -30,7 +30,7 @@ void printLogoFromFile(const char* filename) {
 
 using namespace std;
 int main(int argc, char *argv[]) {
-
+    Logger::SetSpecificLoggingEnabled("INFO");
     clock_t start = clock();
     if(argc != 7){
         printf("wrong input\n");
@@ -162,6 +162,7 @@ int main(int argc, char *argv[]) {
 
     //project 3
     printf("RANDOM PROJECTION TREES\n");
+    int jobs=0;
     RandomProjectionTrees r(3);
     r.setMetrics(metrics);
     r.setK(K);
@@ -173,19 +174,17 @@ int main(int argc, char *argv[]) {
     JobScheduler *scheduler;
     scheduler=new JobScheduler(5);
     scheduler->start_execute(); // Start the worker threads before submitting any jobs
-    NormCalculationJob *normCalculationJob=new NormCalculationJob(r.getPoints());
+    NormCalculationJob *normCalculationJob=new NormCalculationJob(r.getPoints(),jobs++);
 
-    scheduler->submit(new NormCalculationJob(r.getPoints()));
-    for(int i=1;i<10;i++) {
-//        usleep(100);
-        scheduler->submit(new RandomProjectionTreeJob(&r,normCalculationJob));
-    }
+    scheduler->submit(normCalculationJob);
+    for(int i=0;i<10;i++)
+        scheduler->submit(new RandomProjectionTreeJob(&r,normCalculationJob,jobs++));
+//    }
 //    scheduler.submit(new RandomProjectionTreeJob(&r));
 
 //    r.initGraph();
 //
-    r.graphInitialization(scheduler);
-
+    r.graphInitialization(scheduler,jobs++);
 
     // Calculate the time taken by the function in microseconds
 
@@ -194,6 +193,7 @@ int main(int argc, char *argv[]) {
     scheduler->printStats();
     r.printTree();
 //    printf("ok\n");
+    delete scheduler;
     r.printGraph("project3.txt");
     char buffer2[50];
     sprintf(buffer2, "Execution time: %f\n", (double)(end - start) / CLOCKS_PER_SEC);

@@ -9,12 +9,13 @@
 
 class Job {
 private:
-    JobDependency dependency;
+    JobDependency *dependency;
     bool completed;
+    int jobID;
 public:
-//    int getJobId() const ;
-//    void setJobId(int jobId) ;
-//    void incrementJobId() ;
+    int getJobId() const ;
+    void setJobId(int jobId) ;
+    void incrementJobId() ;
     Job() ;
     void printJobState();
     void addDependency(Job* job) ;

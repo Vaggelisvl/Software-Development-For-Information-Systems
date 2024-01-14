@@ -49,4 +49,6 @@ add_library(_project
         headers/structures/scheduler/job/CalculateDistanceJob.h
         src/structures/scheduler/JobDependency.cpp
         headers/structures/scheduler/JobDependency.h
+        src/structures/scheduler/job/GraphInitializationJob.cpp
+        headers/structures/scheduler/job/GraphInitializationJob.h
 )

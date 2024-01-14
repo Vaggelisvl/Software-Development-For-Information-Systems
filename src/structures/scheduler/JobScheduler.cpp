@@ -21,9 +21,7 @@ JobScheduler::JobScheduler(int numThreads) : numThreads(numThreads), stop(false)
     this->threads = new pthread_t[numThreads];
     pthread_mutex_init(&mutex, nullptr);
     pthread_cond_init(&cond, nullptr);
-    char log[100];
-    sprintf(log, "JobScheduler created with %d threads", numThreads);
-    LOG_INFO( log);
+    LOG_DEBUG( ([&](){char* buffer = new char[50];sprintf(buffer, "JobScheduler created with %d threads", numThreads); return buffer;})());
 }
 
 JobScheduler::~JobScheduler() {
@@ -49,14 +47,14 @@ void JobScheduler::wait_to_finish() {
     pthread_mutex_lock(&mutex);
     // Set the stop flag to true
     stop = true;
-    // Unlock the mutex before signaling the condition variable
-    pthread_mutex_unlock(&mutex);
     // Signal all waiting threads
     pthread_cond_broadcast(&cond);
+    // Unlock the mutex after signaling the condition variable
+    pthread_mutex_unlock(&mutex);
     // Wait for all threads to finish
-    for (int i = 0; i < numThreads; ++i) {
+    for (int i = 0; i < numThreads; ++i)
         pthread_join(threads[i], nullptr);
-    }
+
 }
 
 void JobScheduler::submit(Job *job){
@@ -65,9 +63,8 @@ void JobScheduler::submit(Job *job){
     queue.push(job);
     pthread_mutex_unlock(&mutex);
     pthread_cond_signal(&cond);
-    char log[100];
-    sprintf(log, "Job with id %d submitted", numJobs++);
-    LOG_INFO( log);
+    LOG_INFO(([&](){char* buffer = new char[50];sprintf(buffer, "Job with id %d submitted", job->getJobId()); return buffer;})());
+
 
 }
 
@@ -96,17 +93,24 @@ void *JobScheduler::threadFunction(void *arg) {
     while (true) {
         pthread_mutex_lock(&scheduler->mutex);
         while (!scheduler->stop && scheduler->queue.empty()) {
-            clock_t startWait = clock();
             pthread_cond_wait(&scheduler->cond, &scheduler->mutex);
+            clock_t startWait = clock();
             clock_t endWait = clock();
             scheduler->waitingTime[threadIndex] += static_cast<double>(endWait - startWait) / CLOCKS_PER_SEC;
         }
         if (scheduler->stop && scheduler->queue.empty()) {
             pthread_mutex_unlock(&scheduler->mutex);
-            return nullptr;
+            return NULL;
         }
         Job* job = scheduler->queue.pop();
+        if(job->isCompleted()){
+            LOG_DEBUG(([&](){char* buffer = new char[50];sprintf(buffer, "Job with id %d competed", job->getJobId()); return buffer;})());
+            return NULL;
+        }
         if (job->areDependenciesMet()) {
+
+            LOG_DEBUG(([&](){char* buffer = new char[50];sprintf(buffer, "Job with id %d started", job->getJobId()); return buffer;})());
+
             scheduler->jobCount[threadIndex]++;
             pthread_mutex_unlock(&scheduler->mutex);
             clock_t startExecution = clock();
@@ -114,18 +118,28 @@ void *JobScheduler::threadFunction(void *arg) {
             clock_t endExecution = clock();
             scheduler->executionTime[threadIndex] += static_cast<double>(endExecution - startExecution) / CLOCKS_PER_SEC;
             if (!executed) {
+
+                LOG_DEBUG(([&](){char* buffer = new char[50];sprintf(buffer, "Job with id %d failed", job->getJobId()); return buffer;})());
+
                 pthread_mutex_lock(&scheduler->mutex);
                 scheduler->queue.push(job);
                 pthread_mutex_unlock(&scheduler->mutex);
                 pthread_cond_signal(&scheduler->cond);
             } else {
-                delete job;
+
+                LOG_DEBUG(([&](){char* buffer = new char[70];sprintf(buffer, "-----Job with id %d completed-----", job->getJobId()); return buffer;})());
+
                 pthread_cond_broadcast(&scheduler->cond); // Signal all threads that a job has completed
+//                delete job;
+//                break;
             }
         } else {
+
+            LOG_DEBUG(([&](){char* buffer = new char[70];sprintf(buffer, "Job with id %d has unmet dependencies", job->getJobId()); return buffer;})());
+
             scheduler->queue.push(job);
             pthread_mutex_unlock(&scheduler->mutex);
-            usleep(1000); // Sleep for a short period of time to give other jobs a chance to complete
+//            usleep(1000); // Sleep for a short period of time to give other jobs a chance to complete
         }
     }
 }

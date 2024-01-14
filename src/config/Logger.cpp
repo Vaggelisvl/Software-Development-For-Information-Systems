@@ -9,7 +9,7 @@ bool Logger::loggingEnabled = true;
 bool Logger::loggingInfoEnabled = true;
 bool Logger::loggingWarnEnabled = true;
 bool Logger::loggingErrorEnabled = true;
-
+bool Logger::loggingDebugEnabled = true;
 void Logger::Info(const char *message) {
     Log("INFO", message, "\033[32m");  // Green
 }
@@ -53,25 +53,40 @@ bool Logger::IsLoggingWarnEnabled() {
 bool Logger::IsLoggingErrorEnabled() {
     return loggingErrorEnabled;
 }
+void Logger::Debug(const char *message) {
+    Log("DEBUG", message, "\033[34m");  // Blue
+}
 
+bool Logger::IsLoggingDebugEnabled() {
+    return loggingDebugEnabled;
+}
 void Logger::SetSpecificLoggingEnabled( const char *level) {
     if (strcmp(level, "ALL") == 0) {
         loggingInfoEnabled = true;
         loggingErrorEnabled = true;
         loggingWarnEnabled = true;
+        loggingDebugEnabled = true;
     } else if (strcmp(level, "NONE") == 0) {
         loggingEnabled = false;
     } else if (strcmp(level, "INFO") == 0) {
         loggingInfoEnabled = true;
+        loggingDebugEnabled = false;
         loggingErrorEnabled = false;
         loggingWarnEnabled = false;
     } else if (strcmp(level, "WARN") == 0) {
         loggingWarnEnabled = true;
+        loggingDebugEnabled = false;
         loggingErrorEnabled = false;
         loggingInfoEnabled = false;
     } else if (strcmp(level, "ERROR") == 0) {
         loggingErrorEnabled = true;
+        loggingDebugEnabled = false;
         loggingInfoEnabled = false;
+        loggingWarnEnabled = false;
+    } else if (strcmp(level, "DEBUG") == 0) {
+        loggingDebugEnabled = true;
+        loggingInfoEnabled = false;
+        loggingErrorEnabled = false;
         loggingWarnEnabled = false;
     }
 
