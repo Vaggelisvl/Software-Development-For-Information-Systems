@@ -194,6 +194,7 @@ int main(int argc, char *argv[]) {
     r.printTree();
 //    printf("ok\n");
     delete scheduler;
+//    usleep(10000000);
     r.printGraph("project3.txt");
     char buffer2[50];
     sprintf(buffer2, "Execution time: %f\n", (double)(end - start) / CLOCKS_PER_SEC);

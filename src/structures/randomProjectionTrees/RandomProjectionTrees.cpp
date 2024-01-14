@@ -232,13 +232,14 @@ void RandomProjectionTrees::graphInitialization(JobScheduler* scheduler,int id )
                 }
             }
         }
-        fillGraph(scheduler,id);
 
 
     }
+    fillGraph(scheduler,id);
 }
 
 void RandomProjectionTrees::fillGraph(JobScheduler* scheduler,int id ) {
+
     for(int k=0;k<numOfPoints;k++) {
         Vector<Neighbors> neighborsVector;
         pthread_rwlock_rdlock(&this->pointslock); // Lock the read-write lock for reading
@@ -247,7 +248,7 @@ void RandomProjectionTrees::fillGraph(JobScheduler* scheduler,int id ) {
         pthread_rwlock_rdlock(&this->graphlock);
         graph.find(currentPoint, neighborsVector);
         pthread_rwlock_unlock(&graphlock); // Unlock the read-write lock
-        for (int i = neighborsVector.getSize(); i < K; i++) {
+        for (int i = neighborsVector.getSize(); i <= K; i++) {
             int randomNum;
             int loopFlag = 1;
             while (loopFlag) {
