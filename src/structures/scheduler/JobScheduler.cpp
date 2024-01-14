@@ -109,7 +109,7 @@ void *JobScheduler::threadFunction(void *arg) {
         scheduler->jobCount[threadIndex]++;
         pthread_mutex_unlock(&scheduler->mutex);
         clock_t startExecution = clock();  // Record the start time before execution
-        job->execute();
+        job->run();
         clock_t endExecution = clock();  // Record the end time after execution
         scheduler->executionTime[threadIndex] += static_cast<double>(endExecution - startExecution) / CLOCKS_PER_SEC;  // Add the execution time to the total
 

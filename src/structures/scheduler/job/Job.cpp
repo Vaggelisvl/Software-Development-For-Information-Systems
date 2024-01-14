@@ -12,3 +12,21 @@
 //}
 //
 //void Job::incrementJobId() { jobID++; }
+#include "../../../../headers/structures/scheduler/job/Job.h"
+
+void Job::run() {
+    if(dependency.areDependenciesMet()) {
+        execute();
+        completed = true;
+    }
+}
+
+bool Job::isCompleted() {
+    return completed;
+}
+
+void Job::addDependency(Job *job) {
+    dependency.addDependency(job);
+}
+
+Job::Job() : completed(false) {}

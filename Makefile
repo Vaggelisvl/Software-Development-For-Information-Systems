@@ -30,6 +30,7 @@ LIB_SRCS = $(SRCDIR)/structures/point/Point.cpp \
            $(SRCDIR)/structures/scheduler/job/CalculateDistanceJob.cpp \
            $(SRCDIR)/structures/scheduler/job/FindKNearestNeighborsForPointJob.cpp \
            $(SRCDIR)/structures/scheduler/JobQueue.cpp \
+           $(SRCDIR)/structures/scheduler/JobDependency.cpp	\
            $(SRCDIR)/structures/scheduler/JobScheduler.cpp	\
            $(SRCDIR)/structures/Dataset.cpp \
            $(SRCDIR)/structures/graph/GraphInitialization.cpp \

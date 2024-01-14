@@ -30,8 +30,6 @@ private:
     Vector<TreeContents> trees;
     void fillGraph(JobScheduler* scheduler);
 public:
-
-
     RandomProjectionTrees(int);
     int split(Vector<int>, Vector<Vector<int> > &);
     Vector<Vector<int> > hyperplane(Vector<int>);
