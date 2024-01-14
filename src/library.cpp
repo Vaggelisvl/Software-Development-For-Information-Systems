@@ -13,6 +13,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
+
 void printLogoFromFile(const char* filename) {
     FILE* file = fopen(filename, "r");
     if (file != NULL) {
@@ -171,10 +173,11 @@ int main(int argc, char *argv[]) {
     JobScheduler *scheduler;
     scheduler=new JobScheduler(5);
     scheduler->start_execute(); // Start the worker threads before submitting any jobs
-    auto *normCalculationJob=new NormCalculationJob(r.getPoints());
+    NormCalculationJob *normCalculationJob=new NormCalculationJob(r.getPoints());
 
     scheduler->submit(new NormCalculationJob(r.getPoints()));
-    for(int i=0;i<10;i++) {
+    for(int i=1;i<10;i++) {
+//        usleep(100);
         scheduler->submit(new RandomProjectionTreeJob(&r,normCalculationJob));
     }
 //    scheduler.submit(new RandomProjectionTreeJob(&r));

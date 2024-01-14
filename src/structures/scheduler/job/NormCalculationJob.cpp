@@ -19,4 +19,7 @@ void NormCalculationJob::execute() {
         LOG_INFO(buffer);
 
     }
+    char buffer[50];
+    sprintf(buffer, "NormCalculationJob completed");
+    LOG_INFO(buffer);
 }

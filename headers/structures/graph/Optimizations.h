@@ -17,6 +17,7 @@ private:
     UnorderedMap< Point, Vector<Neighbors> > reverseNN;
     float d;
     bool hasBeenInitialized=false;
+    pthread_rwlock_t hashMapRwlock;
 protected:
     /**
     * @brief This function checks if a point is a duplicate in the neighbor list of another point.
@@ -37,6 +38,7 @@ protected:
     int hashingDuplicateDistances(Point&, Point&);
 
 public:
+    Optimizations();
 
     /**
     * @brief This function is used to sample a subset of neighbors for each point in the graph.
@@ -124,6 +126,8 @@ public:
 
 
     float calculateDistance(Point, Point);
+    void writeHashMap(Point point, DistanceContents contents) ;
+    DistanceContents readHashMap(Point point);
 };
 
 

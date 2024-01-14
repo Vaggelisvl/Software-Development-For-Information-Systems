@@ -23,7 +23,9 @@ private:
     int *jobCount; ///< Array to store the number of jobs executed by each thread.
     int numJobs = 0; ///< Total number of jobs submitted to the scheduler.
 
+
 public:
+    void printSchedulerState();
 
     /**
      * @brief Constructor for the JobScheduler class.

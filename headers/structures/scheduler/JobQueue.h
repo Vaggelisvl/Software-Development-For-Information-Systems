@@ -9,6 +9,7 @@ class JobQueue {
 private:
     JobNode* front;
     JobNode* back;
+    int size;
 
 public:
     JobQueue() : front(nullptr), back(nullptr) {}
@@ -17,8 +18,8 @@ public:
 
     Job* pop() ;
     Job* peek() ;// Add this line
-
-
+    int getSize();
+    JobNode* begin() ;
     inline bool empty() { return front == nullptr;}
 };
 

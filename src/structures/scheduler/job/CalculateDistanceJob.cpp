@@ -6,11 +6,19 @@
 
 CalculateDistanceJob::CalculateDistanceJob(Optimizations *optimizations,int p1,int p2) :pointId1(p1),pointId2(p2){
     this->optimizations=optimizations;
+    char log[100];
+    sprintf(log, "CalculateDistanceJob created with pointIds %d and %d", pointId1,pointId2);
+    LOG_INFO(log);
 
 }
 
 void CalculateDistanceJob::execute() {
+    char log1[100];
+    sprintf(log1, "Calculating distance between %d and %d", pointId1,pointId2);
+    LOG_INFO(log1);
     optimizations->calculateDistance(optimizations->getPoint(pointId1),optimizations->getPoint(pointId2));
+    char log[100];
+    sprintf(log, "Distance between %d and %d calculated", pointId1,pointId2);
 }
 //
 //void CalculateDistanceJob::setPointId1(int pointId1) {

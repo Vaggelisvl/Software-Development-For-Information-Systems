@@ -5,6 +5,8 @@
 #include "../../../headers/structures/scheduler/JobDependency.h"
 #include "../../../headers/structures/scheduler/job/Job.h"
 void JobDependency::addDependency(Job *job)  {
+    char log[35];
+    sprintf(log, "JobDependency::addDependency");
     dependencies.push_back(job);
 }
 

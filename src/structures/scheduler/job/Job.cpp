@@ -33,9 +33,19 @@ bool Job::isCompleted() {
 }
 
 void Job::addDependency(Job *job) {
+    char log[35];
+    sprintf(log, "Dependency added");
     dependency.addDependency(job);
 }
 
 Job::Job() : completed(false) {}
 
 bool Job::areDependenciesMet(){ return dependency.areDependenciesMet(); }
+
+void Job::printJobState() {
+    char log[100];
+    sprintf(log, "Job is %s", completed ? "completed" : "not completed");
+    sprintf(log, "Job Dependencies Met: %s", dependency.areDependenciesMet() ? "true" : "false");
+    LOG_INFO(log);
+
+}

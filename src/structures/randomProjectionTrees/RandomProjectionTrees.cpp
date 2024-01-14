@@ -150,7 +150,10 @@ void RandomProjectionTrees::graphInitialization(JobScheduler* scheduler){
                 for (int k = 0; k < tempTree.at(i).getSize(); k++) {
                     Point secondPoint = points.at(tempTree.at(i).at(k) - 1);
                     if (j != k) {
-
+                        char buffer[100];
+                        sprintf(buffer, "Calculating distance in graphInitialization for points %d and %d", firstPoint.getId(),
+                                secondPoint.getId());
+                        LOG_INFO(buffer);
                         //calculate distance
                         scheduler->submit(new CalculateDistanceJob(this,firstPoint.getId(), secondPoint.getId()));
                         float distance = this->hashMap.get(firstPoint).dist;

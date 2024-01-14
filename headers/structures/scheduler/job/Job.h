@@ -16,6 +16,7 @@ public:
 //    void setJobId(int jobId) ;
 //    void incrementJobId() ;
     Job() ;
+    void printJobState();
     void addDependency(Job* job) ;
     bool isCompleted() ;
     virtual void execute() = 0; // Pure virtual function

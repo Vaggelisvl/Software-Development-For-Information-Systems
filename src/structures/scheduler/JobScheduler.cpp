@@ -61,13 +61,14 @@ void JobScheduler::wait_to_finish() {
 
 void JobScheduler::submit(Job *job){
 //    job->incrementJobId();
-    char log[100];
-    sprintf(log, "Job with id %d submitted", numJobs++);
-    LOG_INFO( log);
     pthread_mutex_lock(&mutex);
     queue.push(job);
     pthread_mutex_unlock(&mutex);
     pthread_cond_signal(&cond);
+    char log[100];
+    sprintf(log, "Job with id %d submitted", numJobs++);
+    LOG_INFO( log);
+
 }
 
 void JobScheduler::printStats() {
@@ -139,4 +140,24 @@ void JobScheduler::start_execute() {
     }
 
 
+}
+
+void JobScheduler::printSchedulerState() {
+    char log[300];
+    sprintf(log, "JobScheduler State: \nNumber of Jobs: %d\nNumber of Threads: %d\nJobs in Queue: %d\n", numJobs, numThreads, queue.getSize());
+    LOG_INFO( log);
+
+    while(!queue.empty()){
+        Job* job = queue.pop();
+        job->printJobState();
+        queue.push(job);
+    }
+
+
+    // Print state of each thread
+    for (int i = 0; i < numThreads; ++i) {
+        char log1[300];
+        sprintf(log, "Thread %d State: \nJobs Executed: %d\nWaiting Time: %f\nExecution Time: %f\n", i, jobCount[i], waitingTime[i],executionTime[i]);
+        LOG_INFO( log1);
+    }
 }
