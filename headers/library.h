@@ -1,6 +1,0 @@
-#ifndef _PROJECT_LIBRARY_H
-#define _PROJECT_LIBRARY_H
-
-
-
-#endif //_PROJECT_LIBRARY_H

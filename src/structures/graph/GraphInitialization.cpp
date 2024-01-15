@@ -57,11 +57,15 @@ void GraphInitialization::printGraph(char* outputFile) {
         Vector<Neighbors> neighborsVector;
         //print graph
         fprintf(file, "point: %d{\n", i+1);
-        for (int j = 0; j < this->K; j++) {
-            this->graph.find(this->points.at(i), neighborsVector);
+        this->graph.find(this->points.at(i), neighborsVector);
+        neighborsVector.sort();
+        for (int j = 0; j < neighborsVector.getSize(); j++) {
             char buffer[100]; // Adjust the buffer size as needed
+
             int neighborId = neighborsVector.at(j).getId();
             float neighborDistance = neighborsVector.at(j).getDistance();
+//            sprintf(buffer, "distance: %f", neighborDistance);
+//            LOG_INFO(buffer);
             fprintf(file,"point: %d", neighborId);
             fprintf(file," distance: %f\n", neighborDistance);
 //            LOG_INFO(buffer);
@@ -83,7 +87,7 @@ void GraphInitialization::printNeighbors(int id) {
 }
 
 void GraphInitialization::setKRandomNeighbors() {
-    srand(static_cast<unsigned>(time(nullptr)));
+    srand(static_cast<unsigned>(time(NULL)));
 
     //for every point
     for (int i = 0; i < this->numOfPoints; i++) {
@@ -266,7 +270,7 @@ int GraphInitialization::KNNAlgorithm() {
 
 
 void GraphInitialization::findKNearestNeighborsForPoint(const Point &queryPoint) {
-    srand(time(nullptr));
+    srand(time(NULL));
     Vector<Neighbors> uniqueNumbers;
     int randomNumber;
     int flag;
@@ -323,7 +327,9 @@ UnorderedMap<Point, Vector<Neighbors>> GraphInitialization::getGraph() {
 }
 
 Point GraphInitialization::getPoint(int id) {
+    pthread_rwlock_rdlock(&pointslock);
     return this->points.at(id - 1);
+    pthread_rwlock_unlock(&pointslock);
 }
 
 int GraphInitialization::getK() {
@@ -342,6 +348,7 @@ void GraphInitialization::setK(int k) {
     this->K = k;
 
 }
+
 
 void GraphInitialization::calculateAllDistances() {
     printf("calculate all distances\n");
@@ -369,7 +376,7 @@ void GraphInitialization::calculateAllDistances() {
     printf("calculate all distances 1 \n");
     FILE *file;
     file = fopen("results.txt", "w");
-    if(file == nullptr){
+    if(file == NULL){
         LOG_ERROR("Cannot open results.txt file");
         exit(1);
     }
@@ -394,6 +401,11 @@ void GraphInitialization::calculateAllDistances() {
         fprintf(file, "\n}\n");
     }
     fclose(file);
+}
+
+void GraphInitialization::setNormOfPoint(int index, float norm) {
+    this->points.at(index).setSquareNorm(norm);
+
 }
 
 

@@ -1,6 +1,3 @@
-//
-// Created by snz on 10/31/2023.
-//
 
 #ifndef POINT_H
 #define POINT_H
@@ -13,10 +10,13 @@ protected:
     Vector<float > coordinates;
     int id;
     int hasBeenChoosen;
-
+    float squareNorm;
 public:
+    void setSquareNorm(float squareNorm);
+    float getSquareNorm() const;
     Point(int id, Vector<float> coordinates);
     Point();
+
     void setHasBeenChoosen(int hasBeenChoosen);
     int getHasBeenChoosen() const;
     bool operator==(const Point& other) const;
@@ -34,4 +34,4 @@ public:
 };
 
 
-#endif //_PROJECT_POINT_H
+#endif

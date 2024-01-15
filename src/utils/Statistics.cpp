@@ -41,7 +41,7 @@ void Statistics::calculateAllDistances(char*metric) {
     }
     FILE *file;
     file = fopen("results.txt", "w");
-    if(file == nullptr){
+    if(file == NULL){
         LOG_ERROR("Cannot open results.txt file");
         exit(1);
     }
@@ -137,9 +137,9 @@ void Statistics::printStatistics(int k) {
 void Statistics::printInMatrixForm(int k){
 
     // Calculate the length of the "Point" string
-    int pointLabelLength = snprintf(nullptr, 0, "| Point: %d", pointInfo[0]->getId());
+    int pointLabelLength = snprintf(NULL, 0, "| Point: %d", pointInfo[0]->getId());
     const char* label = "|Right Decisions:";
-    int labelLength = snprintf(nullptr, 0, "%s", label);
+    int labelLength = snprintf(NULL, 0, "%s", label);
 
     // Print the "Point" row
     for(int i=0;i<labelLength;i++)
@@ -147,7 +147,7 @@ void Statistics::printInMatrixForm(int k){
     for (int i = 0; i < numOfPoints; i++) {
         printf("| Point: %d", pointInfo[i]->getId());
         // Pad with spaces to align the next column
-        for (int j = 0; j < snprintf(nullptr, 0, "| Point: %d", pointInfo[i]->getId()) - snprintf(nullptr, 0, "| Point: %d", pointInfo[i]->getId()); j++) {
+        for (int j = 0; j < snprintf(NULL, 0, "| Point: %d", pointInfo[i]->getId()) - snprintf(NULL, 0, "| Point: %d", pointInfo[i]->getId()); j++) {
             printf(" ");
         }
     }
@@ -157,7 +157,7 @@ void Statistics::printInMatrixForm(int k){
     for (int i = 0; i < numOfPoints; i++) {
         printf("| %d", statisticInfo[i]->getRightDecision());
         // Pad with spaces to align the next column
-        for (int j = 0; j < snprintf(nullptr, 0, "| Point: %d", pointInfo[i]->getId()) - snprintf(nullptr, 0, "| %d", statisticInfo[i]->getRightDecision()); j++) {
+        for (int j = 0; j < snprintf(NULL, 0, "| Point: %d", pointInfo[i]->getId()) - snprintf(NULL, 0, "| %d", statisticInfo[i]->getRightDecision()); j++) {
             printf(" ");
         }
     }
@@ -167,7 +167,7 @@ void Statistics::printInMatrixForm(int k){
     for (int i = 0; i < numOfPoints; i++) {
         printf("| %d", statisticInfo[i]->getWrongDecision());
         // Pad with spaces to align the next column
-        for (int j = 0; j < snprintf(nullptr, 0, "| Point: %d", pointInfo[i]->getId()) - snprintf(nullptr, 0, "| %d", statisticInfo[i]->getWrongDecision()); j++) {
+        for (int j = 0; j < snprintf(NULL, 0, "| Point: %d", pointInfo[i]->getId()) - snprintf(NULL, 0, "| %d", statisticInfo[i]->getWrongDecision()); j++) {
             printf(" ");
         }
     }
@@ -177,7 +177,7 @@ void Statistics::printInMatrixForm(int k){
     for (int i = 0; i < numOfPoints; i++) {
         printf("| %d", statisticInfo[i]->getTotal());
         // Pad with spaces to align the next column
-        for (int j = 0; j < snprintf(nullptr, 0, "| Point: %d", pointInfo[i]->getId()) - snprintf(nullptr, 0, "| %d", statisticInfo[i]->getTotal()); j++) {
+        for (int j = 0; j < snprintf(NULL, 0, "| Point: %d", pointInfo[i]->getId()) - snprintf(NULL, 0, "| %d", statisticInfo[i]->getTotal()); j++) {
             printf(" ");
         }
     }
@@ -185,13 +185,13 @@ void Statistics::printInMatrixForm(int k){
     // Print "Percentage" row
     printf("|Percentage:");
     const char* perLabel = "|Percentage:";
-    int labelPerLength = snprintf(nullptr, 0, "%s", perLabel);
+    int labelPerLength = snprintf(NULL, 0, "%s", perLabel);
     for(int i=0;i<labelLength-labelPerLength;i++)
         printf(" ");
     for (int i = 0; i < numOfPoints; i++) {
         printf("| %d%%", statisticInfo[i]->getPercentage());
         // Pad with spaces to align the next column
-        for (int j = 0; j < snprintf(nullptr, 0, "| Point: %d", pointInfo[i]->getId()) - snprintf(nullptr, 0, "| %d%%", statisticInfo[i]->getPercentage()); j++) {
+        for (int j = 0; j < snprintf(NULL, 0, "| Point: %d", pointInfo[i]->getId()) - snprintf(NULL, 0, "| %d%%", statisticInfo[i]->getPercentage()); j++) {
             printf(" ");
         }
     }

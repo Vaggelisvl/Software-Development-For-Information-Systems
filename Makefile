@@ -23,9 +23,19 @@ INSTALL_CMAKE_COMMAND = sudo apt-get update && sudo apt-get install -y cmake
 LIB_SRCS = $(SRCDIR)/structures/point/Point.cpp \
            $(SRCDIR)/structures/point/PointInfo.cpp \
            $(SRCDIR)/structures/point/Neighbors.cpp \
+           $(SRCDIR)/structures/scheduler/job/KNNJob.cpp \
+           $(SRCDIR)/structures/scheduler/job/Job.cpp \
+           $(SRCDIR)/structures/scheduler/job/NormCalculationJob.cpp \
+           $(SRCDIR)/structures/scheduler/job/RandomProjectionTreeJob.cpp \
+           $(SRCDIR)/structures/scheduler/job/CalculateDistanceJob.cpp \
+           $(SRCDIR)/structures/scheduler/job/FindKNearestNeighborsForPointJob.cpp \
+           $(SRCDIR)/structures/scheduler/JobQueue.cpp \
+           $(SRCDIR)/structures/scheduler/JobDependency.cpp	\
+           $(SRCDIR)/structures/scheduler/JobScheduler.cpp	\
            $(SRCDIR)/structures/Dataset.cpp \
            $(SRCDIR)/structures/graph/GraphInitialization.cpp \
            $(SRCDIR)/structures/graph/Optimizations.cpp \
+           $(SRCDIR)/structures/randomProjectionTrees/RandomProjectionTrees.cpp \
            $(SRCDIR)/utils/Metrics.cpp \
            $(SRCDIR)/utils/Statistics.cpp \
            $(SRCDIR)/utils/StatisticInfo.cpp \
@@ -40,6 +50,7 @@ LIB_STATIC = $(OUTDIR)/lib$(LIB_NAME).a
 TEST_SRCS = $(TESTDIR)/structures/point/PointTest.cpp \
             $(TESTDIR)/structures/graph/GraphInitializationTest.cpp \
             $(TESTDIR)/structures/graph/OptimizationsTest.cpp \
+            $(TESTDIR)/structures/graph/RandomProjectionTreesTest.cpp \
             $(TESTDIR)/structures/dataset/DatasetTest.cpp \
             $(TESTDIR)/structures/vector/VectorTestFloat.cpp \
             $(TESTDIR)/structures/vector/VectorTestNeighbor.cpp \
@@ -68,7 +79,7 @@ shared_library: $(LIB_SHARED)
 static_library: $(LIB_STATIC)
 
 $(LIB_SHARED): $(LIB_SRCS)
-	$(CXX) $(CXXFLAGS) -shared -o $@ $^ $(INCLUDES)
+	$(CXX) $(CXXFLAGS) -shared -o $@ $^ $(INCLUDES) -lpthread
 
 $(LIB_STATIC): $(LIB_SRCS)
 	ar rcs $@ $^

@@ -1,5 +1,5 @@
-#ifndef _PROJECT_OPTIMIZATIONS_H
-#define _PROJECT_OPTIMIZATIONS_H
+#ifndef OPTIMIZATIONS_H
+#define OPTIMIZATIONS_H
 /**
 * @file Optimizations.h
 * @brief This file contains the declaration of the Optimizations class.
@@ -14,6 +14,10 @@ typedef struct DistanceContents {
 
 class Optimizations : public GraphInitialization{
 private:
+    UnorderedMap< Point, Vector<Neighbors> > reverseNN;
+    float d;
+    bool hasBeenInitialized=false;
+protected:
     /**
     * @brief This function checks if a point is a duplicate in the neighbor list of another point.
     * @param point1 The first point to check.
@@ -22,19 +26,19 @@ private:
     * @param neighborsList2 The neighbor list of the second point.
     * @return 1 if the point is a duplicate, 0 otherwise.
     */
-    int checkDuplicate(Neighbors,Neighbors,Vector<Neighbors>, Vector<Neighbors>);
+    int checkDuplicate(Point,Point,Vector<Neighbors>, Vector<Neighbors>);
     /**
     * @brief This function checks if the distance between two points has already been calculated and stored in the hash map.
     * @param point1 The first point.
     * @param point2 The second point.
     * @return The id of the point if the distance has been calculated, 0 otherwise.
     */
-    int hashingDuplicateDistances(Point&, Point&);
     UnorderedMap<Point, DistanceContents > hashMap;
-    UnorderedMap< Point, Vector<Neighbors> > reverseNN;
-    float d;
-    bool hasBeenInitialized=false;
+    int hashingDuplicateDistances(Point&, Point&);
+
+    pthread_rwlock_t hashMapRwlock;
 public:
+    Optimizations();
 
     /**
     * @brief This function is used to sample a subset of neighbors for each point in the graph.
@@ -119,6 +123,12 @@ public:
     * @param outputFile The name of the output file.
     */
     void printReverseNN(char*);
+
+
+    float calculateDistance(Point, Point);
+    float calculateNormDistance(Point, Point);
+    void writeHashMap(Point point, DistanceContents contents) ;
+    DistanceContents readHashMap(Point point);
 };
 
 

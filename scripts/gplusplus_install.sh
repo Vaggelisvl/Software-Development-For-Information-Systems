@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 
 if ! command -v g++-11 &> /dev/null; then
     echo "g++-11 not found. Installing..."

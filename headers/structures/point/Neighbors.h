@@ -1,5 +1,5 @@
-#ifndef _PROJECT_NEIGHBORS_H
-#define _PROJECT_NEIGHBORS_H
+#ifndef NEIGHBORS_H
+#define NEIGHBORS_H
 
 
 #include "Point.h"
@@ -24,4 +24,4 @@ public:
 };
 
 
-#endif //_PROJECT_NEIGHBORS_H
+#endif

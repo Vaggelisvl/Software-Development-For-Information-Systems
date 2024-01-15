@@ -18,7 +18,6 @@ add_library(_project
         headers/utils/Metrics.h
         src/utils/Metrics.cpp
         src/structures/Dataset.cpp
-        headers/library.h
         tests/unit_tests/structures/vector/VectorTestFloat.cpp
         tests/unit_tests/structures/vector/VectorTestPoint.cpp
         tests/unit_tests/structures/vector/VectorTestNeighbor.cpp
@@ -31,4 +30,26 @@ add_library(_project
         headers/utils/Statistics.h
         src/utils/Statistics.cpp
         headers/utils/StatisticInfo.h
-        src/utils/StatisticInfo.cpp headers/structures/graph/Optimizations.h src/structures/graph/Optimizations.cpp)
+        src/utils/StatisticInfo.cpp headers/structures/graph/Optimizations.h src/structures/graph/Optimizations.cpp headers/structures/randomProjectionTrees/RandomProjectionTrees.h src/structures/randomProjectionTrees/RandomProjectionTrees.cpp
+        src/structures/scheduler/job/RandomProjectionTreeJob.cpp
+        headers/structures/scheduler/job/RandomProjectionTreeJob.h
+        headers/structures/scheduler/job/RandomProjectionTreeJob.h
+        src/utils/StatisticInfo.cpp headers/structures/graph/Optimizations.h src/structures/graph/Optimizations.cpp
+        tests/unit_tests/structures/graph/OptimizationsTest.cpp
+
+        src/structures/scheduler/JobScheduler.cpp
+        src/structures/scheduler/JobQueue.cpp
+        src/structures/scheduler/job/KNNJob.cpp
+        src/structures/scheduler/job/FindKNearestNeighborsForPointJob.cpp
+        headers/structures/scheduler/job/FindKNearestNeighborsForPointJob.h
+        src/structures/scheduler/job/NormCalculationJob.cpp
+        headers/structures/scheduler/job/NormCalculationJob.h
+        src/structures/scheduler/job/Job.cpp
+        src/structures/scheduler/job/CalculateDistanceJob.cpp
+        headers/structures/scheduler/job/CalculateDistanceJob.h
+        src/structures/scheduler/JobDependency.cpp
+        headers/structures/scheduler/JobDependency.h
+        src/structures/scheduler/job/GraphInitializationJob.cpp
+        headers/structures/scheduler/job/GraphInitializationJob.h
+        tests/unit_tests/structures/graph/RandomProjectionTreesTest.cpp
+)
