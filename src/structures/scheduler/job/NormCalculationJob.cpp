@@ -1,31 +1,30 @@
 
 #include "../../../../headers/structures/scheduler/job/NormCalculationJob.h"
 #include "../../../../headers/config/Logger.h"
-
 void NormCalculationJob::execute() {
+    pthread_rwlock_wrlock(&this->graphInitialization->pointslock);
 
-    // Implement the logic for calculating the square norm of points here
-    for (auto& point : points) {
-        Vector<float> coordinates = point.getCoordinates();
+    for (int i=0;i <this->points->getSize();i++) {
+        Vector<float> coordinates = this->points->at(i).getCoordinates();
         float squareNorm = 0.0;
         for (float coordinate : coordinates) {
             squareNorm += coordinate * coordinate;
         }
         // Store the square norm for later use
-        // Assuming Point class has a method setSquareNorm for this purpose
-        const_cast<Point&>(point).setSquareNorm(squareNorm);
+        this->points->at(i).setSquareNorm(squareNorm);
 
-        LOG_INFO(([&](){char* buffer = new char[100];sprintf(buffer, "Square norm for point with id %d is %f", point.getId(), squareNorm);return buffer;})());
+        char buffer[100];
+        sprintf(buffer, "Square norm for point with id %d is %f", this->points->at(i).getId(), squareNorm);
+        LOG_INFO(buffer);
     }
-    char buffer[60];
-    sprintf(buffer, "-----------NormCalculationJob completed-----------------");
-    LOG_INFO(buffer);
 
+    pthread_rwlock_unlock(&this->graphInitialization->pointslock);
 }
 
-NormCalculationJob::NormCalculationJob(Vector<Point> points, int id) {
+NormCalculationJob::NormCalculationJob(Vector<Point> *points, int id,GraphInitialization* graphInitialization) {
     this->points = points;
     this->setJobId(id);
+    this->graphInitialization=graphInitialization;
     char buffer[50];
     sprintf(buffer, "NormCalculationJob created with id %d", id);
     LOG_INFO(buffer);

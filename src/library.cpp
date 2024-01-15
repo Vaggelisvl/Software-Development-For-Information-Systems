@@ -174,7 +174,7 @@ int main(int argc, char *argv[]) {
     JobScheduler *scheduler;
     scheduler=new JobScheduler(5);
     scheduler->start_execute(); // Start the worker threads before submitting any jobs
-    NormCalculationJob *normCalculationJob=new NormCalculationJob(r.getPoints(),jobs++);
+    NormCalculationJob *normCalculationJob=new NormCalculationJob(r.getPoints(),jobs++,&r);
 
     scheduler->submit(normCalculationJob);
     for(int i=0;i<10;i++)
@@ -194,7 +194,8 @@ int main(int argc, char *argv[]) {
     r.printTree();
 //    printf("ok\n");
     delete scheduler;
-//    usleep(10000000);
+//    usleep(10000000)
+//    r.sortKNeighbors();
     r.printGraph("project3.txt");
     char buffer2[50];
     sprintf(buffer2, "Execution time: %f\n", (double)(end - start) / CLOCKS_PER_SEC);

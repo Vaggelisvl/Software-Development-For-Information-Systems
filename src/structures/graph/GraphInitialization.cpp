@@ -58,6 +58,7 @@ void GraphInitialization::printGraph(char* outputFile) {
         //print graph
         fprintf(file, "point: %d{\n", i+1);
         this->graph.find(this->points.at(i), neighborsVector);
+        neighborsVector.sort();
         for (int j = 0; j < neighborsVector.getSize(); j++) {
             char buffer[100]; // Adjust the buffer size as needed
 
@@ -400,6 +401,11 @@ void GraphInitialization::calculateAllDistances() {
         fprintf(file, "\n}\n");
     }
     fclose(file);
+}
+
+void GraphInitialization::setNormOfPoint(int index, float norm) {
+    this->points.at(index).setSquareNorm(norm);
+
 }
 
 

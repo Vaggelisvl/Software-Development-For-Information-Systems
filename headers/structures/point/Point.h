@@ -13,8 +13,7 @@ protected:
     float squareNorm;
 public:
     void setSquareNorm(float squareNorm);
-
-public:
+    float getSquareNorm() const;
     Point(int id, Vector<float> coordinates);
     Point();
     void setHasBeenChoosen(int hasBeenChoosen);

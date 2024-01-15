@@ -85,3 +85,7 @@ bool Point::operator>(const Point& other) const
 void Point::setSquareNorm(float squareNorm) {
     Point::squareNorm = squareNorm;
 }
+
+float Point::getSquareNorm() const {
+    return squareNorm;
+}

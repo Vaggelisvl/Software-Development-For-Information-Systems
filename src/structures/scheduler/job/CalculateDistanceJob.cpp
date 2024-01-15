@@ -20,7 +20,7 @@ void CalculateDistanceJob::execute() {
     LOG_DEBUG(([&](){char* buffer = new char[100];sprintf(buffer, "Calculating distance between %d and %d", pointId1,pointId2);return buffer;})());
 
     pthread_mutex_lock(&mutex);
-    optimizations->calculateDistance(optimizations->getPoint(pointId1),optimizations->getPoint(pointId2));
+    optimizations->calculateNormDistance(optimizations->getPoint(pointId1),optimizations->getPoint(pointId2));
 //    while ( !isFinished ) {
 //        pthread_cond_wait(&cond, &mutex);
 //    }

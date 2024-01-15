@@ -126,6 +126,7 @@ public:
 
 
     float calculateDistance(Point, Point);
+    float calculateNormDistance(Point, Point);
     void writeHashMap(Point point, DistanceContents contents) ;
     DistanceContents readHashMap(Point point);
 };

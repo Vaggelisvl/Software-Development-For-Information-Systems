@@ -17,7 +17,7 @@ float Optimizations::calculateDistance(Point point1, Point point2) {
         //put dist in to the hashMap
         DistanceContents newHashNum;
         newHashNum.id = point2.getId();
-       // Unlock the mutex
+        // Unlock the mutex
         newHashNum.dist = dist;
         pthread_rwlock_wrlock(&hashMapRwlock); // Lock the mutex
         this->hashMap.insert(point1, newHashNum);
@@ -380,7 +380,7 @@ void Optimizations::printReverseNN(char *outputFile) {
 void Optimizations::writeHashMap(Point point, DistanceContents content) {
     pthread_rwlock_wrlock(&hashMapRwlock); // Lock the mutex
     char buffer[100];
-    sprintf(buffer, "content: %f\n ",content.dist);
+    sprintf(buffer, "content: %f\n ", content.dist);
     LOG_INFO(buffer);
     this->hashMap.insert(point, content); // Write to the hashMap
     pthread_rwlock_unlock(&hashMapRwlock); // Unlock the mutex
@@ -398,4 +398,43 @@ DistanceContents Optimizations::readHashMap(Point point) {
     pthread_rwlock_unlock(&hashMapRwlock); // Unlock the read-write lock
     return contents;
 
+}
+
+float Optimizations::calculateNormDistance(Point point1, Point point2) {
+    float squareNorm1 = point1.getSquareNorm();
+    float squareNorm2 = point2.getSquareNorm();
+    float squaredDistance;
+    int hashNum = hashingDuplicateDistances(point1, point2);
+    if (hashNum == 0) {
+
+        // Calculate the inner product of the two points
+        float innerProduct = 0.0;
+        for (int i = 0; i < point1.getCoordinates().getSize(); i++) {
+            innerProduct += point1.getCoordinates()[i] * point2.getCoordinates()[i];
+        }
+
+        // Calculate the squared distance between the two points
+        squaredDistance = squareNorm1 + squareNorm2 - 2 * innerProduct;
+        DistanceContents newHashNum;
+        newHashNum.id = point2.getId();
+        // Unlock the mutex
+        newHashNum.dist = squaredDistance;
+        pthread_rwlock_wrlock(&hashMapRwlock); // Lock the mutex
+        this->hashMap.insert(point1, newHashNum);
+        pthread_rwlock_unlock(&hashMapRwlock);
+    } else {
+        pthread_rwlock_rdlock(&pointslock);
+        Point hashPoint = this->points.at(hashNum - 1);
+        pthread_rwlock_unlock(&pointslock);
+
+        DistanceContents content;
+
+        pthread_rwlock_rdlock(&hashMapRwlock); // Lock the mutex
+        this->hashMap.find(hashPoint, content);
+        pthread_rwlock_unlock(&hashMapRwlock); // Unlock the mutex
+
+        squaredDistance = content.dist;
+    }
+    // Return the squared distance
+    return squaredDistance;
 }
