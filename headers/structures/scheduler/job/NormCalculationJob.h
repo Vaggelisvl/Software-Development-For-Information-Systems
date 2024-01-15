@@ -9,10 +9,10 @@
 
 class NormCalculationJob : public Job {
 private:
-    Vector<Point> *points;
+    Vector<Point> points;
     GraphInitialization* graphInitialization;
 public:
-    NormCalculationJob(Vector<Point> *points,int id,GraphInitialization* graphInitialization) ;
+    NormCalculationJob(Vector<Point> points,int id,GraphInitialization* graphInitialization) ;
     void execute() override ;
 };
 #endif
