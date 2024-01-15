@@ -10,6 +10,7 @@
 #include "../headers/structures/scheduler/JobScheduler.h"
 #include "../headers/structures/scheduler/job/RandomProjectionTreeJob.h"
 #include "../headers/structures/scheduler/job/NormCalculationJob.h"
+#include "../headers/structures/scheduler/job/KNNJob.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -185,11 +186,6 @@ int main(int argc, char *argv[]) {
     scheduler->submit(normCalculationJob);
     for(int i=0;i<10;i++)
         scheduler->submit(new RandomProjectionTreeJob(&r,normCalculationJob,jobs++));
-//    }
-//    scheduler.submit(new RandomProjectionTreeJob(&r));
-
-//    r.initGraph();
-//
     clock_t startt,endt;
     double cputime;
     startt = clock();
@@ -198,16 +194,15 @@ int main(int argc, char *argv[]) {
     cputime = (double)(endt - startt) / CLOCKS_PER_SEC;
     fprintf(file, "time for %d points and %d neighbors:%f\n",dataset.getNumOfPoints(),K,cputime);
 
-    // Calculate the time taken by the function in microseconds
-
     scheduler->wait_to_finish(); // Wait for all jobs to finish after they have been submitted
+    scheduler->start_execute();
+    scheduler->submit(new KNNJob(&r,jobs++));
     clock_t end = clock();
+    scheduler->wait_to_finish();
     scheduler->printStats();
     r.printTree();
-//    printf("ok\n");
     delete scheduler;
-//    usleep(10000000)
-//    r.sortKNeighbors();
+
     r.printGraph("project3.txt");
     char buffer2[50];
     sprintf(buffer2, "Execution time: %f\n", (double)(end - start) / CLOCKS_PER_SEC);

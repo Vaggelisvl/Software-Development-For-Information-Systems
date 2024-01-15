@@ -32,7 +32,6 @@ TEST_F(RandomProjectionTreesTest, calculateInnerProductReturnsCorrectValue) {
     vector2.push_back(3.0f);
     vector2.push_back(4.0f);
     float result = rTree->calculateInnerProduct(vector1, vector2);
-    printf(" result : %f", result);
     ASSERT_FLOAT_EQ(result, 11.0f);
 }
 

@@ -20,7 +20,6 @@ float RandomProjectionTrees::calculateInnerProduct(Vector<float> vector1, Vector
     for (int i = 0; i < dimensions; i++){
         innerProduct += vector1.at(i) * vector2.at(i);
     }
-    printf("inner product: %f",innerProduct);
     return innerProduct;
 }
 
