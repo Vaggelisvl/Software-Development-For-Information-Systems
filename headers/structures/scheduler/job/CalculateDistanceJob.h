@@ -19,17 +19,12 @@ private:
     pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
 public:
-//    int getPointId1() const ;
-//
-//    void setPointId1(int pointId1) ;
-//
-//    int getPointId2() const ;
-//    void setPointId2(int pointId2) ;
     bool getIsFinished() const;
-public:
     explicit CalculateDistanceJob(Optimizations *optimizations,int,int,int);
     void waitUntilFinished();
     void execute() override;
+
+
 };
 
 

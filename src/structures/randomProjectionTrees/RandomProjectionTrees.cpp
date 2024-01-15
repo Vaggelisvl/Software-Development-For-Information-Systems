@@ -238,7 +238,7 @@ void RandomProjectionTrees::graphInitialization(JobScheduler* scheduler,int id )
     fillGraph(scheduler,id);
 }
 
-void RandomProjectionTrees::fillGraph(JobScheduler* scheduler,int id ) {
+void RandomProjectionTrees::fillGraph(JobScheduler* scheduler,int &id ) {
 
     for(int k=0;k<numOfPoints;k++) {
         Vector<Neighbors> neighborsVector;
@@ -267,7 +267,7 @@ void RandomProjectionTrees::fillGraph(JobScheduler* scheduler,int id ) {
             pthread_rwlock_rdlock(&this->pointslock); // Lock the read-write lock for reading
             Point secondPoint = points.at(randomNum - 1);
             pthread_rwlock_unlock(&pointslock); // Unlock the read-write lock
-            auto* job = new CalculateDistanceJob(this,currentPoint.getId(), secondPoint.getId(),id);
+            auto* job = new CalculateDistanceJob(this,currentPoint.getId(), secondPoint.getId(),id++);
             scheduler->submit(job);
             job->waitUntilFinished();
             pthread_rwlock_rdlock(&this->hashMapRwlock); // Lock the read-write lock for reading

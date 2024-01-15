@@ -34,3 +34,4 @@ JobDependency::JobDependency() {
     pthread_rwlock_init(&vectorRwlock, NULL);
 
 }
+

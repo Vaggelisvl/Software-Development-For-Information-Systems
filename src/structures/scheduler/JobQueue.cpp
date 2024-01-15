@@ -6,8 +6,10 @@
 #include "../../../headers/structures/scheduler/JobQueue.h"
 #include "../../../headers/config/Logger.h"
 
+
+
 void JobQueue::push(Job *job) {
-    auto* node = new JobNode(job);
+    auto *node = new JobNode(job);
     if (back) {
         back->next = node;
     } else {
@@ -22,10 +24,10 @@ void JobQueue::push(Job *job) {
 
 Job *JobQueue::pop() {
     if (!front) return nullptr;
-    JobNode* node = front;
+    JobNode *node = front;
     front = front->next;
     if (!front) back = nullptr;
-    Job* job = node->job;
+    Job *job = node->job;
     delete node;
     size--;
     return job;

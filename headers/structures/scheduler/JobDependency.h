@@ -15,6 +15,7 @@ private:
     pthread_rwlock_t vectorRwlock;
 public:
     JobDependency() ;
+
     void addDependency(Job* job) ;
     bool areDependenciesMet() ;
 };

@@ -39,7 +39,7 @@ public:
     void creatTrees();
     void graphInitialization(JobScheduler* scheduler,int);//jobScheduler
 
-    void fillGraph(JobScheduler* scheduler,int);
+    void fillGraph(JobScheduler* scheduler,int&);
 };
 
 

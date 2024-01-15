@@ -14,7 +14,7 @@ void NormCalculationJob::execute() {
         this->points.at(i).setSquareNorm(squareNorm);
 
         char buffer[100];
-        sprintf(buffer, "Square norm for point with id %d is %f", this->points.at(i).getId(), squareNorm);
+        sprintf(buffer, "Square norm for point with id %d is %f", this->points.at(i).getId(), this->graphInitialization->getPoints().at(i).getSquareNorm());
         LOG_INFO(buffer);
     }
 

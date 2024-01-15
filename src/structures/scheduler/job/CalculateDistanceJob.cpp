@@ -11,8 +11,6 @@ CalculateDistanceJob::CalculateDistanceJob(Optimizations *optimizations,int p1,i
     this->optimizations=optimizations;
     this->setJobId(id);
     char log[100];
-//    sprintf(log, "CalculateDistanceJob created with pointIds %d and %d", pointId1,pointId2);
-//    LOG_INFO(log);
 
 }
 
@@ -21,9 +19,7 @@ void CalculateDistanceJob::execute() {
 
     pthread_mutex_lock(&mutex);
     optimizations->calculateNormDistance(optimizations->getPoint(pointId1),optimizations->getPoint(pointId2));
-//    while ( !isFinished ) {
-//        pthread_cond_wait(&cond, &mutex);
-//    }
+
     isFinished = true;
     pthread_cond_signal(&cond);
     pthread_mutex_unlock(&mutex);
@@ -40,19 +36,3 @@ void CalculateDistanceJob::waitUntilFinished() {
     }
     pthread_mutex_unlock(&mutex);
 }
-//
-//void CalculateDistanceJob::setPointId1(int pointId1) {
-//    this->pointId1 = pointId1;
-//}
-//
-//void CalculateDistanceJob::setPointId2(int pointId2){
-//   this->pointId2 = pointId2;
-//}
-//
-//int CalculateDistanceJob::getPointId1() const {
-//    return pointId1;
-//}
-//
-//int CalculateDistanceJob::getPointId2() const {
-//    return pointId2;
-//}
