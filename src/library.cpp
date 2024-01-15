@@ -37,8 +37,8 @@ using namespace std;
 int main(int argc, char *argv[]) {
     Logger::SetSpecificLoggingEnabled("INFO");
     clock_t start = clock();
-    if(argc != 7){
-        printf("wrong input\n");
+    if(argc != 11){
+        printf("Invalid input. Please provide the correct arguments in the following format: <inputFile> <dimensions> <numOfPoints> <K> <queryId> <d> <metrics> <D> <numOfTrees> <numOfThreads>\n");
         return 0;
     }
     //./name inputFile dimensions numOfPoints K queryId metrics
@@ -47,7 +47,11 @@ int main(int argc, char *argv[]) {
     int numOfPoints = atoi(argv[3]);
     int K = atoi(argv[4]);
     int queryId = atoi(argv[5]);
-    char* metrics = argv[6];
+    int d = atoi(argv[6]);
+    char* metrics = argv[7];
+    int D = atoi(argv[8]);
+    int numOfTrees = atoi(argv[9]);
+    int numOfThreads = atoi(argv[10]);
 
     char buffer[50];
     LOG_INFO(buffer);
@@ -114,6 +118,7 @@ int main(int argc, char *argv[]) {
 //    //for project 2
 //    printf("OPTIMIZATIONS\n");
 //    Optimizations op;
+//op.setd(d);
 //    for(int i=0;i<dataset.getNumOfPoints();i++){
 //        op.putPoints(elements.at(i).getCoordinates());
 //    }
@@ -121,7 +126,7 @@ int main(int argc, char *argv[]) {
 //    op.setK(K);
 //    op.setMetrics(metrics);
 //    op.setDimensions(dataset.getDimensions());
-//    op.setd(0.01);
+//    op.setd(d);
 //    op.setKRandomNeighbors();
 //    op.initFlags();
 //    op.initReverseNN();
@@ -170,7 +175,7 @@ int main(int argc, char *argv[]) {
     file = fopen("times.txt", "w");
     printf("RANDOM PROJECTION TREES\n");
     int jobs=0;
-    RandomProjectionTrees r(3);
+    RandomProjectionTrees r(D);
     r.setMetrics(metrics);
     r.setK(K);
     r.setDimensions(dataset.getDimensions());
@@ -179,12 +184,12 @@ int main(int argc, char *argv[]) {
     }
 
     JobScheduler *scheduler;
-    scheduler=new JobScheduler(5);
+    scheduler=new JobScheduler(numOfThreads);
     scheduler->start_execute(); // Start the worker threads before submitting any jobs
     NormCalculationJob *normCalculationJob=new NormCalculationJob(r.getPoints(),jobs++,&r);
 
     scheduler->submit(normCalculationJob);
-    for(int i=0;i<10;i++)
+    for(int i=0;i<numOfTrees;i++)
         scheduler->submit(new RandomProjectionTreeJob(&r,normCalculationJob,jobs++));
     clock_t startt,endt;
     double cputime;
