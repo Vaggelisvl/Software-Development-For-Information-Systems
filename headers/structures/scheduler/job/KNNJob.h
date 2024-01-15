@@ -13,7 +13,7 @@ class KNNJob : public Job {
 private:
     Optimizations* optimizations;
 public:
-    explicit KNNJob(Optimizations* optimizations) ;
+    explicit KNNJob(Optimizations* optimizations,int) ;
     void execute() override ;
 };
 

@@ -8,4 +8,6 @@ void KNNJob::execute() {
     optimizations->KNN();
 }
 
-KNNJob::KNNJob(Optimizations *optimizations) : optimizations(optimizations) {}
+KNNJob::KNNJob(Optimizations *optimizations,int id) : optimizations(optimizations) {
+    this->setJobId(id);
+}
