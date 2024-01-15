@@ -106,7 +106,7 @@ export_library_path:
 
 main_executable: create_outdir
 	$(CXX) -o main $(SRCDIR)/library.cpp -L$(OUTDIR) -Wl,-rpath,'$$ORIGIN/$(OUTDIR)' -ldataforge
-ARGS ?= src/input1.bin 100 20 5 1 euclidean
+ARGS ?= src/input1.bin 100 20 5 1 0.01 euclidean 3 10 5
 
 run:
 	./main $(or $(filter-out $@,$(MAKECMDGOALS)),$(ARGS))
