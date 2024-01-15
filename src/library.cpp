@@ -14,6 +14,10 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include <cstdlib>
+#include <ctime>
+#include <string.h>
+
 
 void printLogoFromFile(const char* filename) {
     FILE* file = fopen(filename, "r");
@@ -161,6 +165,8 @@ int main(int argc, char *argv[]) {
 
 
     //project 3
+    FILE *file;
+    file = fopen("times.txt", "w");
     printf("RANDOM PROJECTION TREES\n");
     int jobs=0;
     RandomProjectionTrees r(3);
@@ -184,7 +190,13 @@ int main(int argc, char *argv[]) {
 
 //    r.initGraph();
 //
+    clock_t startt,endt;
+    double cputime;
+    startt = clock();
     r.graphInitialization(scheduler,jobs++);
+    endt = clock();
+    cputime = (double)(endt - startt) / CLOCKS_PER_SEC;
+    fprintf(file, "time for %d points and %d neighbors:%f\n",dataset.getNumOfPoints(),K,cputime);
 
     // Calculate the time taken by the function in microseconds
 
