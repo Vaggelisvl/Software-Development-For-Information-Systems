@@ -34,7 +34,7 @@ void printLogoFromFile(const char* filename) {
 
 using namespace std;
 int main(int argc, char *argv[]) {
-    Logger::SetSpecificLoggingEnabled("DEBUG");
+    Logger::SetSpecificLoggingEnabled("INFO");
     clock_t start = clock();
     if(argc != 7){
         printf("wrong input\n");

@@ -19,8 +19,8 @@ JobScheduler::JobScheduler(int numThreads) : numThreads(numThreads), stop(false)
     executionTime = new double[numThreads]();
     jobCount = new int[numThreads]();
     this->threads = new pthread_t[numThreads];
-    pthread_mutex_init(&mutex, nullptr);
-    pthread_cond_init(&cond, nullptr);
+    pthread_mutex_init(&mutex, NULL);
+    pthread_cond_init(&cond, NULL);
     LOG_DEBUG( ([&](){char* buffer = new char[50];sprintf(buffer, "JobScheduler created with %d threads", numThreads); return buffer;})());
 }
 
@@ -53,7 +53,7 @@ void JobScheduler::wait_to_finish() {
     pthread_mutex_unlock(&mutex);
     // Wait for all threads to finish
     for (int i = 0; i < numThreads; ++i)
-        pthread_join(threads[i], nullptr);
+        pthread_join(threads[i], NULL);
 
 }
 
@@ -150,7 +150,7 @@ void JobScheduler::start_execute() {
     for (int i = 0; i < numThreads; ++i) {
         args[i].scheduler = this;
         args[i].threadIndex = i;
-        pthread_create(&threads[i], nullptr, JobScheduler::threadFunction, &args[i]);
+        pthread_create(&threads[i], NULL, JobScheduler::threadFunction, &args[i]);
     }
 
 

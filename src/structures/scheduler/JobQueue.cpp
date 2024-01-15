@@ -23,17 +23,17 @@ void JobQueue::push(Job *job) {
 }
 
 Job *JobQueue::pop() {
-    if (!front) return nullptr;
+    if (!front) return NULL;
     JobNode *node = front;
     front = front->next;
-    if (!front) back = nullptr;
+    if (!front) back = NULL;
     Job *job = node->job;
     delete node;
     size--;
     return job;
 }
 
-Job *JobQueue::peek() { return front ? front->job : nullptr; }
+Job *JobQueue::peek() { return front ? front->job : NULL; }
 
 int JobQueue::getSize() {
     return size;

@@ -51,4 +51,5 @@ add_library(_project
         headers/structures/scheduler/JobDependency.h
         src/structures/scheduler/job/GraphInitializationJob.cpp
         headers/structures/scheduler/job/GraphInitializationJob.h
+        tests/unit_tests/structures/graph/RandomProjectionTreesTest.cpp
 )

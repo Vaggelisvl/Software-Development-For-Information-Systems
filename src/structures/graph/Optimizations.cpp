@@ -266,7 +266,7 @@ int Optimizations::KNN() {
 }
 
 void Optimizations::findKNearestNeighborsForPoint(const Point &queryPoint) {
-    srand(time(nullptr));
+    srand(time(NULL));
     Vector<Neighbors> uniqueNumbers;
     int randomNumber;
     int flag;

@@ -26,11 +26,11 @@ class RandomProjectionTrees : public Optimizations{
 private:
     int numberOfTrees;
     int D;
-    float calculateInnerProduct(Vector<float>, Vector<float>);
     Vector<TreeContents> trees;
     pthread_rwlock_t treeslock;
-
 public:
+
+    float calculateInnerProduct(Vector<float>, Vector<float>);
     RandomProjectionTrees(int);
     int split(Vector<int>, Vector<Vector<int> > &);
     Vector<Vector<int> > hyperplane(Vector<int>);
@@ -38,7 +38,7 @@ public:
     void putPoints(Vector<float>);
     void creatTrees();
     void graphInitialization(JobScheduler* scheduler,int);//jobScheduler
-
+    int getNumberOfTrees();
     void fillGraph(JobScheduler* scheduler,int&);
 };
 

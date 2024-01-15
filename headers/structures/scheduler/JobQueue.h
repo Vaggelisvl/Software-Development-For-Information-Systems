@@ -12,7 +12,7 @@ private:
     int size;
 
 public:
-    JobQueue() : front(nullptr), back(nullptr) {}
+    JobQueue() : front(NULL), back(NULL) {}
 //    ~JobQueue();
     void push(Job* job) ;
 
@@ -20,7 +20,7 @@ public:
     Job* peek() ;// Add this line
     int getSize();
     JobNode* begin() ;
-    inline bool empty() { return front == nullptr;}
+    inline bool empty() { return front == NULL;}
 };
 
 #endif

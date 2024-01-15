@@ -50,6 +50,7 @@ LIB_STATIC = $(OUTDIR)/lib$(LIB_NAME).a
 TEST_SRCS = $(TESTDIR)/structures/point/PointTest.cpp \
             $(TESTDIR)/structures/graph/GraphInitializationTest.cpp \
             $(TESTDIR)/structures/graph/OptimizationsTest.cpp \
+            $(TESTDIR)/structures/graph/RandomProjectionTreesTest.cpp \
             $(TESTDIR)/structures/dataset/DatasetTest.cpp \
             $(TESTDIR)/structures/vector/VectorTestFloat.cpp \
             $(TESTDIR)/structures/vector/VectorTestNeighbor.cpp \
