@@ -97,3 +97,24 @@ Git repository: https://github.com/Vaggelisvl/Project_2023_1
 - **Εκτέλεση Προγράμματος:**<br>
 Με το make run εκτελείται default το src/input1.bin 100 20 5 1 euclidean 
 (100 διαστάσεων, 20 σημεία, Κ=5, queryId=1, μετρική ευκλείδια)
+
+- **Βελτιστοποιήσεις δεύτερου μέρους:**<br>
+•Το πρόγραμμα δέχεται τα ορίσματα απο τη γραμμή εντολών με αυτή τη σειρά:<br>
+<inputFile> <dimensions> <numOfPoints> <K> <queryId> <d> <metrics> <D> <numOfTrees> <numOfThreads>
+
+<p align="center">
+  <strong>Άσκηση 3</strong>
+</p>
+
+- **Εκτέλεση Προγράμματος:**<br>
+Με το make run εκτελείται default το src/input1.bin 100 20 5 1 0.01 euclidean 3 10 5 
+(100 διαστάσεων, 20 σημεία, Κ=5, queryId=1, d=0.01, μετρική ευκλείδια, D=3, 10 δέντρα, 5 threads)
+
+
+<p align="center">
+  <strong>ΤΕΛΙΚΗ ΑΝΑΦΟΡΑ</strong>
+</p>
+
+
+
+
