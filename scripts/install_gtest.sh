@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 
 # Check if gtest is installed
 if ! dpkg -l | grep -q libgtest-dev; then
@@ -11,8 +11,8 @@ if ! dpkg -l | grep -q libgtest-dev; then
     # Build and install gtest
     cd /usr/src/gtest || exit
     sudo  cmake CMakeLists.txt
-    sudo   make
-    sudo   cp *.a /usr/lib
+    sudo  make
+    sudo  cp *.a /usr/lib
 
     echo "Google Test installed successfully."
 else

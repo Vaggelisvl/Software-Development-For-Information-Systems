@@ -64,7 +64,7 @@ TESTS = $(patsubst $(TESTDIR)/%.cpp,$(OUTDIR)/%,$(TEST_SRCS))
 
 .PHONY: all clean test
 
-all: install_dependencies  shared_library static_library export_library_path main_executable
+all: install_dependencies  shared_library static_library export_library_path main_executable test
 install_dependencies:
 	$(MKDIR_P) $(OUTDIR)
 	@$(INSTALL_CMAKE_COMMAND)
@@ -84,7 +84,8 @@ $(LIB_SHARED): $(LIB_SRCS)
 $(LIB_STATIC): $(LIB_SRCS)
 	ar rcs $@ $^
 
-all_skip_dependencies: shared_library static_library export_library_path main_executable
+all_skip_dependencies: shared_library static_library export_library_path main_executable test
+all_skip_dependencies_and_test: shared_library static_library export_library_path main_executable
 
 test: export_library_path create_outdir $(TESTS)
 	@for test in $(TESTS); do \
