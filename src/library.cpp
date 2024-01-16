@@ -206,16 +206,17 @@ int main(int argc, char *argv[]) {
 
 
     scheduler->wait_to_finish();
+    scheduler->printStats();
+    delete scheduler;
+
     Statistics* statistics3 = new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
     statistics3->printNormResults(metrics,r);
     statistics3->calculateStatistics(K,&r);
     statistics3->printTotalPercentage(K);
-
-    scheduler->printStats();
-//    r.printTree();
-    delete scheduler;
-
     r.printGraph("project3.txt");
+
+//    r.printTree();
+
     clock_t end = clock();
     char buffer2[50];
     sprintf(buffer2, "Execution time: %f\n", (double)(end - start) / CLOCKS_PER_SEC);

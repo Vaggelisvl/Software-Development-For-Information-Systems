@@ -39,6 +39,7 @@ protected:
     pthread_rwlock_t hashMapRwlock;
 public:
     Optimizations();
+    UnorderedMap<Point, DistanceContents > getHashMap();
 
     /**
     * @brief This function is used to sample a subset of neighbors for each point in the graph.

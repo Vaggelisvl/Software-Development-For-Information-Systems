@@ -202,7 +202,6 @@ void Statistics::printTotalPercentage(int k) {
     totalStatisticInfo->printStatistics();
 
 }
-
 void Statistics::printNormResults(char *metric,RandomProjectionTrees r) {
     for(int i=0;i<numOfPoints;i++){
         Point point1 = points.at(i);
@@ -210,8 +209,11 @@ void Statistics::printNormResults(char *metric,RandomProjectionTrees r) {
         for(int j=0;j<numOfPoints;j++){
             if(i!=j){
                 Point point2 = points.at(j);
-                float dist = r.calculateNormDistance(point1, point2);
-                pointInfo[i]->insert(point2.getId(),dist);
+                DistanceContents distContents = r.readHashMap(point1);
+                if(distContents.id == point2.getId()){
+                    float dist = distContents.dist;
+                    pointInfo[i]->insert(point2.getId(),dist);
+                }
             }
         }
     }
@@ -236,12 +238,9 @@ void Statistics::printNormResults(char *metric,RandomProjectionTrees r) {
                 LOG_ERROR("Cannot write distance to results.txt file");
                 exit(1);
             }
-
-
         }
         fprintf(fileDist, "\n}\n");
     }
     fclose(fileDist);
-
 }
 

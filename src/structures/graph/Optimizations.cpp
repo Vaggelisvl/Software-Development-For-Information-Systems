@@ -438,3 +438,7 @@ float Optimizations::calculateNormDistance(Point point1, Point point2) {
     // Return the squared distance
     return squaredDistance;
 }
+
+UnorderedMap<Point, DistanceContents> Optimizations::getHashMap() {
+    return this->hashMap;
+}
