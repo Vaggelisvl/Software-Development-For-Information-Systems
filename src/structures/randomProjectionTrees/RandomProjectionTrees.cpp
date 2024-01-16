@@ -287,3 +287,5 @@ void RandomProjectionTrees::fillGraph(JobScheduler* scheduler,int &id ) {
 int RandomProjectionTrees::getNumberOfTrees() {
     return numberOfTrees;
 }
+
+

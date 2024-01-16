@@ -203,3 +203,45 @@ void Statistics::printTotalPercentage(int k) {
 
 }
 
+void Statistics::printNormResults(char *metric,RandomProjectionTrees r) {
+    for(int i=0;i<numOfPoints;i++){
+        Point point1 = points.at(i);
+        pointInfo[i] = new PointInfo(point1.getId(), numOfPoints);
+        for(int j=0;j<numOfPoints;j++){
+            if(i!=j){
+                Point point2 = points.at(j);
+                float dist = r.calculateNormDistance(point1, point2);
+                pointInfo[i]->insert(point2.getId(),dist);
+            }
+        }
+    }
+    FILE *fileDist;
+    fileDist = fopen("NormResults.txt", "w");
+    if(fileDist == NULL){
+        LOG_ERROR("Cannot open results.txt file");
+        exit(1);
+    }
+
+    for (int i = 0; i < numOfPoints; i++) {
+        fprintf(fileDist, "point: %d{\n", pointInfo[i]->getId());
+        pointInfo[i]->sortDistances();
+        //print 20 nearest neighbors points
+        for(int j=0;j<pointInfo[i]->getPointsInserted();j++){
+            if(fprintf(fileDist,"point: %d", pointInfo[i]->getNeighborId(j))<0){
+                LOG_ERROR("Cannot write point to results.txt file");
+                exit(1);
+            }
+
+            if(fprintf(fileDist," distance: %f\n", pointInfo[i]->getDistance(j))<0){
+                LOG_ERROR("Cannot write distance to results.txt file");
+                exit(1);
+            }
+
+
+        }
+        fprintf(fileDist, "\n}\n");
+    }
+    fclose(fileDist);
+
+}
+

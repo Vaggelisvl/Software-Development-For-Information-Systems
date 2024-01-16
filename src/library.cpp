@@ -36,7 +36,7 @@ void printLogoFromFile(const char* filename) {
 using namespace std;
 int main(int argc, char *argv[]) {
     Logger::SetSpecificLoggingEnabled("INFO");
-    clock_t start = clock();
+
     if(argc != 11){
         printf("Invalid input. Please provide the correct arguments in the following format: <inputFile> <dimensions> <numOfPoints> <K> <queryId> <d> <metrics> <D> <numOfTrees> <numOfThreads>\n");
         return 0;
@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
     int numOfPoints = atoi(argv[3]);
     int K = atoi(argv[4]);
     int queryId = atoi(argv[5]);
-    int d = atoi(argv[6]);
+    float d = atoi(argv[6]);
     char* metrics = argv[7];
     int D = atoi(argv[8]);
     int numOfTrees = atoi(argv[9]);
@@ -70,102 +70,102 @@ int main(int argc, char *argv[]) {
 
     //project 1
     //initialize graph, put points, set K, initialize random k neighbors...
-//    GraphInitialization g;
-//    for(int i=0;i<dataset.getNumOfPoints();i++){
-//        g.putPoints(elements.at(i).getCoordinates());
-//    }
-//
-//    g.setK(K);
-//    g.setMetrics(metrics);
-//    g.setDimensions(dataset.getDimensions());
-//    g.setKRandomNeighbors();
-//
-//    Statistics* statistics=new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
-//    statistics->calculateAllDistances(metrics);
-//
-//    //if query out of the graph
-//    if(queryId == dataset.getNumOfPoints() + 1){
-//        srand(static_cast<unsigned>(time(NULL)));
-//        Vector<float> queryVector;
-//        //generate random coordinates
-//        for (int i = 0; i < dataset.getDimensions(); i++) {
-//            //in space [-1.0-1.0]
-//            float randomFloat = -1.0 + 2.0 * ((float)rand() / (float)RAND_MAX);
-//            queryVector.push_back(randomFloat);
-//        }
-//        Point queryPoint(queryId,queryVector);
-//        g.findKNearestNeighborsForPoint(queryPoint);
-//
-//    }
-//    else{
-//        g.sortKNeighbors();
-//        while(!g.KNNAlgorithm());
-//        g.calculateAllDistances();
-//        g.printNeighbors(queryId);
-//        g.printGraph("graph.txt");
-//    }
-//
-//
-//    statistics->calculateStatistics(K,&g);
-////    if(numOfPoints>20)
-////        statistics->printStatistics(K);
-////    else
-//        statistics->printInMatrixForm(K);
-//
-//    statistics->printTotalPercentage(K);
-//
-//
-//    //for project 2
-//    printf("OPTIMIZATIONS\n");
-//    Optimizations op;
-//op.setd(d);
-//    for(int i=0;i<dataset.getNumOfPoints();i++){
-//        op.putPoints(elements.at(i).getCoordinates());
-//    }
-//
-//    op.setK(K);
-//    op.setMetrics(metrics);
-//    op.setDimensions(dataset.getDimensions());
-//    op.setd(d);
-//    op.setKRandomNeighbors();
-//    op.initFlags();
-//    op.initReverseNN();
-//    op.sortKNeighbors();
-//
-//    //if query out of the graph
-//    if(queryId == dataset.getNumOfPoints() + 1){
-//        srand(static_cast<unsigned>(time(NULL)));
-//        Vector<float> queryVector;
-//        //generate random coordinates
-//        for (int i = 0; i < dataset.getDimensions(); i++) {
-////          in space [-1.0-1.0]
-//            float randomFloat = -1.0 + 2.0 * ((float)rand() / (float)RAND_MAX);
-//            queryVector.push_back(randomFloat);
-//        }
-//        Point queryPoint(queryId,queryVector);
-//        op.findKNearestNeighborsForPoint(queryPoint);
-//
-//    }
-//    else{
-//        op.sortKNeighbors();
-//        op.initSampling();
-//        while(op.KNN());
-//        op.printNeighbors(queryId);
-//    }
-//    Statistics* statistics2 = new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
-//    statistics2->calculateAllDistances(metrics);
-//
-//    op.printGraph("optimizedGraph.txt");
-//    op.printReverseNN("reverseNN.txt");
-//
-//
-//    statistics2->calculateStatistics(K,&op);
-////    if(numOfPoints>20)
-////        statistics2->printStatistics(K);
-////    else
-//        statistics2->printInMatrixForm(K);
-//
-//    statistics2->printTotalPercentage(K);
+    GraphInitialization g;
+    for(int i=0;i<dataset.getNumOfPoints();i++){
+        g.putPoints(elements.at(i).getCoordinates());
+    }
+
+    g.setK(K);
+    g.setMetrics(metrics);
+    g.setDimensions(dataset.getDimensions());
+    g.setKRandomNeighbors();
+
+    Statistics* statistics=new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
+    statistics->calculateAllDistances(metrics);
+
+    //if query out of the graph
+    if(queryId == dataset.getNumOfPoints() + 1){
+        srand(static_cast<unsigned>(time(NULL)));
+        Vector<float> queryVector;
+        //generate random coordinates
+        for (int i = 0; i < dataset.getDimensions(); i++) {
+            //in space [-1.0-1.0]
+            float randomFloat = -1.0 + 2.0 * ((float)rand() / (float)RAND_MAX);
+            queryVector.push_back(randomFloat);
+        }
+        Point queryPoint(queryId,queryVector);
+        g.findKNearestNeighborsForPoint(queryPoint);
+
+    }
+    else{
+        g.sortKNeighbors();
+        while(!g.KNNAlgorithm());
+        g.calculateAllDistances();
+        g.printNeighbors(queryId);
+        g.printGraph("graph.txt");
+    }
+
+
+    statistics->calculateStatistics(K,&g);
+//    if(numOfPoints>20)
+//        statistics->printStatistics(K);
+//    else
+        statistics->printInMatrixForm(K);
+
+    statistics->printTotalPercentage(K);
+
+
+//    for project 2
+    printf("OPTIMIZATIONS\n");
+    Optimizations op;
+    op.setd(d);
+    for(int i=0;i<dataset.getNumOfPoints();i++){
+        op.putPoints(elements.at(i).getCoordinates());
+    }
+
+    op.setK(K);
+    op.setMetrics(metrics);
+    op.setDimensions(dataset.getDimensions());
+    op.setd(d);
+    op.setKRandomNeighbors();
+    op.initFlags();
+    op.initReverseNN();
+    op.sortKNeighbors();
+
+    //if query out of the graph
+    if(queryId == dataset.getNumOfPoints() + 1){
+        srand(static_cast<unsigned>(time(NULL)));
+        Vector<float> queryVector;
+        //generate random coordinates
+        for (int i = 0; i < dataset.getDimensions(); i++) {
+//          in space [-1.0-1.0]
+            float randomFloat = -1.0 + 2.0 * ((float)rand() / (float)RAND_MAX);
+            queryVector.push_back(randomFloat);
+        }
+        Point queryPoint(queryId,queryVector);
+        op.findKNearestNeighborsForPoint(queryPoint);
+
+    }
+    else{
+        op.sortKNeighbors();
+        op.initSampling();
+        while(op.KNN());
+        op.printNeighbors(queryId);
+    }
+    Statistics* statistics2 = new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
+    statistics2->calculateAllDistances(metrics);
+
+    op.printGraph("optimizedGraph.txt");
+    op.printReverseNN("reverseNN.txt");
+
+
+    statistics2->calculateStatistics(K,&op);
+//    if(numOfPoints>20)
+//        statistics2->printStatistics(K);
+//    else
+        statistics2->printInMatrixForm(K);
+
+    statistics2->printTotalPercentage(K);
 //
 //    printLogoFromFile("logo.txt");
 
@@ -175,6 +175,7 @@ int main(int argc, char *argv[]) {
     file = fopen("times.txt", "w");
     printf("RANDOM PROJECTION TREES\n");
     int jobs=0;
+    clock_t start = clock();
     RandomProjectionTrees r(D);
     r.setMetrics(metrics);
     r.setK(K);
@@ -189,26 +190,33 @@ int main(int argc, char *argv[]) {
     NormCalculationJob *normCalculationJob=new NormCalculationJob(r.getPoints(),jobs++,&r);
 
     scheduler->submit(normCalculationJob);
-    for(int i=0;i<numOfTrees;i++)
+    for(int i=0;i<numOfTrees;i++) {
         scheduler->submit(new RandomProjectionTreeJob(&r,normCalculationJob,jobs++));
-    clock_t startt,endt;
-    double cputime;
-    startt = clock();
-    r.graphInitialization(scheduler,jobs++);
-    endt = clock();
-    cputime = (double)(endt - startt) / CLOCKS_PER_SEC;
-    fprintf(file, "time for %d points and %d neighbors:%f\n",dataset.getNumOfPoints(),K,cputime);
+    }
+//    }
+//    scheduler.submit(new RandomProjectionTreeJob(&r));
 
-    scheduler->wait_to_finish(); // Wait for all jobs to finish after they have been submitted
-    scheduler->start_execute();
+
+    r.graphInitialization(scheduler,jobs++);
+
+//    scheduler->wait_to_finish(); // Wait for all jobs to finish after they have been submitted
+
+//    scheduler->start_execute();
     scheduler->submit(new KNNJob(&r,jobs++));
-    clock_t end = clock();
+
+
     scheduler->wait_to_finish();
+    Statistics* statistics3 = new Statistics(elements,dataset.getNumOfPoints(),dataset.getDimensions());
+    statistics3->printNormResults(metrics,r);
+    statistics3->calculateStatistics(K,&r);
+    statistics3->printTotalPercentage(K);
+
     scheduler->printStats();
-    r.printTree();
+//    r.printTree();
     delete scheduler;
 
     r.printGraph("project3.txt");
+    clock_t end = clock();
     char buffer2[50];
     sprintf(buffer2, "Execution time: %f\n", (double)(end - start) / CLOCKS_PER_SEC);
     LOG_INFO(buffer2);

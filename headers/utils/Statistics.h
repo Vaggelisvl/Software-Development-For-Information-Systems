@@ -8,6 +8,7 @@
 #include "../structures/vector/Vector.h"
 #include "../structures/graph/GraphInitialization.h"
 #include "StatisticInfo.h"
+#include "../structures/randomProjectionTrees/RandomProjectionTrees.h"
 
 class Statistics {
 private:
@@ -24,6 +25,7 @@ public:
     void calculateAllDistances(char* metric);
     void printStatistics(int k);
     void calculateStatistics(int k,GraphInitialization *graph);
+    void printNormResults(char* metric,RandomProjectionTrees r);
     void printInMatrixForm(int k);
     void printTotalPercentage(int k);
 };

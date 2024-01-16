@@ -40,6 +40,7 @@ public:
     void graphInitialization(JobScheduler* scheduler,int);//jobScheduler
     int getNumberOfTrees();
     void fillGraph(JobScheduler* scheduler,int&);
+
 };
 
 
