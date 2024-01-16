@@ -43,3 +43,14 @@ JobNode *JobQueue::begin() {
     return front;
 }
 
+JobQueue::~JobQueue() {
+    while (front) {
+        JobNode *node = front;
+        front = front->next;
+        delete node;
+    }
+    back = NULL;
+    size = 0;
+
+}
+

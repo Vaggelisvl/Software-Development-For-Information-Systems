@@ -35,3 +35,9 @@ JobDependency::JobDependency() {
 
 }
 
+JobDependency::~JobDependency() {
+    pthread_rwlock_destroy(&vectorRwlock);
+
+
+}
+

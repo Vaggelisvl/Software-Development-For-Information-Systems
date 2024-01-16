@@ -16,6 +16,7 @@ public:
     * @param job The job to be associated with this node.
     */
     explicit JobNode(Job* job) : job(job), next(NULL) {}
+    ~JobNode() = default;
 
 };
 #endif //_PROJECT_JOBNODE_H

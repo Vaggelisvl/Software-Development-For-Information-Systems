@@ -11,6 +11,7 @@ private:
     int percentage;
 public:
     StatisticInfo();
+    ~StatisticInfo()=default;
     void increaseRightDecisions(int i);
     void increaseRightDecision();
     void increaseWrongDecision();

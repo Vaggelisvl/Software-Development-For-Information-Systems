@@ -21,6 +21,7 @@ private:
 
 public:
     Statistics( Vector<Point> points,int numOfPoints,int dimensions);
+    ~Statistics();
     void calculateAllDistances(char* metric);
     void printStatistics(int k);
     void calculateStatistics(int k,GraphInitialization *graph);

@@ -16,6 +16,20 @@ private:
 //    NormCalculationJob*normCalculationJob;
 public:
     explicit RandomProjectionTreeJob(RandomProjectionTrees* tree,Vector<NormCalculationJob*>, int) ;
+    ~RandomProjectionTreeJob() override = default;
+    // Copy constructor
+    RandomProjectionTreeJob(const RandomProjectionTreeJob& other) : Job(other) {
+        tree = other.tree;
+    }
+
+    // Assignment operator
+    RandomProjectionTreeJob& operator=(const RandomProjectionTreeJob& other) {
+        if (this != &other) {
+            Job::operator=(other);
+            tree = other.tree;
+        }
+        return *this;
+    }
     void execute() override ;
 };
 

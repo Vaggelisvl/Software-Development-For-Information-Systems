@@ -7,9 +7,10 @@ template <typename T>
 class Vector {
 public:
     Vector<T>();
+    Vector(const Vector<T>& other);
     ~Vector();
     void push_back(const T& value);
-
+    Vector<T>& operator=(const Vector<T>& other);
     const T* begin() const {
         return array;
     };
@@ -106,6 +107,31 @@ private:
 
 
 };
+
+template<typename T>
+Vector<T> &Vector<T>::operator=(const Vector<T> &other) {
+    if (this != &other) {
+        delete[] array;
+        size = other.size;
+        capacity = other.capacity;
+        array = new T[capacity];
+        for (size_t i = 0; i < size; ++i) {
+            array[i] = other.array[i];
+        }
+    }
+    return *this;
+}
+
+template<typename T>
+Vector<T>::Vector(const Vector<T> &other) {
+    size = other.size;
+    capacity = other.capacity;
+    array = new T[capacity];
+    for (size_t i = 0; i < size; ++i) {
+        array[i] = other.array[i];
+    }
+
+}
 
 template<typename T>
 Vector<T>::Vector(T *start, T *end) {

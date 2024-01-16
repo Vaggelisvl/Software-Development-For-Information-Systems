@@ -28,7 +28,7 @@ protected:
     UnorderedMap< Point, Vector<Neighbors> > graph;
 public:
     GraphInitialization();
-//    ~GraphInitialization();
+    ~GraphInitialization()=default;
     virtual void printGraph(char*);
     void printNeighbors(int id);
     void putPoints(Vector<float> coordinates);

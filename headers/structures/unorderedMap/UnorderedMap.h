@@ -12,7 +12,41 @@ template<typename Key, typename Value>
 class UnorderedMap {
 public:
     UnorderedMap();
+    // Copy constructor
+    UnorderedMap(const UnorderedMap<Key, Value>& other) : capacity(other.capacity), data(new KeyValue*[other.capacity]) {
+        for (size_t i = 0; i < capacity; ++i) {
+            data[i] = nullptr;
+            for (KeyValue* node = other.data[i]; node; node = node->next) {
+                insert(node->key, node->value);
+            }
+        }
+    }
 
+    // Assignment operator
+    UnorderedMap<Key, Value>& operator=(const UnorderedMap<Key, Value>& other) {
+        if (this != &other) {
+            // Delete current data
+            for (size_t i = 0; i < capacity; ++i) {
+                while (data[i]) {
+                    KeyValue* oldNode = data[i];
+                    data[i] = data[i]->next;
+                    delete oldNode;
+                }
+            }
+            delete[] data;
+
+            // Copy data from other UnorderedMap
+            capacity = other.capacity;
+            data = new KeyValue*[other.capacity];
+            for (size_t i = 0; i < capacity; ++i) {
+                data[i] = nullptr;
+                for (KeyValue* node = other.data[i]; node; node = node->next) {
+                    insert(node->key, node->value);
+                }
+            }
+        }
+        return *this;
+    }
     // Insert a key-value pair into the hashmap
     void insert(const Key& key, Value value);
 
@@ -146,17 +180,17 @@ void UnorderedMap<Key,Value>::remove(const Key& key) {
 }
 template<typename Key,typename Value>
 UnorderedMap<Key,Value>::~UnorderedMap() {
-//    for (size_t i = 0; i < capacity; i++) {
-//        KeyValue* current = data[i];
-//        while (current) {
-//            KeyValue* temp = current;
-//            current = current->next;
-//            delete temp;
-//
-//        }
-//        data[i] = NULL; // Set the bucket to NULL after deleting
-//    }
-//    delete[] data;
+    for (size_t i = 0; i < capacity; i++) {
+        KeyValue* current = data[i];
+        while (current) {
+            KeyValue* temp = current;
+            current = current->next;
+            delete temp;
+
+        }
+        data[i] = NULL; // Set the bucket to NULL after deleting
+    }
+    delete[] data;
 }
 
 //TODO change the function to be more efficient

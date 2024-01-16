@@ -11,6 +11,7 @@ private:
 public:
     Neighbors(int id, float distance, Vector<float> coordinates);
     Neighbors();
+    ~Neighbors()= default;
     int getId() const;
     float getDistance() const;
     bool getFlag() const;

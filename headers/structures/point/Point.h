@@ -16,7 +16,7 @@ public:
     float getSquareNorm() const;
     Point(int id, Vector<float> coordinates);
     Point();
-
+    ~Point()= default;
     void setHasBeenChoosen(int hasBeenChoosen);
     int getHasBeenChoosen() const;
     bool operator==(const Point& other) const;

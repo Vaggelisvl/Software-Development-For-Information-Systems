@@ -68,4 +68,9 @@ void Job::printJobState() {
 
 }
 
+Job::~Job() {
+    delete dependency;
+
+}
+
 

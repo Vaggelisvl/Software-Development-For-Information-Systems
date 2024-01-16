@@ -21,8 +21,32 @@ private:
 public:
     bool getIsFinished() const;
     explicit CalculateDistanceJob(Optimizations *optimizations,int,int,int);
+    ~CalculateDistanceJob() override=default;
     void waitUntilFinished();
     void execute() override;
+    // Copy constructor
+    CalculateDistanceJob(const CalculateDistanceJob& other) : Job(other) {
+        optimizations = other.optimizations;
+        pointId1 = other.pointId1;
+        pointId2 = other.pointId2;
+        isFinished = other.isFinished;
+        mutex = other.mutex;
+        cond = other.cond;
+    }
+
+    // Assignment operator
+    CalculateDistanceJob& operator=(const CalculateDistanceJob& other) {
+        if (this != &other) {
+            Job::operator=(other);
+            optimizations = other.optimizations;
+            pointId1 = other.pointId1;
+            pointId2 = other.pointId2;
+            isFinished = other.isFinished;
+            mutex = other.mutex;
+            cond = other.cond;
+        }
+        return *this;
+    }
 
 
 };

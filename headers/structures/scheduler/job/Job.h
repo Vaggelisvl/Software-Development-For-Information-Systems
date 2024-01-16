@@ -17,6 +17,24 @@ public:
     void setJobId(int jobId) ;
     void incrementJobId() ;
     Job() ;
+    // Copy constructor
+    Job(const Job& other) {
+        dependency = new JobDependency(*other.dependency);
+        completed = other.completed;
+        jobID = other.jobID;
+    }
+
+    // Assignment operator
+    Job& operator=(const Job& other) {
+        if (this != &other) {
+            delete dependency;
+            dependency = new JobDependency(*other.dependency);
+            completed = other.completed;
+            jobID = other.jobID;
+        }
+        return *this;
+    }
+    virtual ~Job() ;
     void printJobState();
     void addDependency(Job* job) ;
     bool isCompleted() ;

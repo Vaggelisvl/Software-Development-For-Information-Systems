@@ -32,6 +32,7 @@ public:
 
     float calculateInnerProduct(Vector<float>, Vector<float>);
     RandomProjectionTrees(int);
+    ~RandomProjectionTrees()=default;
     int split(Vector<int>, Vector<Vector<int> > &);
     Vector<Vector<int> > hyperplane(Vector<int>);
     void printTree();

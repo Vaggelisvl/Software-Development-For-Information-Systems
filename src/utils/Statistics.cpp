@@ -203,3 +203,16 @@ void Statistics::printTotalPercentage(int k) {
 
 }
 
+Statistics::~Statistics() {
+    for(int i=0;i<numOfPoints;i++){
+        delete statisticInfo[i];
+    }
+    delete[] statisticInfo;
+    delete totalStatisticInfo;
+    for(int i=0;i<numOfPoints;i++){
+        delete pointInfo[i];
+    }
+    delete[] pointInfo;
+
+}
+

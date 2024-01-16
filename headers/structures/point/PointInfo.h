@@ -8,6 +8,7 @@
 class PointInfo {
 public:
     PointInfo(int i,int points);
+    ~PointInfo()= default;
     void insert(int i ,float dis);
     void sortDistances(); // Function to sort distances
     int getPointsInserted();

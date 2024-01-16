@@ -13,7 +13,7 @@ private:
 
 public:
     JobQueue() : front(NULL), back(NULL) {}
-//    ~JobQueue();
+    ~JobQueue();
     void push(Job* job) ;
 
     Job* pop() ;

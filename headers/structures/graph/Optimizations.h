@@ -39,7 +39,7 @@ protected:
     pthread_rwlock_t hashMapRwlock;
 public:
     Optimizations();
-
+    ~Optimizations()=default;
     /**
     * @brief This function is used to sample a subset of neighbors for each point in the graph.
     * The sampling rate is determined by a random float p between 0.1 and 1.0.
