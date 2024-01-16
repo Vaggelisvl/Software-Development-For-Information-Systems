@@ -183,14 +183,30 @@ int main(int argc, char *argv[]) {
         r.putPoints(elements.at(i).getCoordinates());
     }
 
+    Vector<NormCalculationJob*>normCalculationJobs;
     JobScheduler *scheduler;
     scheduler=new JobScheduler(numOfThreads);
     scheduler->start_execute(); // Start the worker threads before submitting any jobs
-    NormCalculationJob *normCalculationJob=new NormCalculationJob(r.getPoints(),jobs++,&r);
+    int divisionResult = dataset.getNumOfPoints() / K;
+    int chunkSize = K < divisionResult ? divisionResult : K;
+    for (int i = 0; i < dataset.getNumOfPoints(); i += chunkSize) {
+        Vector<Point> points;
+        for (int j = i; j < i + chunkSize && j < dataset.getNumOfPoints(); j++) {
+            points.push_back(elements.at(j));
+        }
+        normCalculationJobs.push_back(new NormCalculationJob(points, jobs++, &r));
+    }
+    char buffer3[50];
+    sprintf(buffer3, "Number of jobs: %d\n", jobs);
+    LOG_ERROR(buffer3);
 
-    scheduler->submit(normCalculationJob);
+//    NormCalculationJob *normCalculationJob=new NormCalculationJob(r.getPoints(),jobs++,&r);
+//    NormCalculationJob *normCalculationJob2=new NormCalculationJob(r.getPoints(),jobs++,&r);
+    for (int i = 0; i <normCalculationJobs.getSize() ; ++i) {
+        scheduler->submit(normCalculationJobs.at(i));
+    }
     for(int i=0;i<numOfTrees;i++)
-        scheduler->submit(new RandomProjectionTreeJob(&r,normCalculationJob,jobs++));
+        scheduler->submit(new RandomProjectionTreeJob(&r,normCalculationJobs,jobs++));
     clock_t startt,endt;
     double cputime;
     startt = clock();

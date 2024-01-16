@@ -21,7 +21,7 @@ JobScheduler::JobScheduler(int numThreads) : numThreads(numThreads), stop(false)
     this->threads = new pthread_t[numThreads];
     pthread_mutex_init(&mutex, NULL);
     pthread_cond_init(&cond, NULL);
-    LOG_DEBUG( ([&](){char* buffer = new char[50];sprintf(buffer, "JobScheduler created with %d threads", numThreads); return buffer;})());
+//    LOG_DEBUG( ([&](){char* buffer = new char[50];sprintf(buffer, "JobScheduler created with %d threads", numThreads); return buffer;})());
 }
 
 JobScheduler::~JobScheduler() {
@@ -63,7 +63,7 @@ void JobScheduler::submit(Job *job){
     queue.push(job);
     pthread_mutex_unlock(&mutex);
     pthread_cond_signal(&cond);
-    LOG_INFO(([&](){char* buffer = new char[50];sprintf(buffer, "Job with id %d submitted", job->getJobId()); return buffer;})());
+//    LOG_INFO(([&](){char* buffer = new char[50];sprintf(buffer, "Job with id %d submitted", job->getJobId()); return buffer;})());
 
 
 }
@@ -104,12 +104,12 @@ void *JobScheduler::threadFunction(void *arg) {
         }
         Job* job = scheduler->queue.pop();
         if(job->isCompleted()){
-            LOG_DEBUG(([&](){char* buffer = new char[50];sprintf(buffer, "Job with id %d competed", job->getJobId()); return buffer;})());
+//            LOG_DEBUG(([&](){char* buffer = new char[50];sprintf(buffer, "Job with id %d competed", job->getJobId()); return buffer;})());
             return NULL;
         }
         if (job->areDependenciesMet()) {
 
-            LOG_DEBUG(([&](){char* buffer = new char[50];sprintf(buffer, "Job with id %d started", job->getJobId()); return buffer;})());
+//            LOG_DEBUG(([&](){char* buffer = new char[50];sprintf(buffer, "Job with id %d started", job->getJobId()); return buffer;})());
 
             scheduler->jobCount[threadIndex]++;
             pthread_mutex_unlock(&scheduler->mutex);
@@ -119,7 +119,7 @@ void *JobScheduler::threadFunction(void *arg) {
             scheduler->executionTime[threadIndex] += static_cast<double>(endExecution - startExecution) / CLOCKS_PER_SEC;
             if (!executed) {
 
-                LOG_DEBUG(([&](){char* buffer = new char[50];sprintf(buffer, "Job with id %d failed", job->getJobId()); return buffer;})());
+//                LOG_DEBUG(([&](){char* buffer = new char[50];sprintf(buffer, "Job with id %d failed", job->getJobId()); return buffer;})());
 
                 pthread_mutex_lock(&scheduler->mutex);
                 scheduler->queue.push(job);
@@ -127,7 +127,7 @@ void *JobScheduler::threadFunction(void *arg) {
                 pthread_cond_signal(&scheduler->cond);
             } else {
 
-                LOG_DEBUG(([&](){char* buffer = new char[70];sprintf(buffer, "-----Job with id %d completed-----", job->getJobId()); return buffer;})());
+//                LOG_DEBUG(([&](){char* buffer = new char[70];sprintf(buffer, "-----Job with id %d completed-----", job->getJobId()); return buffer;})());
 
                 pthread_cond_broadcast(&scheduler->cond); // Signal all threads that a job has completed
 //                delete job;
@@ -135,7 +135,7 @@ void *JobScheduler::threadFunction(void *arg) {
             }
         } else {
 
-            LOG_DEBUG(([&](){char* buffer = new char[70];sprintf(buffer, "Job with id %d has unmet dependencies", job->getJobId()); return buffer;})());
+//            LOG_DEBUG(([&](){char* buffer = new char[70];sprintf(buffer, "Job with id %d has unmet dependencies", job->getJobId()); return buffer;})());
 
             scheduler->queue.push(job);
             pthread_mutex_unlock(&scheduler->mutex);

@@ -161,7 +161,7 @@ void RandomProjectionTrees::graphInitialization(JobScheduler* scheduler,int id )
                     pthread_rwlock_unlock(&pointslock); // Unlock the read-write lock
                     if (j != k) {
 
-                        LOG_DEBUG(([&](){char* buffer = new char[100];sprintf(buffer, "Calculating distance in graphInitialization for points %d and %d", firstPoint.getId(),secondPoint.getId()); return buffer;})());
+//                        LOG_DEBUG(([&](){char* buffer = new char[100];sprintf(buffer, "Calculating distance in graphInitialization for points %d and %d", firstPoint.getId(),secondPoint.getId()); return buffer;})());
 
                         auto* job = new CalculateDistanceJob(this,firstPoint.getId(), secondPoint.getId(),id++);
 

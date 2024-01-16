@@ -20,19 +20,19 @@ void Job::incrementJobId() { jobID++; }
 bool Job::run() {
     if (dependency->areDependenciesMet()) {
         execute();
-        LOG_DEBUG(([&]() {
-            char *buffer = new char[55];
-            sprintf(buffer, "Job::run: Job %d completed", jobID);
-            return buffer;
-        })());
+//        LOG_DEBUG(([&]() {
+//            char *buffer = new char[55];
+//            sprintf(buffer, "Job::run: Job %d completed", jobID);
+//            return buffer;
+//        })());
         completed = true;
         return true;
     } else {
-        LOG_DEBUG(([&]() {
-            char *buffer = new char[55];
-            sprintf(buffer, "Job::run: Dependencies not met for job %d", jobID);
-            return buffer;
-        })());
+//        LOG_DEBUG(([&]() {
+//            char *buffer = new char[55];
+//            sprintf(buffer, "Job::run: Dependencies not met for job %d", jobID);
+//            return buffer;
+//        })());
         return false;
     }
 }
@@ -52,11 +52,11 @@ Job::Job() : completed(false) {
 }
 
 bool Job::areDependenciesMet() {
-    LOG_DEBUG(([&]() {
-        char *buffer = new char[55];
-        sprintf(buffer, "Job::areDependenciesMet for job with id %d", jobID);
-        return buffer;
-    })());
+//    LOG_DEBUG(([&]() {
+//        char *buffer = new char[55];
+//        sprintf(buffer, "Job::areDependenciesMet for job with id %d", jobID);
+//        return buffer;
+//    })());
     return dependency->areDependenciesMet();
 }
 

@@ -8,8 +8,9 @@ void RandomProjectionTreeJob::execute() {
     tree->creatTrees();
 }
 
-RandomProjectionTreeJob::RandomProjectionTreeJob(RandomProjectionTrees *tree,NormCalculationJob *normCalculationJob,int id ) : tree(tree) {
-    LOG_DEBUG(([&](){char *log=new char[35];sprintf(log, "RandomProjectionTreeJob created"); return log;})());
+RandomProjectionTreeJob::RandomProjectionTreeJob(RandomProjectionTrees *tree,Vector<NormCalculationJob*>normCalculationJob,int id ) : tree(tree) {
+//    LOG_DEBUG(([&](){char *log=new char[35];sprintf(log, "RandomProjectionTreeJob created"); return log;})());
     this->setJobId(id);
-    this->addDependency(normCalculationJob);
+    for(int i=0;i<normCalculationJob.getSize();i++)
+         this->addDependency(normCalculationJob.at(i));
 }
